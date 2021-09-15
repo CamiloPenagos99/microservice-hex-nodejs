@@ -13,7 +13,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         console.log('===== llegue al dao ===', data);
         await this.firestore
             .collection(this.collection)
-            .doc('prueba')
+            .doc(data.codigo_remision)
             .set({ ...data });
     }
 }
