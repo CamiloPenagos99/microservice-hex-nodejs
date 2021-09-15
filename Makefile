@@ -33,12 +33,14 @@ terraform-plan: $(prerequisites)
 		terraform workspace select $(ENV) && \
 		terraform plan \
 		-var="project=$(PROJECT_ID)" \
+		-var="project_suite=$(SUITE_PROJECT_ID)" \
 
 terraform-apply: $(prerequisites)
 	@cd infra && \
 		terraform workspace select $(ENV) && \
 		terraform apply \
 		-var="project=$(PROJECT_ID)" \
+		-var="project_suite=$(SUITE_PROJECT_ID)" \
         -auto-approve
 
 deploy: check-project check-commit-sha check-service-name
