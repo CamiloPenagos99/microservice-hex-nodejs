@@ -1,7 +1,7 @@
-resource "google_pubsub_subscription" "example" {
+resource "google_pubsub_subscription" "sub-tracking-almacenar-pin-guia" {
   ack_deadline_seconds       = "10"
   message_retention_duration = "900s"
-  name                       = "subExample"
+  name                       = "sub-tracking-almacenar-pin-guia"
   project                    = var.project
   expiration_policy {
     ttl = ""
@@ -13,9 +13,9 @@ resource "google_pubsub_subscription" "example" {
   }
 
   push_config {
-    push_endpoint = data.google_cloud_run_service.example.status[0].url
+    push_endpoint = data.google_cloud_run_service.cm-tracking-almacenar-pin-guia.status[0].url
   }
 
   retain_acked_messages = "false"
-  topic                 = google_pubsub_topic.example.name
+  topic                 = google_pubsub_topic.guardar-guia-pin.name
 }
