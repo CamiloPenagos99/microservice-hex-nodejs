@@ -1,4 +1,4 @@
-name: cm-tracking-almacenar-guia-pin Flow
+name: cm-tracking-almacenar-pin-guia Flow
 on:
     push:
         branches:
@@ -6,7 +6,7 @@ on:
             - 'testing'
             - 'dev'
 env:
-    SERVICE_NAME: cm-tracking-almacenar-guia-pin
+    SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
 jobs:
     build_and_deploy:

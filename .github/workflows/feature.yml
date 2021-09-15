@@ -1,10 +1,10 @@
-name: cm-tracking-almacenar-guia-pin Flow
+name: cm-tracking-almacenar-pin-guia Flow
 on:
     push:
         branches:
             - 'feature/**'
 env:
-    SERVICE_NAME: cm-tracking-almacenar-guia-pin
+    SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
     GCP_PROJECT: ${{ secrets.PROJECT_ID_DEV }}
     ENV_FILE: ENV_DEV
