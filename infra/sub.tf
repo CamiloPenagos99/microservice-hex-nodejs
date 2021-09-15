@@ -17,5 +17,5 @@ resource "google_pubsub_subscription" "sub-tracking-almacenar-pin-guia" {
   }
 
   retain_acked_messages = "false"
-  topic                 = google_pubsub_topic.guardar-guia-pin.name
+  topic                 = data.google_pubsub_topic.guardar-guia-pin.name
 }
