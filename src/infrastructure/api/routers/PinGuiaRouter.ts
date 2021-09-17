@@ -22,7 +22,7 @@ export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply)
         const guia: IGuiaPinIn = schema;
         const response = await pinGuiaService.consultarPin(guia);
         console.log('data router', response);
-        return reply.send({ response, id });
+        return reply.send({ ...response, id });
     }
     throw new BadMessageException(error.message);
 };
