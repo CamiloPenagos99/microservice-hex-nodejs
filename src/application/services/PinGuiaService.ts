@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
-import { IDataIn } from '@application/data';
+import { IDataIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
 import { reconstruccionData } from '@application/util';
 //import { NotFoundException } from '@domain/exceptions';
@@ -15,5 +15,10 @@ export class PinGuiaService {
             await this.guiaRepository.guardarPin(dataFinal);
         });
         return Result.ok();
+    }
+
+    async consultarPin(data: IGuiaPinIn): Promise<Response<boolean | null>> {
+        const result = await this.guiaRepository.consultarPin(data);
+        return Result.ok(result);
     }
 }

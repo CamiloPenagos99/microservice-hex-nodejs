@@ -3,6 +3,7 @@ import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
 import { GuardarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
+import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -15,5 +16,10 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             .collection(this.collection)
             .doc(data.codigo_remision)
             .set({ ...data });
+    }
+
+    async consultarPin(data: ConsultarPinEntity): Promise<boolean> {
+        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
+        return consulta?.pin === data.pin ? true : false;
     }
 }
