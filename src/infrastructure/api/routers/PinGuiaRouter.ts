@@ -21,7 +21,8 @@ export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply)
     if (!error) {
         const guia: IGuiaPinIn = schema;
         const response = await pinGuiaService.consultarPin(guia);
-        return reply.send({ ...response, id });
+        console.log('data router', response);
+        return reply.send({ response, id });
     }
     throw new BadMessageException(error.message);
 };

@@ -19,6 +19,7 @@ export class PinGuiaService {
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<boolean | null>> {
         const result = await this.guiaRepository.consultarPin(data);
+        console.log('==== result ====', result);
         return Result.ok(result);
     }
 }
