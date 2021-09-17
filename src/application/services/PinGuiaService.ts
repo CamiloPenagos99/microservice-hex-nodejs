@@ -4,6 +4,7 @@ import { Result, Response } from '@domain/response';
 import { IDataIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
 import { reconstruccionData } from '@application/util';
+import { JsonObject } from 'swagger-ui-express';
 //import { NotFoundException } from '@domain/exceptions';
 
 @injectable()
@@ -17,9 +18,9 @@ export class PinGuiaService {
         return Result.ok();
     }
 
-    async consultarPin(data: IGuiaPinIn): Promise<Response<boolean | null>> {
+    async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
         const result = await this.guiaRepository.consultarPin(data);
-        console.log('==== result ====', result);
-        return Result.ok(result);
+        const respuesta = { pinValido: result };
+        return Result.ok(respuesta);
     }
 }
