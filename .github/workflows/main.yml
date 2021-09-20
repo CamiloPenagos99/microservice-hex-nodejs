@@ -29,6 +29,10 @@ jobs:
                       master:${{ secrets.PROJECT_ID_PROD }}
                       testing:${{ secrets.PROJECT_ID_TEST }}
                       !default:${{ secrets.PROJECT_ID_DEV }}
+                  SUITE_PROJECT_ID: |
+                      master:${{ secrets.PROJECT_ID_SUITE }}
+                      testing:${{ secrets.PROJECT_ID_SUITE_TEST }}
+                      !default:${{ secrets.PROJECT_ID_SUITE_DEV }}
                   ENV_FILE: |
                       master:ENV_PROD
                       testing:ENV_TEST
@@ -91,4 +95,3 @@ jobs:
               run: PROJECT_ID=$GCP_PROJECT ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-create-workspace
             - name: Apply Terraform
               run: PROJECT_ID=$GCP_PROJECT ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-apply
-    
