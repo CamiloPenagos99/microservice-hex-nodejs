@@ -8,6 +8,7 @@ on:
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
+    SUITE_PROJECT_ID: ${{ secrets.PROJECT_ID_SUITE_TEST }}
 jobs:
     build_and_deploy:
         runs-on: ubuntu-latest
