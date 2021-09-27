@@ -3,6 +3,7 @@ on:
     push:
         branches:
             - 'feature/**'
+            - 'dev'
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
@@ -70,4 +71,3 @@ jobs:
               run: PROJECT_ID=$GCP_PROJECT ENV=dev  make terraform-create-workspace
             - name: Apply Terraform
               run: PROJECT_ID=$GCP_PROJECT ENV=dev  make terraform-apply
-
