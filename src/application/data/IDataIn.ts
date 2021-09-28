@@ -8,4 +8,5 @@ export interface IDataIn {
     correo_remitente: string;
     envio_data: boolean;
     guias: JsonObject[];
+    actualizado?: boolean;
 }
