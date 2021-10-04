@@ -20,6 +20,5 @@ export const guardarPinGuiaSchema = Joi.object({
             }),
         )
         .required()
-        .min(1)
-    
+        .min(1),
 });
