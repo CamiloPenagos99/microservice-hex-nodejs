@@ -1,15 +1,9 @@
 import { DEPENDENCY_CONTAINER } from '@configuration';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import {
-    consultarPinGuiaSchema,
-    guardarPinGuiaSchema,
-    IDataEnvioSchema,
-    IGuiaSchema,
-    validateDataPubSub,
-} from '../util';
+import { consultarPinGuiaSchema, guardarPinGuiaSchema, IDataEnvioSchema, validateDataPubSub } from '../util';
 import { PinGuiaService } from '@application/services';
 //import { BadMessageException } from '@domain/exceptions';
-import { IDataIn, IGuiaPinIn, IGuiaIn, IDataEnvioIn } from '@application/data';
+import { IDataIn, IGuiaPinIn, IDataEnvioIn } from '@application/data';
 import { BadMessageException } from '@domain/exceptions';
 
 export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
@@ -37,10 +31,10 @@ export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply)
 export const recuperarPinGuia = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     const { id } = _req;
-    const guia = _req.body as IGuiaIn;
-    const { value: schema, error } = IGuiaSchema.validate(guia);
+    const guia = _req.body as IDataEnvioIn;
+    const { value: schema, error } = IDataEnvioSchema.validate(guia);
     if (!error) {
-        const guia: IGuiaPinIn = schema;
+        const guia: IDataEnvioIn = schema;
         const response = await pinGuiaService.recuperarPin(guia);
         console.log('data router', response);
         return reply.send({ ...response, id });
