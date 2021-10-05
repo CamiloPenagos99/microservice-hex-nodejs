@@ -10,5 +10,6 @@ export interface IRecuperarPinOut {
     id_llamada: number;
     remitente: string;
     envio_data: string;
-    esRemitente: boolean;
+    tipoUsuario: string;
+    medioEnvio?: string;
 }
