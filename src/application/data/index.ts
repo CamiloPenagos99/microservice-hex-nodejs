@@ -4,3 +4,4 @@ export * from './IGuiaPinIn';
 export * from './IGuiaIn';
 export * from './IEnvioDataOut';
 export * from './IDataEnvioIn';
+export * from './IRecuperarPinOut';

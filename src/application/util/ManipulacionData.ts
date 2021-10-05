@@ -1,4 +1,4 @@
-import { IDataIn, IEnvioDataOut, IGuiaPinTracking } from '@application/data';
+import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaPinTracking, IRecuperarPinOut } from '@application/data';
 import { JsonObject } from 'swagger-ui-express';
 
 export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTracking => {
@@ -32,5 +32,23 @@ export const dataRecuperarPinDestinatario = (guia: JsonObject): IEnvioDataOut =>
         telefono_destinatario: guia.telefono_destinatario,
         correo_destinatario: guia.correo_destinatario,
         codigo_remision: guia.codigo_remision,
+    };
+};
+
+export const dataRecuperarPinSalida = (guia: JsonObject, metadata: IDataEnvioIn): IRecuperarPinOut => {
+    return {
+        telefono_destinatario: guia.telefono_destinatario,
+        correo_destinatario: guia.correo_destinatario,
+        codigo_remision: guia.codigo_remision,
+        telefono_remitente: guia.telefono_remitente,
+        correo_remitente: guia.correo_remitente,
+        codigo_recogida: guia.codigo_recogida,
+        token: guia.token,
+        url_relacion_digital: guia.url_relacion_digital,
+        id_llamada: guia.id_llamada,
+        remitente: guia.remitente,
+        envio_data: guia.envio_data,
+        tipoUsuario: metadata.tipoUsuario,
+        medioEnvio: metadata.medioEnvio,
     };
 };
