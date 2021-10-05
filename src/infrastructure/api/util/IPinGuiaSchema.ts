@@ -16,6 +16,7 @@ export const guardarPinGuiaSchema = Joi.object({
                 telefono_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 token: Joi.string().allow(null, '', 0).min(0).optional(),
                 url_relacion_digital: Joi.string().allow(null, '', 0).min(0).optional(),
+                actualizado: Joi.boolean().allow(null).optional(),
             }),
         )
         .required()

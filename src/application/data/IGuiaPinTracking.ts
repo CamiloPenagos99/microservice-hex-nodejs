@@ -11,4 +11,5 @@ export interface IGuiaPinTracking {
     telefono_destinatario: string;
     token?: string;
     url_relacion_digital?: string;
+    actualizado?: boolean;
 }

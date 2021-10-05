@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
-import { GuardarPinEntity } from '@domain/entities';
+import { GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 
@@ -22,5 +22,10 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
         console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
         return consulta ? (consulta.token === data.pin ? true : false) : false;
+    }
+
+    async recuperarPin(data: RecuperarPinEntity): Promise<any> {
+        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
+        return consulta;
     }
 }
