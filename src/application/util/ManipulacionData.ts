@@ -19,12 +19,18 @@ export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTra
     };
 };
 
-export const dataRecuperarPin = (guia: JsonObject): IEnvioDataOut => {
+export const dataRecuperarPinRemitente = (guia: JsonObject): IEnvioDataOut => {
     return {
         telefono_remitente: guia.telefono_remitente,
         correo_remitente: guia.correo_remitente,
         codigo_remision: guia.codigo_remision,
-        correo_destinatario: guia.correo_destinatario,
+    };
+};
+
+export const dataRecuperarPinDestinatario = (guia: JsonObject): IEnvioDataOut => {
+    return {
         telefono_destinatario: guia.telefono_destinatario,
+        correo_destinatario: guia.correo_destinatario,
+        codigo_remision: guia.codigo_remision,
     };
 };
