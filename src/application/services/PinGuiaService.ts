@@ -1,9 +1,9 @@
 import { injectable } from 'inversify';
 import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
-import { IDataIn, IGuiaIn, IGuiaPinIn } from '@application/data';
+import { IDataIn, IEnvioDataOut, IGuiaIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
-import { reconstruccionData } from '@application/util';
+import { dataRecuperarPin, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -26,8 +26,14 @@ export class PinGuiaService {
 
     async recuperarPin(data: IGuiaIn): Promise<Response<JsonObject | null>> {
         const result = await this.guiaRepository.recuperarPin(data);
-        const respuesta = { objeto: result };
-        console.log(respuesta, '--');
-        return Result.ok(respuesta);
+        const respuesta = result;
+        console.log(respuesta);
+        return Result.ok(result);
+    }
+
+    async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {
+        const result = await this.guiaRepository.recuperarDataEnvio(data);
+        const resultado = dataRecuperarPin(result);
+        return Result.ok(resultado);
     }
 }
