@@ -27,7 +27,7 @@ export class PinGuiaService {
     async recuperarPin(data: IGuiaIn): Promise<Response<JsonObject | null>> {
         const result = await this.guiaRepository.recuperarPin(data);
         const respuesta = { objeto: result };
-        console.log(respuesta);
+        console.log(respuesta, '--');
         return Result.ok(respuesta);
     }
 }
