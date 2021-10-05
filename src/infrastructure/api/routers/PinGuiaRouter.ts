@@ -40,3 +40,17 @@ export const recuperarPinGuia = async (_req: FastifyRequest, reply: FastifyReply
     }
     throw new BadMessageException(error.message);
 };
+
+export const consultarFormaEnvio = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
+    const { id } = _req;
+    const guia = _req.body as IGuiaIn;
+    const { value: schema, error } = IGuiaSchema.validate(guia);
+    if (!error) {
+        const guia: IGuiaPinIn = schema;
+        const response = await pinGuiaService.recuperarDataEnvio(guia);
+        console.log('data router', response);
+        return reply.send({ ...response, id });
+    }
+    throw new BadMessageException(error.message);
+};

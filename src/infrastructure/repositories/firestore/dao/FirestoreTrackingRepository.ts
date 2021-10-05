@@ -28,4 +28,9 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
         return consulta;
     }
+
+    async recuperarDataEnvio(data: RecuperarPinEntity): Promise<any> {
+        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
+        return consulta;
+    }
 }
