@@ -16,6 +16,7 @@ export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): 
 export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     const { id } = req;
+
     const data = req.body as IGuiaPinIn;
     const { value: schema, error } = consultarPinGuiaSchema.validate(data);
     if (!error) {
