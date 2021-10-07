@@ -53,7 +53,7 @@ export const dataRecuperarPinSalida = (guia: JsonObject, metadata: IDataEnvioIn)
                 url_relacion_digital: guia.url_relacion_digital,
                 tipoUsuario: metadata.tipoUsuario,
                 medioEnvio: metadata.medioEnvio,
-                recuperado: guia.recuperado,
+                recuperado: true,
             },
         ],
     };
