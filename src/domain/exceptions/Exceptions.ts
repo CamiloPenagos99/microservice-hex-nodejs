@@ -19,7 +19,7 @@ export abstract class Exception {
 export class BadMessageException extends Exception {
     constructor(cause: string) {
         const message = 'Los datos de entrada no corresponden con el esquema definido - ' + cause;
-        super(message, ErrorCode.BAD_MESSAGE, StatusCode.OK, cause);
+        super(message, ErrorCode.BAD_MESSAGE, StatusCode.BAD_REQUEST, cause);
     }
 }
 

@@ -7,7 +7,7 @@ type Body = Record<string, unknown> | undefined | unknown;
 
 export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
     if (dataToValidate) {
-        const { error, value } = schema.validate(dataToValidate, { convert: true });
+        const { error, value } = schema.validate(dataToValidate, { convert: false });
         if (error) {
             console.error(`schemaError: ${JSON.stringify(error)}`);
             throw new Error(error.message);

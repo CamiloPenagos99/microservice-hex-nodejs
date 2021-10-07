@@ -11,7 +11,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     private collection = 'guia-pin';
 
     async guardarPin(data: GuardarPinEntity): Promise<void> {
-        console.log('===== llegue al dao ===', data);
         await this.firestore
             .collection(this.collection)
             .doc(data.codigo_remision)
@@ -31,6 +30,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
 
     async recuperarDataEnvio(data: ConsultarEnvioEntity): Promise<any> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
+        console.log('--------mock-----', consulta);
         return consulta;
     }
 }

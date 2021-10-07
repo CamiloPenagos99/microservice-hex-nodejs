@@ -11,6 +11,7 @@ import {
 } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
+import { USUARIO_REMITENTE } from '@util';
 //import { NotFoundException } from '@domain/exceptions';
 
 @injectable()
@@ -45,7 +46,9 @@ export class PinGuiaService {
     async recuperarDataEnvio(data: IDataEnvioIn): Promise<Response<IEnvioDataOut | null>> {
         const result = await this.guiaRepository.recuperarDataEnvio(data);
         const resultado =
-            data.tipoUsuario === 'REMITENTE' ? dataRecuperarPinRemitente(result) : dataRecuperarPinDestinatario(result);
+            data.tipoUsuario === USUARIO_REMITENTE
+                ? dataRecuperarPinRemitente(result)
+                : dataRecuperarPinDestinatario(result);
         return Result.ok(resultado);
     }
 }
