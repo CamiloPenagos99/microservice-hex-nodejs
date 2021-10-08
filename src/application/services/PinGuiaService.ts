@@ -45,6 +45,9 @@ export class PinGuiaService {
 
     async recuperarDataEnvio(data: IDataEnvioIn): Promise<Response<IEnvioDataOut | null>> {
         const result = await this.guiaRepository.recuperarDataEnvio(data);
+        if (!result) {
+            return Result.ok(result);
+        }
         const resultado =
             data.tipoUsuario === USUARIO_REMITENTE
                 ? dataRecuperarPinRemitente(result)

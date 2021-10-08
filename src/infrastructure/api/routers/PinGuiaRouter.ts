@@ -4,7 +4,7 @@ import { consultarPinGuiaSchema, guardarPinGuiaSchema, IDataEnvioSchema, validat
 import { PinGuiaService } from '@application/services';
 //import { BadMessageException } from '@domain/exceptions';
 import { IDataIn, IGuiaPinIn, IDataEnvioIn } from '@application/data';
-import { BadMessageException } from '@domain/exceptions';
+import { BadMessageException, FirestoreException } from '@domain/exceptions';
 
 export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
@@ -23,7 +23,7 @@ export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply)
     if (!error) {
         const guia: IGuiaPinIn = schema;
         const response = await pinGuiaService.consultarPin(guia);
-        console.log('data router', response);
+        //console.log('data router', response);
         return reply.send({ ...response, id });
     }
     throw new BadMessageException(error.message);
@@ -50,6 +50,7 @@ export const consultarFormaEnvio = async (_req: FastifyRequest, reply: FastifyRe
     if (!error) {
         const guia: IDataEnvioIn = schema;
         const response = await pinGuiaService.recuperarDataEnvio(guia);
+        if (!response.data) throw new FirestoreException(0, 'Record not found in database');
         return reply.send({ ...response, id });
     }
     throw new BadMessageException(error.message);

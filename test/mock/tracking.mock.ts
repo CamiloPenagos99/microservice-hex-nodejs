@@ -29,8 +29,23 @@ export const consultarPinOK = {
     pin: '12347',
 };
 
+export const consultarPinGuiaInexistente = {
+    guia: '00000000000',
+    pin: '12347',
+};
+
+export const consultarPinErrado = {
+    guia: '73940048072',
+    pin: '17891',
+};
+
 export const recuperarFormaEnvioOk = {
     guia: '73940048072',
+    tipoUsuario: USUARIO_REMITENTE,
+};
+
+export const recuperarFormaEnvioInexistente = {
+    guia: '73940048073',
     tipoUsuario: USUARIO_REMITENTE,
 };
 

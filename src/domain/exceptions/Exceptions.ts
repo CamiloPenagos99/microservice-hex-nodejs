@@ -40,6 +40,10 @@ export class FirestoreException extends Exception {
     constructor(code: number | string, message: string) {
         const fsError = ErrorCode.REPOSITORY_ERROR;
         switch (code) {
+            case 0:
+            case '0':
+                super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
+                break;
             case 1:
             case '1':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore action cancelled');
