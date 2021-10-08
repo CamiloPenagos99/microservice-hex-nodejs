@@ -1,4 +1,4 @@
-import { MEDIO_ENVIO_CORREO, USUARIO_DESTINATARIO, USUARIO_REMITENTE } from '@util';
+import { MEDIO_ENVIO_CORREO, MEDIO_ENVIO_SMS, USUARIO_DESTINATARIO, USUARIO_REMITENTE } from '@util';
 
 export const dataInput = {
     codigo_recogida: 12,
@@ -64,4 +64,10 @@ export const recuperarPinF = {
     guia: '73940048072',
     tipoUsuario: USUARIO_DESTINATARIO,
     medioEnvio: 'llamada',
+};
+
+export const recuperarPinGuiaInexistente = {
+    guia: '00000000000',
+    tipoUsuario: USUARIO_DESTINATARIO,
+    medioEnvio: MEDIO_ENVIO_SMS,
 };

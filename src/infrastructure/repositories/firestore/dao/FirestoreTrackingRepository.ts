@@ -30,7 +30,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
 
     async recuperarDataEnvio(data: ConsultarEnvioEntity): Promise<any> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        console.warn('respuesta de DB:', consulta);
         return consulta;
     }
 }

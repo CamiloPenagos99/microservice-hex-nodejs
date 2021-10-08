@@ -15,6 +15,7 @@ import {
     recuperarFormaEnvioInexistente,
     recuperarFormaEnvioOk,
     recuperarPinF,
+    recuperarPinGuiaInexistente,
     recuperarPinOk,
 } from './mock';
 
@@ -168,6 +169,16 @@ describe('MS tracking pin guia', () => {
                 payload: recuperarPinOk,
             });
             expect(response.statusCode).toBe(200);
+        });
+
+        it('test exitoso para recuperar pin, de guia inexistente', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/recuperarPin',
+                payload: recuperarPinGuiaInexistente,
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
         });
     });
 });

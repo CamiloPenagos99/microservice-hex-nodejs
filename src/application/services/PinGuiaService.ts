@@ -34,6 +34,7 @@ export class PinGuiaService {
 
     async recuperarPin(data: IDataEnvioIn): Promise<Response<string | null>> {
         const result = await this.guiaRepository.recuperarPin(data);
+        if (!result) return Result.ok(result);
         const respuesta = dataRecuperarPinSalida(result, data);
         const res = await this.axiosRecuperarPin.recuperar(respuesta);
         if (!res.isError) {

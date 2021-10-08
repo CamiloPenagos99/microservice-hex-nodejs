@@ -37,6 +37,7 @@ export const recuperarPinGuia = async (_req: FastifyRequest, reply: FastifyReply
     if (!error) {
         const guia: IDataEnvioIn = schema;
         const response = await pinGuiaService.recuperarPin(guia);
+        if (!response.data) throw new FirestoreException(0, 'Record not found in database');
         return reply.send({ ...response, id });
     }
     throw new BadMessageException(error.message);
