@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { application } from '@infrastructure/api/Application';
 import { Firestore } from '@google-cloud/firestore';
 import MockFirebase from 'mock-cloud-firestore';
