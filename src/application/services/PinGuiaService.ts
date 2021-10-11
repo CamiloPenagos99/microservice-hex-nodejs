@@ -3,15 +3,10 @@ import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
 import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
-import {
-    dataRecuperarPinDestinatario,
-    dataRecuperarPinRemitente,
-    dataRecuperarPinSalida,
-    reconstruccionData,
-} from '@application/util';
+import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
-import { USUARIO_REMITENTE } from '@util';
+
 //import { NotFoundException } from '@domain/exceptions';
 
 @injectable()
@@ -49,10 +44,7 @@ export class PinGuiaService {
         if (!result) {
             return Result.ok(result);
         }
-        const resultado =
-            data.tipoUsuario === USUARIO_REMITENTE
-                ? dataRecuperarPinRemitente(result)
-                : dataRecuperarPinDestinatario(result);
+        const resultado = dataRecuperarPinCompleto(result);
         return Result.ok(resultado);
     }
 }
