@@ -19,7 +19,7 @@ export abstract class Exception {
 export class BadMessageException extends Exception {
     constructor(cause: string) {
         const message = 'Los datos de entrada no corresponden con el esquema definido - ' + cause;
-        super(message, ErrorCode.BAD_MESSAGE, StatusCode.OK, cause);
+        super(message, ErrorCode.BAD_MESSAGE, StatusCode.BAD_REQUEST, cause);
     }
 }
 
@@ -40,6 +40,10 @@ export class FirestoreException extends Exception {
     constructor(code: number | string, message: string) {
         const fsError = ErrorCode.REPOSITORY_ERROR;
         switch (code) {
+            case 0:
+            case '0':
+                super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
+                break;
             case 1:
             case '1':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore action cancelled');

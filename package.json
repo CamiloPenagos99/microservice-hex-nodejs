@@ -21,7 +21,8 @@
         "test": "jest --color --verbose --no-cache",
         "coverage": "jest --coverage",
         "release": "standard-version",
-        "husky:install": "husky install"
+        "husky:install": "husky install",
+        "clear_jest": "jest --clearCache"
     },
     "dependencies": {
         "@google-cloud/firestore": "4.13.2",

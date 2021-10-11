@@ -3,14 +3,10 @@ import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
 import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
-import {
-    dataRecuperarPinDestinatario,
-    dataRecuperarPinRemitente,
-    dataRecuperarPinSalida,
-    reconstruccionData,
-} from '@application/util';
+import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
+
 //import { NotFoundException } from '@domain/exceptions';
 
 @injectable()
@@ -33,6 +29,7 @@ export class PinGuiaService {
 
     async recuperarPin(data: IDataEnvioIn): Promise<Response<string | null>> {
         const result = await this.guiaRepository.recuperarPin(data);
+        if (!result) return Result.ok(result);
         const respuesta = dataRecuperarPinSalida(result, data);
         const res = await this.axiosRecuperarPin.recuperar(respuesta);
         if (!res.isError) {
@@ -44,8 +41,10 @@ export class PinGuiaService {
 
     async recuperarDataEnvio(data: IDataEnvioIn): Promise<Response<IEnvioDataOut | null>> {
         const result = await this.guiaRepository.recuperarDataEnvio(data);
-        const resultado =
-            data.tipoUsuario === 'REMITENTE' ? dataRecuperarPinRemitente(result) : dataRecuperarPinDestinatario(result);
+        if (!result) {
+            return Result.ok(result);
+        }
+        const resultado = dataRecuperarPinCompleto(result);
         return Result.ok(resultado);
     }
 }

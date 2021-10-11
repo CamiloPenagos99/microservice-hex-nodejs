@@ -11,7 +11,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     private collection = 'guia-pin';
 
     async guardarPin(data: GuardarPinEntity): Promise<void> {
-        console.log('===== llegue al dao ===', data);
         await this.firestore
             .collection(this.collection)
             .doc(data.codigo_remision)
@@ -20,7 +19,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
 
     async consultarPin(data: ConsultarPinEntity): Promise<boolean> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
+        //console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
         return consulta ? (consulta.token === data.pin ? true : false) : false;
     }
 
