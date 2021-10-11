@@ -152,7 +152,7 @@ describe('MS tracking pin guia', () => {
             expect(JSON.parse(response.body).isError).toBeTruthy();
         });
 
-        it('test exitoso para consulta forma de envio, tipo remitente', async () => {
+        it('test exitoso para consulta forma de envio, tipo usuario', async () => {
             const response = await application.inject({
                 method: 'POST',
                 url: '/consultarFormaEnvio',
@@ -160,6 +160,7 @@ describe('MS tracking pin guia', () => {
             });
             expect(response.statusCode).toBe(200);
             expect(JSON.parse(response.body).data).toHaveProperty('remitente');
+            expect(JSON.parse(response.body).data).toHaveProperty('destinatario');
         });
     });
     //recuperar pin
