@@ -130,6 +130,15 @@ describe('MS tracking pin guia', () => {
             expect(JSON.parse(response.body).data).toHaveProperty('remitente');
             expect(JSON.parse(response.body).data).toHaveProperty('destinatario');
         });
+
+        it('test fallido para consulta forma de envio, sin data de envio', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/consultarFormaEnvio',
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+        });
     });
     //recuperar pin
     describe('recuperar-pin', () => {
