@@ -68,4 +68,30 @@ defineFeature(feature, (test) => {
             },
         );
     });
+
+    //tercer test
+    test('Solicitar recuperación con celular registrado', ({ given, when, then }) => {
+        given(/^Que la guía consultada (.*) tiene registrado el celular$/, (codigo_remision: string) => {
+            dataTest.guia = codigo_remision;
+        });
+
+        when('Solicite la informacion de envio, del rol REMITENTE', async () => {
+            response = await application.inject({
+                method: 'POST',
+                url: '/consultarFormaEnvio',
+                payload: dataTest,
+            });
+        });
+
+        then(
+            /^Se debe visualizar las opciones de recuperación, CORREO debe ser igual a (.*) y el TELEFONO debe ser igual a (.*)$/,
+            (correo: string, telefono: string) => {
+                expect(response.statusCode).toBe(200);
+                expect(JSON.parse(response.body).data).toHaveProperty('remitente');
+                expect(JSON.parse(response.body).data).toHaveProperty('destinatario');
+                expect(JSON.parse(response.body).data.remitente.correo).toHaveLength(parseInt(correo));
+                expect(JSON.parse(response.body).data.remitente.telefono).toBe(telefono);
+            },
+        );
+    });
 });

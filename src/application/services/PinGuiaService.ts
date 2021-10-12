@@ -1,11 +1,13 @@
 import { injectable } from 'inversify';
 import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
-import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaPinIn } from '@application/data';
+import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
+import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -16,19 +18,22 @@ export class PinGuiaService {
     async guardarPin(data: IDataIn): Promise<Response<string | null>> {
         data.guias.forEach(async (guia) => {
             const dataFinal = reconstruccionData(guia, data);
-            await this.guiaRepository.guardarPin(dataFinal);
+            const entidad = GuardarPinEntity.crearEntidad(dataFinal);
+            await this.guiaRepository.guardarPin(entidad);
         });
         return Result.ok();
     }
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
-        const result = await this.guiaRepository.consultarPin(data);
+        const entidad = ConsultarPinEntity.crearEntidad(data);
+        const result = await this.guiaRepository.consultarPin(entidad);
         const respuesta = { pinValido: result };
         return Result.ok(respuesta);
     }
 
     async recuperarPin(data: IDataEnvioIn): Promise<Response<string | null>> {
-        const result = await this.guiaRepository.recuperarPin(data);
+        const entidad = RecuperarPinEntity.crearEntidad(data);
+        const result = await this.guiaRepository.recuperarPin(entidad);
         if (!result) return Result.ok(result);
         const respuesta = dataRecuperarPinSalida(result, data);
         const res = await this.axiosRecuperarPin.recuperar(respuesta);
@@ -39,8 +44,9 @@ export class PinGuiaService {
         return Result.failure(res[0]);
     }
 
-    async recuperarDataEnvio(data: IDataEnvioIn): Promise<Response<IEnvioDataOut | null>> {
-        const result = await this.guiaRepository.recuperarDataEnvio(data);
+    async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {
+        const entidad = ConsultarEnvioEntity.crearEntidad(data);
+        const result = await this.guiaRepository.recuperarDataEnvio(entidad);
         if (!result) {
             return Result.ok(result);
         }

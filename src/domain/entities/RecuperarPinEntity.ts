@@ -1,13 +1,17 @@
-import { IGuiaIn } from '@application/data';
+import { IDataEnvioIn } from '@application/data';
 
 export class RecuperarPinEntity {
     readonly guia: string;
+    readonly tipoUsuario: string;
+    readonly medioEnvio: string;
 
-    constructor(data: IGuiaIn) {
+    constructor(data: IDataEnvioIn) {
         this.guia = data.guia;
+        this.tipoUsuario = data.tipoUsuario;
+        this.medioEnvio = data.medioEnvio;
     }
 
-    static recuperarPin(data: IGuiaIn): RecuperarPinEntity {
+    static crearEntidad(data: IDataEnvioIn): RecuperarPinEntity {
         return new RecuperarPinEntity(data);
     }
 }

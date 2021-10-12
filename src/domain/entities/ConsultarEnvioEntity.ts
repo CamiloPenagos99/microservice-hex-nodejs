@@ -1,15 +1,13 @@
-import { IDataEnvioIn } from '@application/data';
+import { IGuiaIn } from '@application/data';
 
 export class ConsultarEnvioEntity {
     readonly guia: string;
-    readonly tipoUsuario: string;
 
-    constructor(data: IDataEnvioIn) {
+    constructor(data: IGuiaIn) {
         this.guia = data.guia;
-        this.tipoUsuario = data.guia;
     }
 
-    static consultarDataEnvio(data: IDataEnvioIn): ConsultarEnvioEntity {
+    static crearEntidad(data: IGuiaIn): ConsultarEnvioEntity {
         return new ConsultarEnvioEntity(data);
     }
 }

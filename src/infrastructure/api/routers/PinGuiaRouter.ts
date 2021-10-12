@@ -1,9 +1,15 @@
 import { DEPENDENCY_CONTAINER } from '@configuration';
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { consultarPinGuiaSchema, guardarPinGuiaSchema, IDataEnvioSchema, validateDataPubSub } from '../util';
+import {
+    consultarPinGuiaSchema,
+    guardarPinGuiaSchema,
+    IDataEnvioSchema,
+    validateData,
+    validateDataPubSub,
+} from '../util';
 import { PinGuiaService } from '@application/services';
 //import { BadMessageException } from '@domain/exceptions';
-import { IDataIn, IGuiaPinIn, IDataEnvioIn } from '@application/data';
+import { IDataIn, IGuiaPinIn, IDataEnvioIn, IGuiaIn } from '@application/data';
 import { BadMessageException, FirestoreException } from '@domain/exceptions';
 
 export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
@@ -31,28 +37,20 @@ export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply)
 
 export const recuperarPinGuia = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
+    const validated = validateData<IDataEnvioIn>(IDataEnvioSchema, _req.body);
     const { id } = _req;
-    const guia = _req.body as IDataEnvioIn;
-    const { value: schema, error } = IDataEnvioSchema.validate(guia);
-    if (!error) {
-        const guia: IDataEnvioIn = schema;
-        const response = await pinGuiaService.recuperarPin(guia);
-        if (!response.data) throw new FirestoreException(0, 'Record not found in database');
-        return reply.send({ ...response, id });
-    }
-    throw new BadMessageException(error.message);
+    const guia = validated as IDataEnvioIn;
+    const response = await pinGuiaService.recuperarPin(guia);
+    if (!response.data) throw new FirestoreException(0, 'Record not found in database');
+    return reply.send({ ...response, id });
 };
 
 export const consultarFormaEnvio = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
+    const validated = validateData<IGuiaIn>(IDataEnvioSchema, _req.body);
     const { id } = _req;
-    const guia = _req.body as IDataEnvioIn;
-    const { value: schema, error } = IDataEnvioSchema.validate(guia);
-    if (!error) {
-        const guia: IDataEnvioIn = schema;
-        const response = await pinGuiaService.recuperarDataEnvio(guia);
-        if (!response.data) throw new FirestoreException(0, 'Record not found in database');
-        return reply.send({ ...response, id });
-    }
-    throw new BadMessageException(error.message);
+    const guia = validated as IGuiaIn;
+    const response = await pinGuiaService.recuperarDataEnvio(guia);
+    if (!response.data) throw new FirestoreException(0, 'Record not found in database');
+    return reply.send({ ...response, id });
 };

@@ -90,39 +90,6 @@ describe('MS tracking pin guia', () => {
         });
     });
     ///
-    describe.skip('guardar-pin', () => {
-        it('test exitoso para guardar pin', async () => {
-            const response = await application.inject({
-                method: 'POST',
-                url: '/',
-                payload: {
-                    message: {
-                        data: Buffer.from(JSON.stringify(guardarPinOk)).toString('base64'),
-                        publishTime: new Date(),
-                        messageId: randomBytes(16).toString('hex'),
-                    },
-                },
-            });
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(response.body).isError).toBeFalsy();
-        });
-
-        it('test fallido para guardar pin', async () => {
-            const response = await application.inject({
-                method: 'POST',
-                url: '/',
-                payload: {
-                    message: {
-                        data: Buffer.from(JSON.stringify(guardarPinError)).toString('base64'),
-                        publishTime: new Date(),
-                        messageId: randomBytes(16).toString('hex'),
-                    },
-                },
-            });
-            expect(response.statusCode).toBe(400);
-            expect(JSON.parse(response.body).isError).toBeTruthy();
-        });
-    });
     describe('consultar-formaenvio', () => {
         it('test exitoso para consulta forma de envio', async () => {
             const response = await application.inject({
@@ -182,6 +149,7 @@ describe('MS tracking pin guia', () => {
                 payload: recuperarPinOk,
             });
             expect(response.statusCode).toBe(200);
+            expect(JSON.parse(response.body).isError).toBeFalsy();
         });
 
         it('test exitoso para recuperar pin, de guia inexistente', async () => {
@@ -189,6 +157,40 @@ describe('MS tracking pin guia', () => {
                 method: 'POST',
                 url: '/recuperarPin',
                 payload: recuperarPinGuiaInexistente,
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+        });
+    });
+
+    describe('guardar-pin', () => {
+        it('test exitoso para guardar pin', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/',
+                payload: {
+                    message: {
+                        data: Buffer.from(JSON.stringify(guardarPinOk)).toString('base64'),
+                        publishTime: new Date(),
+                        messageId: randomBytes(16).toString('hex'),
+                    },
+                },
+            });
+            expect(response.statusCode).toBe(200);
+            expect(JSON.parse(response.body).isError).toBeFalsy();
+        });
+
+        it('test fallido para guardar pin', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/',
+                payload: {
+                    message: {
+                        data: Buffer.from(JSON.stringify(guardarPinError)).toString('base64'),
+                        publishTime: new Date(),
+                        messageId: randomBytes(16).toString('hex'),
+                    },
+                },
             });
             expect(response.statusCode).toBe(400);
             expect(JSON.parse(response.body).isError).toBeTruthy();
