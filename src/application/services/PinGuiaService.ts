@@ -21,10 +21,11 @@ export class PinGuiaService {
         data.guias.forEach(async (guia) => {
             const dataFinal = reconstruccionData(guia, data);
             const entidad = GuardarPinEntity.crearEntidad(dataFinal);
-            result += await this.guiaRepository.guardarPin(entidad);
+            result = await this.guiaRepository.guardarPin(entidad);
             console.log('--------------->resultado save------------->', result);
         });
-        return Result.ok(result);
+        if (result) return Result.ok('se guardo en db');
+        return Result.ok('error al guardar');
     }
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {

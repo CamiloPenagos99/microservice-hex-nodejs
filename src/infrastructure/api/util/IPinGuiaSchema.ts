@@ -24,7 +24,7 @@ export const guardarPinGuiaSchema = Joi.object({
                     .length(5)
                     .regex(/^[0-9]+$/),
                 url_relacion_digital: Joi.string().allow(null, '', 0).min(0).optional(),
-                actualizado: Joi.boolean().allow(null).optional(),
+                recuperado: Joi.boolean().allow(null).optional(),
             }),
         )
         .required()
