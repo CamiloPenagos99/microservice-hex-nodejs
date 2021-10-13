@@ -23,9 +23,9 @@ errorHandler(application);
 application.register(fastifySwagger, swagger_config);
 
 //registrar JWT
-application.register(jwt ,{
-  secret: 'supersecret'
-})
+application.register(jwt, {
+    secret: 'supersecret',
+});
 
 // routes
 initRoutes(application);

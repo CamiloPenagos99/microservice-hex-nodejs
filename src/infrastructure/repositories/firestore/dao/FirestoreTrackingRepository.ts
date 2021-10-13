@@ -11,10 +11,13 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     private collection = 'guia-pin';
 
     async guardarPin(data: GuardarPinEntity): Promise<void> {
-        await this.firestore
+        console.warn('data de entrada------------>', data);
+        const test = await this.firestore
             .collection(this.collection)
             .doc(data.codigo_remision)
             .set({ ...data });
+
+        console.log(test);
     }
 
     async consultarPin(data: ConsultarPinEntity): Promise<boolean> {

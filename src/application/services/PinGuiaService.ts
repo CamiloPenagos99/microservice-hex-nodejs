@@ -29,10 +29,10 @@ export class PinGuiaService {
         const entidad = ConsultarPinEntity.crearEntidad(data);
         const result = await this.guiaRepository.consultarPin(entidad);
         let token = '';
-        if(result) { 
+        if (result) {
             token = generarJWT(data.guia);
         }
-        const respuesta = { pinValido: result , bearer: token};
+        const respuesta = { pinValido: result, bearer: token };
         return Result.ok(respuesta);
     }
 
