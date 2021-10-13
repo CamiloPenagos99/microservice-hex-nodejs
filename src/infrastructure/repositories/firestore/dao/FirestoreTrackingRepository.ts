@@ -10,14 +10,10 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
     private collection = 'guia-pin';
 
-    async guardarPin(data: GuardarPinEntity): Promise<void> {
-        console.warn('data de entrada------------>', data);
-        const test = await this.firestore
-            .collection(this.collection)
-            .doc(data.codigo_remision)
-            .set({ ...data });
-
-        console.log(test);
+    async guardarPin(data: GuardarPinEntity): Promise<any> {
+        const result = await this.firestore.collection(this.collection).doc(data.codigo_remision).set(data);
+        console.log('guardando....', result);
+        return result;
     }
 
     async consultarPin(data: ConsultarPinEntity): Promise<boolean> {
