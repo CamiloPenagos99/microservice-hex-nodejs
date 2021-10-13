@@ -16,7 +16,6 @@ export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTra
         telefono_destinatario: guia.telefono_destinatario,
         token: guia.token,
         url_relacion_digital: guia.url_relacion_digital,
-        actualizado: guia.actualizado,
     };
 };
 

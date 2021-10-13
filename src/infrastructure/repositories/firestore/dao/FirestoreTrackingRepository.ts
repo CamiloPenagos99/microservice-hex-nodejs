@@ -4,15 +4,19 @@ import { Firestore } from '@google-cloud/firestore';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
+import { IGuiaPinTracking } from '@application/data';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
     private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
     private collection = 'guia-pin';
 
-    async guardarPin(data: GuardarPinEntity): Promise<any> {
-        const plain = JSON.parse(JSON.stringify(data));
-        const result = await this.firestore.collection(this.collection).doc(data.codigo_remision).set(plain);
+    async guardarPin(payload: IGuiaPinTracking): Promise<any> {
+        //const plain = JSON.parse(JSON.stringify(data));
+        const result = await this.firestore
+            .collection(this.collection)
+            .doc(payload.codigo_remision)
+            .set({ ...payload });
         console.log('guardando....', result);
         return result;
     }

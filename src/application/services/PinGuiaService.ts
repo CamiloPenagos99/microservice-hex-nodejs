@@ -6,7 +6,7 @@ import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
-import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { ConsultarEnvioEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { generarJWT } from '@util';
 
@@ -20,8 +20,8 @@ export class PinGuiaService {
         let result = '';
         data.guias.forEach(async (guia) => {
             const dataFinal = reconstruccionData(guia, data);
-            const entidad = GuardarPinEntity.crearEntidad(dataFinal);
-            result = await this.guiaRepository.guardarPin(entidad);
+            //const entidad = GuardarPinEntity.crearEntidad(dataFinal);
+            result = await this.guiaRepository.guardarPin(dataFinal);
             console.log('--------------->resultado save------------->', result);
         });
         if (result) return Result.ok('se guardo en db');
