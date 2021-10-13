@@ -11,7 +11,8 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     private collection = 'guia-pin';
 
     async guardarPin(data: GuardarPinEntity): Promise<any> {
-        const result = await this.firestore.collection(this.collection).doc(data.codigo_remision).set(data);
+        const plain = JSON.parse(JSON.stringify(data));
+        const result = await this.firestore.collection(this.collection).doc(data.codigo_remision).set(plain);
         console.log('guardando....', result);
         return result;
     }
