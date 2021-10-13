@@ -8,6 +8,7 @@ import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
+import { generarJWT } from '@util';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -27,7 +28,11 @@ export class PinGuiaService {
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
         const entidad = ConsultarPinEntity.crearEntidad(data);
         const result = await this.guiaRepository.consultarPin(entidad);
-        const respuesta = { pinValido: result };
+        let token = '';
+        if(result) { 
+            token = generarJWT(data.guia);
+        }
+        const respuesta = { pinValido: result , bearer: token};
         return Result.ok(respuesta);
     }
 

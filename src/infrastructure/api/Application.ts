@@ -9,6 +9,7 @@ import { initRoutes } from '@infrastructure/api/routers';
 import { randomBytes } from 'crypto';
 import fastifySwagger from 'fastify-swagger';
 import { swagger_config } from './swagger';
+import jwt from 'fastify-jwt';
 
 export const application = fastify({
     genReqId: (_) => randomBytes(20).toString('hex'),
@@ -20,6 +21,11 @@ errorHandler(application);
 
 //swagger registro
 application.register(fastifySwagger, swagger_config);
+
+//registrar JWT
+application.register(jwt ,{
+  secret: 'supersecret'
+})
 
 // routes
 initRoutes(application);
