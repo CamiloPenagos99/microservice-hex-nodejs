@@ -23,7 +23,7 @@ export class PinGuiaService {
             const entidad = GuardarPinEntity.crearEntidad(dataFinal);
             const result = await this.guiaRepository.guardarPin(entidad);
             if (result) contador++;
-            console.log('--------------->resultado save------------->', result);
+            console.log('------------->resultado save------------>', result);
         });
         console.warn('contador de registros final', contador);
         //if (contador === 0) return Result.ok('error al guardar en base de datos');
