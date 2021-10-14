@@ -1,25 +1,31 @@
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
-import { ConsultarEnvioEntity, RecuperarPinEntity } from '@domain/entities';
+import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
-import { IGuiaPinTracking } from '@application/data';
+import { FirestoreException } from '@domain/exceptions';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
     private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
     private collection = 'guia-pin';
 
-    async guardarPin(payload: IGuiaPinTracking): Promise<any> {
-        //const plain = JSON.parse(JSON.stringify(data));
-        const result = await this.firestore
-            .collection(this.collection)
-            .doc(payload.codigo_remision)
-            .set({ ...payload });
-        console.log('guardando....', result);
-        return result;
+    async guardarPin(dataSave: GuardarPinEntity): Promise<any> {
+        try {
+            const res = await this.firestore
+                .collection(this.collection)
+                //.doc(dataSave.codigo_remision)
+                .add({ ...dataSave })
+                .catch((err) => {
+                    throw new FirestoreException(err.id, err.message);
+                });
+            return res;
+        } catch (e) {
+            throw new FirestoreException(e.id, e.message);
+        }
     }
+    //const plain = JSON.parse(JSON.stringify(data));
 
     async consultarPin(data: ConsultarPinEntity): Promise<boolean> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();

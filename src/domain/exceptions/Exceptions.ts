@@ -44,7 +44,6 @@ export class FirestoreException extends Exception {
             case '0':
                 super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
                 break;
-            /*
             case 1:
             case '1':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore action cancelled');
@@ -76,7 +75,6 @@ export class FirestoreException extends Exception {
             default:
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Defaulted unkwnown fs error');
                 break;
-                */
         }
     }
 }

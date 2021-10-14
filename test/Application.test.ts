@@ -45,7 +45,7 @@ describe('MS tracking pin guia', () => {
         expect(response.statusCode).toBe(200);
     });
     //
-    describe('consultar-pin', () => {
+    describe.skip('consultar-pin', () => {
         it('test fallido para consultar pin', async () => {
             const response = await application.inject({
                 method: 'POST',
@@ -90,7 +90,7 @@ describe('MS tracking pin guia', () => {
         });
     });
     ///
-    describe('consultar-formaenvio', () => {
+    describe.skip('consultar-formaenvio', () => {
         it('test exitoso para consulta forma de envio', async () => {
             const response = await application.inject({
                 method: 'POST',
@@ -141,7 +141,7 @@ describe('MS tracking pin guia', () => {
         });
     });
     //recuperar pin
-    describe('recuperar-pin', () => {
+    describe.skip('recuperar-pin', () => {
         it('test fallido para recuperar pin', async () => {
             const response = await application.inject({
                 method: 'POST',
