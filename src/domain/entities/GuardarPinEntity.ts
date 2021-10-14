@@ -29,7 +29,7 @@ export class GuardarPinEntity {
         this.url_relacion_digital = data.url_relacion_digital;
     }
 
-    static guardarPin(data: IGuiaPinTracking): GuardarPinEntity {
+    static crearEntidad(data: IGuiaPinTracking): GuardarPinEntity {
         return new GuardarPinEntity(data);
     }
 }
