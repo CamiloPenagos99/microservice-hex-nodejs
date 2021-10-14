@@ -13,10 +13,11 @@ export class FirestoreTrackingRepository implements TrackingRepository {
 
     async guardarPin(dataSave: GuardarPinEntity): Promise<any> {
         try {
-            // let docRef = await this.firestore.collection(this.collection).doc(dataSave.codigo_remision);
+            const ref = dataSave.codigo_remision;
+            console.warn('id de referencia es', ref);
             const res = await this.firestore
                 .collection(this.collection)
-                .doc()
+                .doc(ref)
                 .set({ ...dataSave })
                 .catch((err) => {
                     throw new FirestoreException(err.id, err.message);
