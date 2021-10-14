@@ -185,8 +185,8 @@ describe('MS tracking pin guia', () => {
                     },
                 },
             });
-            expect(response.statusCode).toBe(200);
-            expect(JSON.parse(response.body).isError).toBeFalsy();
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy;
         });
 
         it('test fallido para guardar pin, error esquema', async () => {
