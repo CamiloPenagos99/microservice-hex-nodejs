@@ -25,7 +25,8 @@ export class PinGuiaService {
             if (result) contador++;
             console.log('--------------->resultado save------------->', result);
         });
-        if (contador === 0) return Result.ok('error al guardar en base de datos');
+        console.warn('contador de registros final', contador);
+        //if (contador === 0) return Result.ok('error al guardar en base de datos');
         return Result.ok(`Se guardo en base de datos, ${contador} registros`);
     }
 

@@ -16,8 +16,8 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             // let docRef = await this.firestore.collection(this.collection).doc(dataSave.codigo_remision);
             const res = await this.firestore
                 .collection(this.collection)
-                //.doc(dataSave.codigo_remision)
-                .add({ ...dataSave })
+                .doc()
+                .set({ ...dataSave })
                 .catch((err) => {
                     throw new FirestoreException(err.id, err.message);
                 });
