@@ -30,7 +30,7 @@ export const FIRESTORE_DATA = {
                     token: '12347',
                     url_relacion_digital: 'https://rutadeguia/mock.com',
                 },
-                '12345678912': {
+                '73940048077': {
                     codigo_recogida: 123,
                     id_llamada: 12,
                     remitente: 'camilo Penagos',
