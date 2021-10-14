@@ -1,3 +1,4 @@
+import { URL_BASE } from '@util';
 import { FastifyDynamicSwaggerOptions } from 'fastify-swagger';
 
 export const swagger_config: FastifyDynamicSwaggerOptions = {
@@ -14,8 +15,8 @@ export const swagger_config: FastifyDynamicSwaggerOptions = {
                 email: 'it@coordinadora.com',
             },
         },
-        host: 'localhost',
-        schemes: ['http'],
+        host: URL_BASE,
+        schemes: [URL_BASE.includes('local') ? 'http' : 'https'],
         consumes: ['application/json'],
         produces: ['application/json'],
     },
