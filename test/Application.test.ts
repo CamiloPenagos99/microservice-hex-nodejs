@@ -173,7 +173,7 @@ describe('MS tracking pin guia', () => {
     });
 
     describe('guardar-pin', () => {
-        it('test exitoso para guardar pin', async () => {
+        it.skip('test exitoso para guardar pin', async () => {
             const response = await application.inject({
                 method: 'POST',
                 url: '/',

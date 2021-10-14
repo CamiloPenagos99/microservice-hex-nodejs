@@ -9,6 +9,7 @@ import { RecuperarPin } from '@infrastructure/repositories';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { generarJWT } from '@util';
+import { FirestoreException } from '@domain/exceptions';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -16,18 +17,12 @@ import { generarJWT } from '@util';
 export class PinGuiaService {
     private guiaRepository = DEPENDENCY_CONTAINER.get<TrackingRepository>(TYPES.FirestoreTrackingRepository);
     private axiosRecuperarPin = DEPENDENCY_CONTAINER.get<RecuperarPin>(RecuperarPin);
+
     async guardarPin(data: IDataIn): Promise<Response<string | null>> {
-        let contador = 0;
-        data.guias.forEach(async (guia) => {
-            const dataFinal = reconstruccionData(guia, data);
-            const entidad = GuardarPinEntity.crearEntidad(dataFinal);
-            const result = await this.guiaRepository.guardarPin(entidad);
-            if (result) contador++;
-            console.log('------------->resultado save------------>', result);
-        });
-        console.warn('contador de registros final', contador);
-        //if (contador === 0) return Result.ok('error al guardar en base de datos');
-        return Result.ok(`Se guardo en base de datos, ${contador} registros`);
+        const guiasRegistradas = await this.guardarGuiasUtil(data);
+        console.log('cantidad de guias registradas', guiasRegistradas);
+        if (guiasRegistradas === 0) throw new FirestoreException(9, 'Unable to save in database');
+        return Result.ok(`Se guardo en base de datos, ${guiasRegistradas} registros`);
     }
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
@@ -63,4 +58,16 @@ export class PinGuiaService {
         const resultado = dataRecuperarPinCompleto(result);
         return Result.ok(resultado);
     }
+
+    guardarGuiasUtil = async (data: IDataIn): Promise<number> => {
+        let contador = 0;
+        for (let i = 0; i < data.guias.length; i++) {
+            const dataFinal = reconstruccionData(data.guias[i], data);
+            const entidad = GuardarPinEntity.crearEntidad(dataFinal);
+            const result = await this.guiaRepository.guardarPin(entidad);
+            if (result) contador++;
+            console.log('------------->resultado save------------>', result);
+        }
+        return contador;
+    };
 }

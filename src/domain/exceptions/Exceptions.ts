@@ -70,7 +70,7 @@ export class FirestoreException extends Exception {
                 break;
             case 9:
             case '9':
-                super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore precondition failed');
+                super(message, fsError, StatusCode.BAD_REQUEST, 'Firestore precondition failed');
                 break;
             default:
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Defaulted unkwnown fs error');
