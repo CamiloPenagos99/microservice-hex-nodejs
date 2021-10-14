@@ -17,15 +17,16 @@ export class PinGuiaService {
     private guiaRepository = DEPENDENCY_CONTAINER.get<TrackingRepository>(TYPES.FirestoreTrackingRepository);
     private axiosRecuperarPin = DEPENDENCY_CONTAINER.get<RecuperarPin>(RecuperarPin);
     async guardarPin(data: IDataIn): Promise<Response<string | null>> {
-        let result = '';
+        let contador = 0;
         data.guias.forEach(async (guia) => {
             const dataFinal = reconstruccionData(guia, data);
             const entidad = GuardarPinEntity.crearEntidad(dataFinal);
-            result = await this.guiaRepository.guardarPin(entidad);
+            const result = await this.guiaRepository.guardarPin(entidad);
+            if (result) contador++;
             console.log('--------------->resultado save------------->', result);
         });
-        if (result) return Result.ok('se guardo en db');
-        return Result.ok('error al guardar');
+        if (contador === 0) return Result.ok('error al guardar en base de datos');
+        return Result.ok(`Se guardo en base de datos, ${contador} registros`);
     }
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
