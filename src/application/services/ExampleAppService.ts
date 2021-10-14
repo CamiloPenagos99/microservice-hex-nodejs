@@ -12,7 +12,7 @@ export class ExampleAppService {
         const example = ExampleEntity.create('123', 'Daniel');
         await this.exampleRepository.save(example);
         const length = calculateNameLength(example.name);
-        const result = length <= 4 ? `You're weird` : `You're incredible`;
-        return Result.ok(result);
+        // const result = length <= 4 ? `You're weird` : `You're incredible`;
+        return Result.ok(length + '');
     }
 }

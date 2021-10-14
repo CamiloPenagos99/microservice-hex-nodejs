@@ -30,11 +30,12 @@ export class RepositoryException extends Exception {
     }
 }
 
+/*
 export class PubSubException extends Exception {
     constructor(message: string, cause: string) {
         super(message, ErrorCode.PUBSUB_ERROR, StatusCode.INTERNAL_ERROR, cause);
     }
-}
+} */
 
 export class FirestoreException extends Exception {
     constructor(code: number | string, message: string) {

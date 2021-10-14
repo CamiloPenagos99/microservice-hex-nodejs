@@ -28,17 +28,9 @@ export const recuperarPin = {
                 type: 'object',
                 properties: {
                     isError: { type: 'boolean', example: false },
-                    data: { type: 'string', example: 'gdehqupUjDVIyUJCrUvR' },
+                    data: { type: 'string', description: 'mensaje de confirmación del envio' },
                     timestamp: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
-                },
-            },
-            '200-BAD_MESSAGE': {
-                description: 'Respuesta insatisfactoria',
-                type: 'object',
-                properties: {
-                    isError: { type: 'boolean', example: true },
-                    data: { type: 'string', example: 'gdehqupUjDVIyUJCrUvR' },
-                    timestamp: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
+                    id: { type: 'string', description: 'id del request' },
                 },
             },
         },

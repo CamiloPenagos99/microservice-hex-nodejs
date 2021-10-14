@@ -136,6 +136,16 @@ describe('MS tracking pin guia', () => {
                 method: 'POST',
                 url: '/consultarFormaEnvio',
             });
+            expect(response.statusCode).toBe(500);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+        });
+
+        it('test fallido para consulta forma de envio, con data de envio vacia', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/consultarFormaEnvio',
+                payload: {},
+            });
             expect(response.statusCode).toBe(400);
             expect(JSON.parse(response.body).isError).toBeTruthy();
         });

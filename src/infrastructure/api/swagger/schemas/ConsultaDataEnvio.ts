@@ -1,7 +1,7 @@
 export const consultaDataEnvio = {
     schema: {
         description: 'Recupera la información para el envio del pin recuperado',
-        tags: ['recuperar-pin'],
+        tags: ['consultar-envio-pin'],
         body: {
             type: 'object',
             properties: {
@@ -13,16 +13,7 @@ export const consultaDataEnvio = {
             },
         },
         response: {
-            '200-OK': {
-                description: 'Respuesta satisfactoria',
-                type: 'object',
-                properties: {
-                    isError: { type: 'boolean', example: false },
-                    data: { type: 'string', example: 'gdehqupUjDVIyUJCrUvR' },
-                    timestamp: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
-                },
-            },
-            '200': {
+            '200-ok': {
                 description: 'Respuesta satisfactoria',
                 type: 'object',
                 properties: {
@@ -50,7 +41,7 @@ export const consultaDataEnvio = {
                         },
                     },
                     timestamp: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
-                    id: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
+                    id: { type: 'string', description: 'id del request' },
                 },
             },
         },

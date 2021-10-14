@@ -5,7 +5,7 @@ export const swagger_config: FastifyDynamicSwaggerOptions = {
     routePrefix: `/docs`,
     swagger: {
         info: {
-            title: 'Microservicio - Tracking - Gestionar Pin',
+            title: 'Microservicio - Tracking - Consulta Pin',
             description:
                 'Este Microservice se encarga de gestionar, almacenar y recuperar el pin de seguridad de la suite',
             version: '0.1.0',
@@ -16,7 +16,8 @@ export const swagger_config: FastifyDynamicSwaggerOptions = {
             },
         },
         host: URL_BASE,
-        schemes: [URL_BASE.includes('local') ? 'http' : 'https'],
+        //schemes: [URL_BASE.includes('local') ? 'http' : 'https'],
+        schemes: ['http'],
         consumes: ['application/json'],
         produces: ['application/json'],
     },

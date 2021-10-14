@@ -1,2 +1,3 @@
-export * from './PingGuiaSchema';
-export * from './DataEnvioSchema';
+export * from './ValidarPinSchema';
+export * from './ConsultaDataEnvio';
+export * from './RecuperarPinSchema';
