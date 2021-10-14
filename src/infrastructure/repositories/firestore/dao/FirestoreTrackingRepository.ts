@@ -4,7 +4,7 @@ import { Firestore } from '@google-cloud/firestore';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
-import { FirestoreException } from '@domain/exceptions';
+import { FirestoreException, RepositoryException } from '@domain/exceptions';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -20,14 +20,14 @@ export class FirestoreTrackingRepository implements TrackingRepository {
                 .doc(ref)
                 .set({ ...dataSave })
                 .catch((err) => {
-                    throw new FirestoreException(err.id, err.message);
+                    console.warn('error in database', err);
+                    throw new RepositoryException();
                 });
             return res;
         } catch (e) {
             throw new FirestoreException(e.id, e.message);
         }
     }
-    //const plain = JSON.parse(JSON.stringify(data));
 
     async consultarPin(data: ConsultarPinEntity): Promise<boolean> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();

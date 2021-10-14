@@ -44,6 +44,7 @@ export class FirestoreException extends Exception {
             case '0':
                 super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
                 break;
+            /*
             case 1:
             case '1':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore action cancelled');
@@ -68,6 +69,7 @@ export class FirestoreException extends Exception {
             case '8':
                 super(message, fsError, StatusCode.OK, 'Firestore resource exhausted');
                 break;
+                 */
             case 9:
             case '9':
                 super(message, fsError, StatusCode.BAD_REQUEST, 'Firestore precondition failed');
