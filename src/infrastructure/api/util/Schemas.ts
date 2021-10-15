@@ -7,6 +7,7 @@ type Schema = Joi.ObjectSchema | Joi.ArraySchema;
 type Body = Record<string, unknown> | undefined | unknown;
 
 export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
+    if (JSON.stringify(dataToValidate) === '{}') throw new BadMessageException('no hay data');
     if (dataToValidate) {
         const { error, value } = schema.validate(dataToValidate, { convert: false });
         if (error) {
@@ -15,6 +16,7 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
         }
         return value;
     }
+
     throw new BadMessageException('no hay data');
 };
 
