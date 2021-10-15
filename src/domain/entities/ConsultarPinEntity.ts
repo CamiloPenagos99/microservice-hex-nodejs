@@ -9,7 +9,7 @@ export class ConsultarPinEntity {
         this.pin = data.pin;
     }
 
-    static consultarPin(data: IGuiaPinIn): ConsultarPinEntity {
+    static crearEntidad(data: IGuiaPinIn): ConsultarPinEntity {
         return new ConsultarPinEntity(data);
     }
 }

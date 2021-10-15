@@ -19,7 +19,7 @@ export abstract class Exception {
 export class BadMessageException extends Exception {
     constructor(cause: string) {
         const message = 'Los datos de entrada no corresponden con el esquema definido - ' + cause;
-        super(message, ErrorCode.BAD_MESSAGE, StatusCode.OK, cause);
+        super(message, ErrorCode.BAD_MESSAGE, StatusCode.BAD_REQUEST, cause);
     }
 }
 
@@ -30,16 +30,22 @@ export class RepositoryException extends Exception {
     }
 }
 
+/*
 export class PubSubException extends Exception {
     constructor(message: string, cause: string) {
         super(message, ErrorCode.PUBSUB_ERROR, StatusCode.INTERNAL_ERROR, cause);
     }
-}
+} */
 
 export class FirestoreException extends Exception {
     constructor(code: number | string, message: string) {
         const fsError = ErrorCode.REPOSITORY_ERROR;
         switch (code) {
+            case 0:
+            case '0':
+                super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
+                break;
+            /*
             case 1:
             case '1':
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore action cancelled');
@@ -64,9 +70,10 @@ export class FirestoreException extends Exception {
             case '8':
                 super(message, fsError, StatusCode.OK, 'Firestore resource exhausted');
                 break;
+                 */
             case 9:
             case '9':
-                super(message, fsError, StatusCode.INTERNAL_ERROR, 'Firestore precondition failed');
+                super(message, fsError, StatusCode.BAD_REQUEST, 'Firestore precondition failed');
                 break;
             default:
                 super(message, fsError, StatusCode.INTERNAL_ERROR, 'Defaulted unkwnown fs error');

@@ -23,7 +23,7 @@ export class RecuperarPin {
                     return res.data;
                 })
                 .catch((err: JsonObject) => {
-                    console.error('Error axios cm-suite-pin-guia', err.response.data.mensaje);
+                    //console.error('Error axios cm-suite-pin-guia', err.response.data.mensaje);
                     return { isError: true, mensaje: err.response.data.mensaje };
                 });
         } catch (e) {

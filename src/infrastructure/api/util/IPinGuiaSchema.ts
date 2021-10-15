@@ -10,13 +10,21 @@ export const guardarPinGuiaSchema = Joi.object({
     guias: Joi.array()
         .items(
             Joi.object({
-                codigo_remision: Joi.string().allow(null, '', 0).min(0).optional(),
+                codigo_remision: Joi.string()
+                    .length(11)
+                    .allow('')
+                    .regex(/^[0-9]+$/)
+                    .required()
+                    .label('El codigo de remision (guia), es obligatorio y de 11 caracteres'),
                 destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 correo_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 telefono_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
-                token: Joi.string().allow(null, '', 0).min(0).optional(),
+                token: Joi.string()
+                    .required()
+                    .length(5)
+                    .regex(/^[0-9]+$/),
                 url_relacion_digital: Joi.string().allow(null, '', 0).min(0).optional(),
-                actualizado: Joi.boolean().allow(null).optional(),
+                recuperado: Joi.boolean().allow(null).optional(),
             }),
         )
         .required()
