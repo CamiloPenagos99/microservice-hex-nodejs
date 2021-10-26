@@ -1,4 +1,4 @@
-import { IGuiaPinTracking } from '@application/data';
+import { IGuiaPinTracking, IToken } from '@application/data';
 
 export class GuardarPinEntity {
     readonly codigo_recogida: number;
@@ -12,7 +12,7 @@ export class GuardarPinEntity {
     readonly correo_destinatario: string;
     readonly destinatario: string;
     readonly telefono_destinatario: string;
-    readonly token?: string;
+    readonly token?: IToken;
     readonly url_relacion_digital?: string;
 
     constructor(data: IGuiaPinTracking) {

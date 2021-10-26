@@ -20,10 +20,15 @@ export const guardarPinGuiaSchema = Joi.object({
                 destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 correo_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 telefono_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
-                token: Joi.string()
-                    .required()
-                    .length(5)
-                    .regex(/^[0-9]+$/),
+                token: Joi.object({
+                    pin: Joi.string()
+                        .required()
+                        .length(5)
+                        .regex(/^[0-9]+$/),
+                    remitente: Joi.number().optional(),
+                    destinatario: Joi.number().optional(),
+                }),
+
                 url_relacion_digital: Joi.string().allow(null, '', 0).min(0).optional(),
                 recuperado: Joi.boolean().allow(null).optional(),
             }),
