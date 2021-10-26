@@ -6,6 +6,7 @@ export const guardarPinGuiaSchema = Joi.object({
     remitente: Joi.string().allow(null, '', 0).min(0).optional(),
     telefono_remitente: Joi.string().allow(null, '', 0).min(0).optional(),
     correo_remitente: Joi.string().allow(null, '', 0).min(0).optional(),
+    nit_remitente: Joi.string().allow(null, '', 0).min(0).optional(),
     envio_data: Joi.bool().optional(),
     guias: Joi.array()
         .items(

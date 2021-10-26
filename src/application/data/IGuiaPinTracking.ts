@@ -3,6 +3,7 @@ export interface IGuiaPinTracking {
     id_llamada: number;
     remitente: string;
     telefono_remitente: string;
+    nit_remitente: string;
     correo_remitente: string;
     envio_data: boolean;
     codigo_remision: string;
