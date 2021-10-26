@@ -6,3 +6,4 @@ export * from './IEnvioDataOut';
 export * from './IDataEnvioIn';
 export * from './IRecuperarPinOut';
 export * from './IConsultaGuiasRtteIn';
+export * from './IToken';

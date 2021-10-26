@@ -5,13 +5,18 @@ export const guardarPinGuiasSwagger = {
         body: {
             type: 'object',
             properties: {
-                data: {
-                    type: 'string',
-                    example: 'Buffer Base64, de objeto interface IDataIn',
-                    description: 'buffer Json base64',
+                message: {
+                    type: 'object',
+                    properties: {
+                        data: {
+                            type: 'string',
+                            example: 'Buffer Base64, de objeto interface IDataIn',
+                            description: 'buffer Json base64',
+                        },
+                        publishTime: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
+                        messageId: { type: 'string', description: 'id del mensaje GCP' },
+                    },
                 },
-                publishTime: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
-                messageId: { type: 'string', description: 'id del mensaje GCP' },
             },
         },
         response: {

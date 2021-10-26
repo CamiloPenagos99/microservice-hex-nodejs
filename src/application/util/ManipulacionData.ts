@@ -8,6 +8,7 @@ export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTra
         id_llamada: data.id_llamada,
         remitente: data.remitente,
         telefono_remitente: data.telefono_remitente,
+        nit_remitente: data.nit_remitente,
         correo_remitente: data.correo_remitente,
         envio_data: data.envio_data,
         codigo_remision: guia.codigo_remision,

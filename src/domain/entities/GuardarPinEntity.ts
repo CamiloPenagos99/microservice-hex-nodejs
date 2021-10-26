@@ -1,4 +1,4 @@
-import { IGuiaPinTracking } from '@application/data';
+import { IGuiaPinTracking, IToken } from '@application/data';
 
 export class GuardarPinEntity {
     readonly codigo_recogida: number;
@@ -6,12 +6,13 @@ export class GuardarPinEntity {
     readonly remitente: string;
     readonly telefono_remitente: string;
     readonly correo_remitente: string;
+    readonly nit_remitente: string;
     readonly envio_data: boolean;
     readonly codigo_remision: string;
     readonly correo_destinatario: string;
     readonly destinatario: string;
     readonly telefono_destinatario: string;
-    readonly token?: string;
+    readonly token?: IToken;
     readonly url_relacion_digital?: string;
 
     constructor(data: IGuiaPinTracking) {
@@ -20,6 +21,7 @@ export class GuardarPinEntity {
         this.remitente = data.remitente;
         this.telefono_remitente = data.telefono_remitente;
         this.correo_remitente = data.correo_remitente;
+        this.nit_remitente = data.nit_remitente;
         this.envio_data = data.envio_data;
         this.codigo_remision = data.codigo_remision;
         this.correo_destinatario = data.correo_destinatario;
