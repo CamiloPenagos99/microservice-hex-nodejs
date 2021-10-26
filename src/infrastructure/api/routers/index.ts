@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify';
 import { consultarFormaEnvio, consultarPinGuia, guardarPinGuia, recuperarPinGuia } from './PinGuiaRouter';
 import { consultaDataEnvio, recuperarPin, validarPin } from '../swagger/schemas';
 import { guardarPinGuiasSwagger } from '../swagger/schemas/GuardarPinGuiaSchema';
+import { guiasRemitente } from './GuiasRemitenteRouter';
 
 export const initRoutes = (application: FastifyInstance): void => {
     application.get('/', example);
@@ -10,4 +11,5 @@ export const initRoutes = (application: FastifyInstance): void => {
     application.post('/consultarPin', validarPin, consultarPinGuia);
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);
+    application.get('/guiasRemitente/:nit/:codigoRecogida', guiasRemitente);
 };
