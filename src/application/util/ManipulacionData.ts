@@ -57,6 +57,7 @@ export const dataRecuperarPinSalida = (guia: JsonObject, metadata: IDataEnvioIn)
         remitente: guia.remitente,
         telefono_remitente: guia.telefono_remitente,
         correo_remitente: guia.correo_remitente,
+        nit_remitente: guia.nit_remitente,
         envio_data: guia.envio_data,
         guias: [
             {
