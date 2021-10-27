@@ -11,4 +11,8 @@ export const consultarPinGuiaSchema = Joi.object({
         .required()
         .length(5)
         .regex(/^[0-9]+$/),
+    usuario: Joi.string()
+        .optional()
+        .length(1)
+        .regex(/^[0-9]+$/),
 });
