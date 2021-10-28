@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import { USUARIO_DESTINATARIO, USUARIO_REMITENTE } from '@util';
 
 export const consultarPinGuiaSchema = Joi.object({
     guia: Joi.string()
@@ -11,4 +12,8 @@ export const consultarPinGuiaSchema = Joi.object({
         .required()
         .length(5)
         .regex(/^[0-9]+$/),
+    tipoUsuario: Joi.string()
+        .valid(USUARIO_REMITENTE, USUARIO_DESTINATARIO)
+        .optional()
+        .label('El tipo de usuario es obligatorio'),
 });

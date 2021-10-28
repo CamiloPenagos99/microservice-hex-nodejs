@@ -32,7 +32,18 @@ export class PinGuiaService {
         if (result) {
             token = generarJWT(data.guia);
         }
-        const respuesta = { pinValido: result, bearer: token };
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
+        return Result.ok(respuesta);
+    }
+
+    async consultarPinCont(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
+        const entidad = ConsultarPinEntity.crearEntidad(data);
+        const result = await this.guiaRepository.consultarPinCont(entidad);
+        let token = '';
+        if (result) {
+            token = generarJWT(data.guia);
+        }
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
         return Result.ok(respuesta);
     }
 

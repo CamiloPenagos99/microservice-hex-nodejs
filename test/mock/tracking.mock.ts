@@ -22,21 +22,25 @@ export const dataInput = {
 export const consultarPinFallido = {
     guia: '73940048072',
     pin: '123451',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const consultarPinOK = {
     guia: '73940048072',
     pin: '12347',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const consultarPinGuiaInexistente = {
     guia: '00000000000',
     pin: '12347',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const consultarPinErrado = {
     guia: '73940048072',
     pin: '17891',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const recuperarFormaEnvioOk = {
