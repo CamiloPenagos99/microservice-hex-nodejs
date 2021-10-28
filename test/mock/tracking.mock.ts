@@ -71,3 +71,9 @@ export const recuperarPinGuiaInexistente = {
     tipoUsuario: USUARIO_DESTINATARIO,
     medioEnvio: MEDIO_ENVIO_SMS,
 };
+
+export const recuperarPinGuiaMalCreada = {
+    guia: '73940048012',
+    tipoUsuario: USUARIO_DESTINATARIO,
+    medioEnvio: MEDIO_ENVIO_CORREO,
+};

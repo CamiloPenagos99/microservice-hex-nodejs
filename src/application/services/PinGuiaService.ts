@@ -9,7 +9,7 @@ import { RecuperarPin } from '@infrastructure/repositories';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { generarJWT } from '@util';
-import { FirestoreException } from '@domain/exceptions';
+import { ApiException, FirestoreException } from '@domain/exceptions';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -46,7 +46,7 @@ export class PinGuiaService {
             return Result.ok('información enviada correctamente');
         }
 
-        return Result.failure(res[0]);
+        throw new ApiException(res.mensaje);
     }
 
     async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {

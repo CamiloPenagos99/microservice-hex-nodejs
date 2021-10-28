@@ -17,6 +17,7 @@ import {
     recuperarFormaEnvioOk,
     recuperarPinF,
     recuperarPinGuiaInexistente,
+    recuperarPinGuiaMalCreada,
     recuperarPinOk,
 } from './mock';
 
@@ -176,6 +177,16 @@ describe('MS tracking pin guia', () => {
                 method: 'POST',
                 url: '/recuperarPin',
                 payload: recuperarPinGuiaInexistente,
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+        });
+
+        it('test exitoso para recuperar pin, de guia mal creada', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/recuperarPin',
+                payload: recuperarPinGuiaMalCreada,
             });
             expect(response.statusCode).toBe(400);
             expect(JSON.parse(response.body).isError).toBeTruthy();
