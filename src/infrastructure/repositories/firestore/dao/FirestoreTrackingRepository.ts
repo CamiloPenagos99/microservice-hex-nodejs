@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
@@ -46,10 +47,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
         consulta
             ? consulta.token.pin === data.pin || consulta.token === data.pin
-                ? await this.firestore
-                    .collection(this.collection)
-                    .doc(data.guia)
-                    .update({ token: { destinatario: 1 } })
+                ? await this.firestore.collection(this.collection).doc(data.guia).update({ token: { destinatario: 1 } })
                 : 0
             : 0;
         return consulta ? (consulta.token.pin === data.pin || consulta.token === data.pin ? true : false) : false;
