@@ -32,7 +32,7 @@ export class PinGuiaService {
         if (result) {
             token = generarJWT(data.guia);
         }
-        const respuesta = { pinValido: result, bearer: token };
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
         return Result.ok(respuesta);
     }
 
