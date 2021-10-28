@@ -47,7 +47,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
         consulta
             ? consulta.token.pin !== data.pin || consulta.token !== data.pin
-                ? await this.firestore.collection(this.collection).doc(data.guia).update({ token: {destinatario: consulta.token.destinatario + 1}})
+                ? await this.firestore.collection(this.collection).doc(data.guia).update({ token: {destinatario: consulta.token.destinatario + 1, remitente: consulta.token.remitente, pin: consulta.token.pin}})
                 : 0
             : 0;
         return consulta ? (consulta.token.pin === data.pin || consulta.token === data.pin ? true : false) : false;
