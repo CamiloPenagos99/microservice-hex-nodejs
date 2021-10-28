@@ -9,7 +9,7 @@ import { RecuperarPin } from '@infrastructure/repositories';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { generarJWT } from '@util';
-import { FirestoreException } from '@domain/exceptions';
+import { ApiException, FirestoreException } from '@domain/exceptions';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -32,7 +32,18 @@ export class PinGuiaService {
         if (result) {
             token = generarJWT(data.guia);
         }
-        const respuesta = { pinValido: result, bearer: token };
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
+        return Result.ok(respuesta);
+    }
+
+    async consultarPinCont(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
+        const entidad = ConsultarPinEntity.crearEntidad(data);
+        const result = await this.guiaRepository.consultarPinCont(entidad);
+        let token = '';
+        if (result) {
+            token = generarJWT(data.guia);
+        }
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
         return Result.ok(respuesta);
     }
 
@@ -41,12 +52,12 @@ export class PinGuiaService {
         const result = await this.guiaRepository.recuperarPin(entidad);
         if (!result) return Result.ok(result);
         const respuesta = dataRecuperarPinSalida(result, data);
-        const res = await this.axiosRecuperarPin.recuperar(respuesta);
+        const res = await this.axiosRecuperarPin.recuperar(respuesta); //TODO
         if (!res.isError) {
             return Result.ok('información enviada correctamente');
         }
 
-        return Result.failure(res[0]);
+        throw new ApiException(res.mensaje);
     }
 
     async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {

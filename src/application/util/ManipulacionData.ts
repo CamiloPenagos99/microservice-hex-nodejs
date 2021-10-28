@@ -8,6 +8,7 @@ export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTra
         id_llamada: data.id_llamada,
         remitente: data.remitente,
         telefono_remitente: data.telefono_remitente,
+        nit_remitente: data.nit_remitente,
         correo_remitente: data.correo_remitente,
         envio_data: data.envio_data,
         codigo_remision: guia.codigo_remision,
@@ -56,6 +57,7 @@ export const dataRecuperarPinSalida = (guia: JsonObject, metadata: IDataEnvioIn)
         remitente: guia.remitente,
         telefono_remitente: guia.telefono_remitente,
         correo_remitente: guia.correo_remitente,
+        nit_remitente: guia.nit_remitente,
         envio_data: guia.envio_data,
         guias: [
             {

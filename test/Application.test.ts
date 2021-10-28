@@ -17,7 +17,9 @@ import {
     recuperarFormaEnvioOk,
     recuperarPinF,
     recuperarPinGuiaInexistente,
+    recuperarPinGuiaMalCreada,
     recuperarPinOk,
+    //recuperarPinOk,
 } from './mock';
 
 const MockFirestore = new MockFirebase(FIRESTORE_DATA);
@@ -64,7 +66,7 @@ describe('MS tracking pin guia', () => {
             });
             expect(response.statusCode).toBe(200);
             expect(JSON.parse(response.body).isError).toBeFalsy();
-            expect(JSON.parse(response.body).data.pinValido).toBeTruthy;
+            //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
         });
 
         it('test correcto, para consultar pin, de guia inexistente', async () => {
@@ -176,6 +178,16 @@ describe('MS tracking pin guia', () => {
                 method: 'POST',
                 url: '/recuperarPin',
                 payload: recuperarPinGuiaInexistente,
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+        });
+
+        it('test exitoso para recuperar pin, de guia mal creada', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/recuperarPin',
+                payload: recuperarPinGuiaMalCreada,
             });
             expect(response.statusCode).toBe(400);
             expect(JSON.parse(response.body).isError).toBeTruthy();

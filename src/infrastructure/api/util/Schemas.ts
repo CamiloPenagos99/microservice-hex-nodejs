@@ -11,7 +11,7 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
     if (dataToValidate) {
         const { error, value } = schema.validate(dataToValidate, { convert: false });
         if (error) {
-            console.error(`schemaError: ${JSON.stringify(error)}`);
+            //console.error(`schemaError: ${JSON.stringify(error)}`);
             throw new BadMessageException(error.message);
         }
         return value;
@@ -27,7 +27,7 @@ export const validateDataPubSub = <T>(schema: Schema, dataToValidate: Body): T =
             const decodeMessage = parse(decode(pubSubPayload.message.data));
             const { error, value } = schema.validate(decodeMessage, { convert: false });
             if (error) {
-                console.error(`schemaError: ${JSON.stringify(error)}`);
+                //console.error(`schemaError: ${JSON.stringify(error)}`);
                 throw new BadMessageException(error.message);
             }
             return value;
