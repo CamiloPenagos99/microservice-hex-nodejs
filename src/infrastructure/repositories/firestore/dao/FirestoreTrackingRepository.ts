@@ -45,7 +45,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     async consultarPinCont(data: ConsultarPinEntity): Promise<boolean> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
         console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
-        data.tipoUsuario === 'remitente' ? consulta?.token.remitente + 1 : consulta?.token.destinatario + 1;
+        consulta ? data.tipoUsuario === 'remitente' ? consulta.token.remitente + 1 : consulta.token.destinatario + 1 : 0 ;
         consulta
             ? consulta.token.pin !== data.pin || consulta.token !== data.pin
                 ? await this.firestore.collection(this.collection).doc(data.guia).update({ token: {destinatario: consulta.token.destinatario, remitente: consulta.token.remitente, pin: consulta.token.pin}})
