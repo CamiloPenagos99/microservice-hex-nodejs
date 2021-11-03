@@ -110,6 +110,20 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         return consulta;
     }
 
+    async reiniciarIntentosPin(data: RecuperarPinEntity): Promise<any> {
+        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
+        if (!consulta) return false
+        console.log('objeto de base de datos', consulta);
+        const rolUsuario = data.tipoUsuario;
+        const pinGuia = consulta.token.pin;
+        const resetIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: 0, destinatario: consulta.token.destinatario, pin: pinGuia }:{remitente: consulta.token.remitente, destinatario: 0, pin: pinGuia }
+        const update = await (this.firestore.collection(this.collection).doc(data.guia).update({ token: resetIntentos})) as JsonObject
+        console.log('objeto de base de actualizado', update);
+        const retorn = update ? true: false
+
+        return retorn;
+    }
+
     async consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject> {
         let result: JsonObject | undefined = {};
         const query = await this.firestore

@@ -65,6 +65,7 @@ export class PinGuiaService {
         const respuesta = dataRecuperarPinSalida(result, data);
         const res = await this.axiosRecuperarPin.recuperar(respuesta); //TODO
         if (!res.isError) {
+            await this.guiaRepository.reiniciarIntentosPin(entidad);
             return Result.ok('información enviada correctamente');
         }
 
