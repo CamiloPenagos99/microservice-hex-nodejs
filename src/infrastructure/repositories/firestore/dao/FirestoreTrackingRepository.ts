@@ -7,6 +7,7 @@ import { TrackingRepository } from '@domain/repository';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
+import { USUARIO_REMITENTE } from '@util';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -44,7 +45,9 @@ export class FirestoreTrackingRepository implements TrackingRepository {
 
     async consultarPinCont(data: ConsultarPinEntity): Promise<any> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
+        if (!consulta) return false
+
+        //console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
 
         consulta ? data.tipoUsuario === 'remitente' ? consulta.token.remitente = consulta.token.remitente + 1 : consulta.token.destinatario = consulta.token.destinatario + 1 : 0 ;
         consulta
@@ -53,6 +56,36 @@ export class FirestoreTrackingRepository implements TrackingRepository {
                 : 0
             : 0;
         return consulta ? (consulta.token.pin === data.pin || consulta.token === data.pin ? {pinValido: true, tipoUsuario: data.tipoUsuario, intentos: consulta.token[data.tipoUsuario]} : { pinValido:false, tipoUsuario: data.tipoUsuario, intentos: consulta.token[data.tipoUsuario] }) : {pinValido:false, tipoUsuario: data.tipoUsuario};
+    }
+
+    async consultarPinCont2(data: ConsultarPinEntity): Promise<any> {
+        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
+        if (!consulta) return false
+        let pinCorrecto = false;
+        const rolUsuario = data.tipoUsuario;
+        const pinUser = data.pin;
+        const pinGuia = consulta.token.pin;
+        const retorno = {pinValidado: false, tipoUsuario: '', intentos: ''}
+        let contador = consulta.token[rolUsuario];
+
+        if ( pinUser === pinGuia ){
+            pinCorrecto=true
+            const resetIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: 0}:{destinatario: 0}
+            const update = await this.firestore.collection(this.collection).doc(data.guia).update({ token: resetIntentos}) as JsonObject
+            retorno.pinValidado=pinCorrecto
+            retorno.tipoUsuario=rolUsuario
+            retorno.intentos=update.token[rolUsuario]
+        } else {
+            contador++;
+            pinCorrecto=false
+            const sumarIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: contador}:{destinatario: contador}
+            const update = await this.firestore.collection(this.collection).doc(data.guia).update({ token: sumarIntentos}) as JsonObject
+            retorno.pinValidado=pinCorrecto
+            retorno.tipoUsuario=rolUsuario
+            retorno.intentos=update.token[rolUsuario]
+        }
+
+        return retorno
     }
 
     async recuperarPin(data: RecuperarPinEntity): Promise<any> {
