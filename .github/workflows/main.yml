@@ -8,7 +8,6 @@ env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
     SUITE_PROJECT_ID: ${{ secrets.PROJECT_ID_SUITE_TEST }}
-    ENV_FILE: ENV_TEST
 jobs:
     build_and_deploy:
         runs-on: ubuntu-latest
@@ -49,6 +48,7 @@ jobs:
               uses: google-github-actions/setup-gcloud@master
               with:
                   project_id: ${{ env.GCP_PROJECT }}
+                  project_suite: ${{ env.SUITE_PROJECT_ID }}
                   service_account_key: ${{ secrets.GCP_SA_KEY }}
                   export_default_credentials: true
             - name: Build and deploy image
@@ -89,6 +89,6 @@ jobs:
             - name: Init Terraform
               run: make terraform-init
             - name: Create Workspace Terraform
-              run: PROJECT_ID=$GCP_PROJECT SUITE_PROJECT_ID=${PROJECT_ID_SUITE_TEST} ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-create-workspace
+              run: PROJECT_ID=$GCP_PROJECT ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-create-workspace
             - name: Apply Terraform
-              run: PROJECT_ID=$GCP_PROJECT SUITE_PROJECT_ID=${PROJECT_ID_SUITE_TEST} ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-apply
+              run: PROJECT_ID=$GCP_PROJECT ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-apply
