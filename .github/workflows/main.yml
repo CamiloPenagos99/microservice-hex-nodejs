@@ -7,7 +7,6 @@ on:
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
-    SUITE_PROJECT_ID: ${{ secrets.PROJECT_ID_SUITE_TEST }}
 jobs:
     build_and_deploy:
         runs-on: ubuntu-latest
@@ -33,6 +32,10 @@ jobs:
                       master:ENV_PROD
                       testing:ENV_TEST
                       !default:ENV_DEV
+                  SUITE_PROJECT_ID: |
+                      master:${{ secrets.PROJECT_ID_SUITE_PROD }}
+                      testing:${{ secrets.PROJECT_ID_SUITE_TEST }}
+                      !default:${{ secrets.PROJECT_ID_SUITE_TEST }}
             - name: Cache node modules
               uses: actions/cache@v2
               with:
