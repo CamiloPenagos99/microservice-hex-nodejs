@@ -7,6 +7,8 @@ on:
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
+    SUITE_PROJECT_ID: ${{ secrets.PROJECT_ID_SUITE_TEST }}
+    ENV_FILE: ENV_TEST
 jobs:
     build_and_deploy:
         runs-on: ubuntu-latest
@@ -87,6 +89,6 @@ jobs:
             - name: Init Terraform
               run: make terraform-init
             - name: Create Workspace Terraform
-              run: PROJECT_ID=$GCP_PROJECT ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-create-workspace
+              run: PROJECT_ID=$GCP_PROJECT SUITE_PROJECT_ID=${PROJECT_ID_SUITE_TEST} ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-create-workspace
             - name: Apply Terraform
-              run: PROJECT_ID=$GCP_PROJECT ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-apply
+              run: PROJECT_ID=$GCP_PROJECT SUITE_PROJECT_ID=${PROJECT_ID_SUITE_TEST} ENV=${{ needs.build_and_deploy.outputs.branch }}  make terraform-apply
