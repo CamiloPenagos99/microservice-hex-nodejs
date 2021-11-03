@@ -4,6 +4,7 @@ import {
     consultarFormaEnvio,
     consultarPinGuia,
     consultarPinGuiaCont,
+    consultarPinGuiaCont2,
     guardarPinGuia,
     recuperarPinGuia,
 } from './PinGuiaRouter';
@@ -16,6 +17,7 @@ export const initRoutes = (application: FastifyInstance): void => {
     application.post('/', guardarPinGuiasSwagger, guardarPinGuia);
     application.post('/consultarPin', validarPin, consultarPinGuia);
     application.post('/consultarPinCont', validarPin, consultarPinGuiaCont);
+    application.post('/consultarPinCont2', validarPin, consultarPinGuiaCont2);
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);
     application.get('/guiasRemitente/:nit/:codigoRecogida', guiasRemitente);

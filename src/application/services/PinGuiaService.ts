@@ -47,6 +47,17 @@ export class PinGuiaService {
         return Result.ok(respuesta);
     }
 
+    async consultarPinCont2(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
+        const entidad = ConsultarPinEntity.crearEntidad(data);
+        const result = await this.guiaRepository.consultarPinCont2(entidad);
+        let token = '';
+        if (result) {
+            token = generarJWT(data.guia);
+        }
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
+        return Result.ok(respuesta);
+    }
+
     async recuperarPin(data: IDataEnvioIn): Promise<Response<string | null>> {
         const entidad = RecuperarPinEntity.crearEntidad(data);
         const result = await this.guiaRepository.recuperarPin(entidad);
