@@ -1,6 +1,6 @@
 check-group:
 ifndef ENV
-	$(error Please set ENV=[dev|test|prod])
+	$(error Please set ENV=[dev|testing|prod])
 endif
 
 check-project:
