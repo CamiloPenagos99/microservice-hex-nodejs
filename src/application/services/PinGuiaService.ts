@@ -22,7 +22,7 @@ export class PinGuiaService {
         const guiasRegistradas = await this.guardarGuiasUtil(data);
         //console.log('cantidad de guias registradas', guiasRegistradas);
         if (guiasRegistradas === 0) throw new FirestoreException(9, 'Unable to save in database');
-        return Result.ok(`Se guardo en base de datos, ${guiasRegistradas} registros`);
+        return Result.ok(`Se guardo en la base de datos, ${guiasRegistradas} registros`);
     }
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
@@ -43,7 +43,7 @@ export class PinGuiaService {
         if (result) {
             token = generarJWT(data.guia);
         }
-        const respuesta = { pin: result, bearer: token };
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
         return Result.ok(respuesta);
     }
 
