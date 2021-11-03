@@ -66,25 +66,35 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         const rolUsuario = data.tipoUsuario;
         const pinUser = data.pin;
         const pinGuia = consulta.token.pin;
-        const retorno = {pinValidado: false, tipoUsuario: '', intentos: ''}
+        const retorno = {pinValidado: false, tipoUsuario: '', intentos: -1}
         let contador = consulta.token[rolUsuario];
+        if(contador>=3){
+            retorno.pinValidado=false
+            retorno.tipoUsuario=rolUsuario
+            //retorno.intentos=update.token[rolUsuario]
+            retorno.intentos=contador;
+            return retorno;
+        }
 
         if ( pinUser === pinGuia ){
             pinCorrecto=true
             const resetIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: 0, destinatario: consulta.token.destinatario, pin: consulta.token.pin }:{remitente: consulta.token.remitente, destinatario: 0, pin: consulta.token.pin }
-            const update = await (this.firestore.collection(this.collection).doc(data.guia).set({ token: resetIntentos}, { merge: true })) as JsonObject
+            const update = await (this.firestore.collection(this.collection).doc(data.guia).update({ token: resetIntentos})) as JsonObject
             console.log('objeto de base de actualizado', update);
             retorno.pinValidado=pinCorrecto
             retorno.tipoUsuario=rolUsuario
-            retorno.intentos=update.token[rolUsuario]
+            //retorno.intentos=update.token[rolUsuario]
+            retorno.intentos=0;
         } else {
             contador++;
             pinCorrecto=false
             const sumarIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: contador, destinatario: consulta.token.destinatario, pin: consulta.token.pin }:{remitente: consulta.token.remitente, destinatario: contador, pin: consulta.token.pin }
-            const update = await this.firestore.collection(this.collection).doc(data.guia).set({ token: sumarIntentos}, { merge: true }) as JsonObject
+            const update = await this.firestore.collection(this.collection).doc(data.guia).update({ token: sumarIntentos}) as JsonObject
+            console.log('objeto de base de actualizado', update);
             retorno.pinValidado=pinCorrecto
             retorno.tipoUsuario=rolUsuario
-            retorno.intentos=update.token[rolUsuario]
+            //retorno.intentos=update.token[rolUsuario]
+            retorno.intentos=contador
         }
         console.log('respuesta validar pin: ', retorno);
         return retorno
