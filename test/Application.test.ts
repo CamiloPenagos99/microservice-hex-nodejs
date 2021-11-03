@@ -201,7 +201,7 @@ describe('MS tracking pin guia', () => {
                 url: '/consultarPinCont2',
                 payload: consultarPinOK,
             });
-            expect(response.statusCode).toBe(500);
+            expect(response.statusCode).toBe(200);
             //expect(JSON.parse(response.body).isError).toBeFalsy();
             //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
         });
