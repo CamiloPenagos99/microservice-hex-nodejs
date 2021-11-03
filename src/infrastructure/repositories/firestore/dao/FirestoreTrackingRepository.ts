@@ -86,7 +86,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             retorno.tipoUsuario=rolUsuario
             retorno.intentos=update.token[rolUsuario]
         }
-        console.log('respuesta validar pin', retorno);
+        console.log('respuesta validar pin: ', retorno);
         return retorno
     }
 
