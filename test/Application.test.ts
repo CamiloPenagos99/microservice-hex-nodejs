@@ -198,7 +198,7 @@ describe('MS tracking pin guia', () => {
         it('test correcto, para consultar pin', async () => {
             const response = await application.inject({
                 method: 'POST',
-                url: '/consultarPinCont',
+                url: '/consultarPinCont2',
                 payload: consultarPinOK,
             });
             expect(response.statusCode).toBe(500);

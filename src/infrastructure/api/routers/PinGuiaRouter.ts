@@ -60,7 +60,7 @@ export const consultarPinGuiaCont2 = async (req: FastifyRequest, reply: FastifyR
     const { value: schema, error } = consultarPinGuiaSchema.validate(data);
     if (!error) {
         const guia: IGuiaPinIn = schema;
-        const response = await pinGuiaService.consultarPinCont(guia);
+        const response = await pinGuiaService.consultarPinCont2(guia);
         //console.log('data router', response);
         return reply.send({ ...response, id });
     }

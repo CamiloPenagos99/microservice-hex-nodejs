@@ -71,7 +71,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
 
         if ( pinUser === pinGuia ){
             pinCorrecto=true
-            const resetIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: 0}:{destinatario: 0}
+            const resetIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: 0, destinatario: consulta.token.destinatario, pin: consulta.token.pin }:{remitente: consulta.token.remitente, destinatario: 0, pin: consulta.token.pin }
             const update = await (this.firestore.collection(this.collection).doc(data.guia).update({ token: resetIntentos})) as JsonObject
             console.log('objeto de base de actualizado', update);
             retorno.pinValidado=pinCorrecto
@@ -80,7 +80,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         } else {
             contador++;
             pinCorrecto=false
-            const sumarIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: contador}:{destinatario: contador}
+            const sumarIntentos = rolUsuario=== USUARIO_REMITENTE ? {remitente: contador, destinatario: consulta.token.destinatario, pin: consulta.token.pin }:{remitente: consulta.token.remitente, destinatario: contador, pin: consulta.token.pin }
             const update = await this.firestore.collection(this.collection).doc(data.guia).update({ token: sumarIntentos}) as JsonObject
             retorno.pinValidado=pinCorrecto
             retorno.tipoUsuario=rolUsuario
