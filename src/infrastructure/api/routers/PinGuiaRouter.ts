@@ -51,7 +51,7 @@ export const consultarPinGuiaCont = async (req: FastifyRequest, reply: FastifyRe
     throw new BadMessageException(error.message);
 };
 
-export const consultarPinGuiaCont2 = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+export const validarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     //const body = validateData<IDataIn>(consultarPinGuiaSchema, req.body);
     const { id } = req;
@@ -60,7 +60,7 @@ export const consultarPinGuiaCont2 = async (req: FastifyRequest, reply: FastifyR
     const { value: schema, error } = consultarPinGuiaSchema.validate(data);
     if (!error) {
         const guia: IGuiaPinIn = schema;
-        const response = await pinGuiaService.consultarPinCont2(guia);
+        const response = await pinGuiaService.validarPinGuia(guia);
         //console.log('data router', response);
         return reply.send({ ...response, id });
     }

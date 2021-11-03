@@ -47,9 +47,9 @@ export class PinGuiaService {
         return Result.ok(respuesta);
     }
 
-    async consultarPinCont2(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
+    async validarPinGuia(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
         const entidad = ConsultarPinEntity.crearEntidad(data);
-        const result = await this.guiaRepository.consultarPinCont2(entidad);
+        const result = await this.guiaRepository.validarPinGuia(entidad);
         let token = '';
         if (result) {
             token = generarJWT(data.guia);

@@ -58,7 +58,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         return consulta ? (consulta.token.pin === data.pin || consulta.token === data.pin ? {pinValido: true, tipoUsuario: data.tipoUsuario, intentos: consulta.token[data.tipoUsuario]} : { pinValido:false, tipoUsuario: data.tipoUsuario, intentos: consulta.token[data.tipoUsuario] }) : {pinValido:false, tipoUsuario: data.tipoUsuario};
     }
 
-    async consultarPinCont2(data: ConsultarPinEntity): Promise<any> {
+    async validarPinGuia(data: ConsultarPinEntity): Promise<any> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
         if (!consulta) return false
         console.log('objeto de base de datos', consulta);
@@ -110,7 +110,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         return consulta;
     }
 
-    async reiniciarIntentosPin(data: RecuperarPinEntity): Promise<any> {
+    async reiniciarIntentosPin(data: RecuperarPinEntity): Promise<boolean> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
         if (!consulta) return false
         console.log('objeto de base de datos', consulta);
