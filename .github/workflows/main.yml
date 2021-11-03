@@ -32,6 +32,10 @@ jobs:
                       master:ENV_PROD
                       testing:ENV_TEST
                       !default:ENV_DEV
+                  SUITE_PROJECT_ID: |
+                      master:${{ secrets.PROJECT_ID_SUITE_PROD }}
+                      testing:${{ secrets.PROJECT_ID_SUITE_TEST }}
+                      !default:${{ secrets.PROJECT_ID_SUITE_DEV }}
             - name: Cache node modules
               uses: actions/cache@v2
               with:
@@ -47,6 +51,7 @@ jobs:
               uses: google-github-actions/setup-gcloud@master
               with:
                   project_id: ${{ env.GCP_PROJECT }}
+                  project_suite: ${{ env.SUITE_PROJECT_ID }}
                   service_account_key: ${{ secrets.GCP_SA_KEY }}
                   export_default_credentials: true
             - name: Build and deploy image
