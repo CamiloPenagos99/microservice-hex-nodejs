@@ -84,6 +84,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             const rolUsuario = data.tipoUsuario;
             const pinUser = data.pin;
             const pinGuia = consulta.token.pin;
+            if (!pinGuia) throw new FirestoreException(9, 'Mal formato del objeto Token, en la guia');
             const retorno = { pinValidado: false, tipoUsuario: '', intentos: -1 };
             let contador = consulta.token[rolUsuario];
 
@@ -96,10 +97,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
                 return retorno;
             }
 
-            if (!pinGuia) {
-                console.log('error del objeto token')
-                throw new FirestoreException(9, 'Mal formato del objeto Token, en la guia');
-            }
             if (pinUser === pinGuia) {
                 pinCorrecto = true;
                 const resetIntentos =
