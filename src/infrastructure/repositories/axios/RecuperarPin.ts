@@ -9,6 +9,8 @@ import { URL_PIN_GUIA } from '@util';
 @injectable()
 export class RecuperarPin {
     public async recuperar(data: IRecuperarPinOut): Promise<JsonObject> {
+        console.log('axios recueprar');
+        console.log(data);
         try {
             return await axios({
                 method: 'post',
