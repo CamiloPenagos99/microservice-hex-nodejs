@@ -15,7 +15,6 @@ export const initRoutes = (application: FastifyInstance): void => {
     application.get('/', example);
     application.post('/', guardarPinGuiasSwagger, guardarPinGuia);
     application.post('/consultarPin', validarPin, consultarPinGuia);
-    //application.post('/consultarPinCont', validarPin, consultarPinGuiaCont);
     application.post('/validarPin', validarPinGuiaSchema, validarPinGuia);
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);

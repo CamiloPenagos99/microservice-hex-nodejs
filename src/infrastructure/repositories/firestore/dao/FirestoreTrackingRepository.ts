@@ -43,38 +43,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         return consulta ? (consulta.token.pin === data.pin || consulta.token === data.pin ? true : false) : false;
     }
 
-    async consultarPinCont(data: ConsultarPinEntity): Promise<any> {
-        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        if (!consulta) return false;
-
-        //console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
-
-        consulta
-            ? data.tipoUsuario === 'remitente'
-                ? (consulta.token.remitente = consulta.token.remitente + 1)
-                : (consulta.token.destinatario = consulta.token.destinatario + 1)
-            : 0;
-        consulta
-            ? consulta.token.pin !== data.pin || consulta.token !== data.pin
-                ? await this.firestore
-                    .collection(this.collection)
-                    .doc(data.guia)
-                    .update({
-                        token: {
-                            destinatario: consulta.token.destinatario,
-                            remitente: consulta.token.remitente,
-                            pin: consulta.token.pin,
-                        },
-                    })
-                : 0
-            : 0;
-        return consulta
-            ? consulta.token.pin === data.pin || consulta.token === data.pin
-                ? { pinValido: true, tipoUsuario: data.tipoUsuario, intentos: consulta.token[data.tipoUsuario] }
-                : { pinValido: false, tipoUsuario: data.tipoUsuario, intentos: consulta.token[data.tipoUsuario] }
-            : { pinValido: false, tipoUsuario: data.tipoUsuario };
-    }
-
     async validarPinGuia(data: ConsultarPinEntity): Promise<any> {
         const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
         if (!consulta) return false;
@@ -84,7 +52,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             const rolUsuario = data.tipoUsuario;
             const pinUser = data.pin;
             const pinGuia = consulta.token.pin;
-            if (!pinGuia) return new FirestoreException(9, 'Mal formato del objeto Token, en la guia');
+            if (!pinGuia) throw new FirestoreException(9, 'Objeto Token invalido para la guia');
             const retorno = { pinValidado: false, tipoUsuario: '', intentos: -1 };
             let contador = consulta.token[rolUsuario];
 
@@ -134,7 +102,7 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             return retorno;
         } catch (e) {
             console.log('error en el formato de guia', e);
-            throw new FirestoreException(9, 'Error en la guia, en base de datos' + e);
+            throw new FirestoreException(9, 'Error base de datos: ' + e.message);
         }
     }
 

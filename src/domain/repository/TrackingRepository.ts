@@ -9,7 +9,6 @@ export interface TrackingRepository {
     reiniciarIntentosPin(dataPin: RecuperarPinEntity): Promise<boolean>;
     guardarPin(dataGuiaPin: GuardarPinEntity): Promise<string>;
     consultarPin(dataPin: ConsultarPinEntity): Promise<boolean>;
-    consultarPinCont(dataPin: ConsultarPinEntity): Promise<any>;
     recuperarPin(guia: RecuperarPinEntity): Promise<any>;
     recuperarDataEnvio(guia: ConsultarEnvioEntity): Promise<IEnvioDataOut>;
     consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject>;

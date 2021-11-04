@@ -48,7 +48,7 @@ describe('MS tracking pin guia', () => {
         expect(response.statusCode).toBe(200);
     });
     //
-    describe.skip('consultar-pin', () => {
+    describe('consultar-pin', () => {
         it('test fallido para consultar pin', async () => {
             const response = await application.inject({
                 method: 'POST',
@@ -93,7 +93,7 @@ describe('MS tracking pin guia', () => {
         });
     });
     ///
-    describe.skip('consultar-formaenvio', () => {
+    describe('consultar-formaenvio', () => {
         it('test exitoso para consulta forma de envio', async () => {
             const response = await application.inject({
                 method: 'POST',
@@ -154,7 +154,7 @@ describe('MS tracking pin guia', () => {
         });
     });
     //recuperar pin
-    describe.skip('recuperar-pin', () => {
+    describe('recuperar-pin', () => {
         it('test fallido para recuperar pin', async () => {
             const response = await application.inject({
                 method: 'POST',
@@ -250,11 +250,11 @@ describe('MS tracking pin guia', () => {
             console.log('error en el formato de guia respuesta', response.body);
             expect(response.statusCode).toBe(400);
             expect(JSON.parse(response.body).isError).toBeTruthy();
-            //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
+            expect(JSON.parse(response.body).code).toBe('REPOSITORY_ERROR');
         });
     });
     //
-    describe.skip('guardar-pin', () => {
+    describe('guardar-pin', () => {
         it('test fallido para guardar pin, error firebase', async () => {
             const response = await application.inject({
                 method: 'POST',
