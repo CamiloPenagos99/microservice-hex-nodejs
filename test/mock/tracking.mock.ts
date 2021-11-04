@@ -37,6 +37,12 @@ export const consultarPinGuiaInexistente = {
     tipoUsuario: USUARIO_DESTINATARIO,
 };
 
+export const consultarPinGuiaMalFormato = {
+    guia: '73141048019',
+    pin: '09192',
+    tipoUsuario: USUARIO_DESTINATARIO,
+};
+
 export const consultarPinErrado = {
     guia: '73940048072',
     pin: '17891',

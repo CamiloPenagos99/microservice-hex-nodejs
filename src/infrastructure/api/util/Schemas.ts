@@ -11,13 +11,13 @@ export const validateData = <T>(schema: Schema, dataToValidate: Body): T => {
     if (dataToValidate) {
         const { error, value } = schema.validate(dataToValidate, { convert: false });
         if (error) {
-            //console.error(`schemaError: ${JSON.stringify(error)}`);
+            console.error(`schemaError: ${JSON.stringify(error)}`);
             throw new BadMessageException(error.message);
         }
         return value;
     }
 
-    throw new BadMessageException('no hay data');
+    throw new BadMessageException('no hay data para validar');
 };
 
 export const validateDataPubSub = <T>(schema: Schema, dataToValidate: Body): T => {

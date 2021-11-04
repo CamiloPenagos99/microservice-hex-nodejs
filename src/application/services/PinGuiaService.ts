@@ -53,6 +53,8 @@ export class PinGuiaService {
         let token = '';
         if (result) {
             token = generarJWT(data.guia);
+        } else if (!result) {
+            throw new FirestoreException(0, 'no se encontro la guia');
         }
         const respuesta = { pinValido: result, bearer: token };
         return Result.ok(respuesta);

@@ -9,6 +9,7 @@ import {
     consultarPinErrado,
     consultarPinFallido,
     consultarPinGuiaInexistente,
+    consultarPinGuiaMalFormato,
     consultarPinOK,
     guardarPinError,
     guardarPinOk,
@@ -202,7 +203,53 @@ describe('MS tracking pin guia', () => {
                 payload: consultarPinOK,
             });
             expect(response.statusCode).toBe(200);
-            //expect(JSON.parse(response.body).isError).toBeFalsy();
+            expect(JSON.parse(response.body).isError).toBeFalsy();
+            expect(JSON.parse(response.body).data.pinValido.pinValidado).toBeTruthy();
+        });
+
+        it('test fallido, para consultar pin', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/validarPin',
+                payload: consultarPinFallido,
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+            //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
+        });
+
+        it('test correcto, para consultar pin incorrecto', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/validarPin',
+                payload: consultarPinErrado,
+            });
+            expect(response.statusCode).toBe(200);
+            expect(JSON.parse(response.body).isError).toBeFalsy();
+            expect(JSON.parse(response.body).data.pinValido.pinValidado).toBeFalsy();
+            expect(JSON.parse(response.body).data.pinValido).toHaveProperty('intentos');
+        });
+
+        it('test correcto, para consultar pin guia inexistente', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/validarPin',
+                payload: consultarPinGuiaInexistente,
+            });
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
+            //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
+        });
+
+        it('test incorrecto, para consultar pin guia mal formateada', async () => {
+            const response = await application.inject({
+                method: 'POST',
+                url: '/validarPin',
+                payload: consultarPinGuiaMalFormato,
+            });
+            console.log('error en el formato de guia respuesta', response.body);
+            expect(response.statusCode).toBe(400);
+            expect(JSON.parse(response.body).isError).toBeTruthy();
             //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
         });
     });
