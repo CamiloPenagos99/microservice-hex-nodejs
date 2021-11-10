@@ -1,4 +1,4 @@
-import { JsonObject } from 'swagger-ui-express';
+import { IGuiaOut } from './IGuiaOut';
 
 export interface IDataIn {
     codigo_recogida: number;
@@ -8,5 +8,5 @@ export interface IDataIn {
     nit_remitente: string;
     correo_remitente: string;
     envio_data: boolean;
-    guias: JsonObject[];
+    guias: IGuiaOut[];
 }
