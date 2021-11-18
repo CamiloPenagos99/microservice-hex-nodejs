@@ -41,7 +41,9 @@ export class PinGuiaService {
         const result = await this.guiaRepository.validarPinGuia(entidad);
         let token = '';
         if (result) {
-            token = generarJWT(data.guia);
+            token = generarJWT(data.guia); //todo:generar el token con firebase admin
+            //desplegar en kubernetes, con cuenta de servicio de la suite
+            //firebaseAdmin.auth().createCustomToken(codigo_remision);
         } else if (!result) {
             throw new FirestoreException(0, 'no se encontro la guia');
         }
