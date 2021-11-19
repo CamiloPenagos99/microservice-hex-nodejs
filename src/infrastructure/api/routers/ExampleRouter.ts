@@ -8,5 +8,5 @@ export const example = async (req: FastifyRequest, reply: FastifyReply): Promise
     const { id } = req;
     const response = await authService.getToken('test');
     //const response = { token: 'firebasetoken' };
-    return reply.send({ ...response, id });
+    return reply.send({ ...response, id, test: 'test de token' });
 };
