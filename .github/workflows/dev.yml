@@ -80,6 +80,7 @@ jobs:
               with:
                   project_id: ${{ env.GCP_PROJECT }}
                   service_name: ${{ env.SERVICE_NAME}}
+                  project_suite: ${{ env.SUITE_PROJECT_ID }}
                   host: ${{ env.HOST }}
                   service_account_key: ${{ secrets.CM_GCP_KEY }}
                   export_default_credentials: true
