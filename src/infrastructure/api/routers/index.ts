@@ -11,7 +11,7 @@ import { consultaDataEnvio, recuperarPin, validarPin, validarPinGuiaSchema } fro
 import { guardarPinGuiasSwagger } from '../swagger/schemas/GuardarPinGuiaSchema';
 import { guiasRemitente } from './GuiasRemitenteRouter';
 
-export const initRoutes = (application: FastifyInstance): void => {
+export const initRoutes = async (application: FastifyInstance): Promise<void> => {
     application.get('/', example);
     application.post('/', guardarPinGuiasSwagger, guardarPinGuia);
     application.post('/consultarPin', validarPin, consultarPinGuia);
