@@ -8,7 +8,7 @@ import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
 import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
-import { generarJWT } from '@util';
+import { generarJWT, getToken } from '@util';
 import { ApiException, FirestoreException } from '@domain/exceptions';
 
 //import { NotFoundException } from '@domain/exceptions';
@@ -39,9 +39,10 @@ export class PinGuiaService {
     async validarPinGuia(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
         const entidad = ConsultarPinEntity.crearEntidad(data);
         const result = await this.guiaRepository.validarPinGuia(entidad);
-        let token = '';
-        if (result) {
-            token = generarJWT(data.guia); //todo:generar el token con firebase admin
+        let token = 'no auth';
+        if (result.pinValidado) {
+            token = await getToken(data.guia);
+            //token = generarJWT(data.guia); //todo:generar el token con firebase admin
             //desplegar en kubernetes, con cuenta de servicio de la suite
             //firebaseAdmin.auth().createCustomToken(codigo_remision);
         } else if (!result) {
