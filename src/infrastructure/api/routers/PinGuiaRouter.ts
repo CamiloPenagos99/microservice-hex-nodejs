@@ -13,6 +13,7 @@ import { IDataIn, IGuiaPinIn, IDataEnvioIn, IGuiaIn } from '@application/data';
 import { BadMessageException, FirestoreException } from '@domain/exceptions';
 
 export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    console.log('En Kubernetes, llega la solicitud de pubsub');
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     const body = validateDataPubSub<IDataIn>(guardarPinGuiaSchema, req.body);
     const respuesta = await pinGuiaService.guardarPin(body);
