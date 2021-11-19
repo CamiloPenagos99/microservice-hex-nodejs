@@ -34,6 +34,8 @@ terraform-plan: $(prerequisites)
 		terraform plan \
 		-var="project=$(PROJECT_ID)" \
 		-var="project_suite=$(SUITE_PROJECT_ID)" \
+		-var="host=$(HOST)" \
+		-var="service_name=$(SERVICE_NAME)" \
 
 terraform-apply: $(prerequisites)
 	@cd infra && \
@@ -41,6 +43,8 @@ terraform-apply: $(prerequisites)
 		terraform apply \
 		-var="project=$(PROJECT_ID)" \
 		-var="project_suite=$(SUITE_PROJECT_ID)" \
+		-var="host=$(HOST)" \
+		-var="service_name=$(SERVICE_NAME)" \
         -auto-approve
 
 deploy: check-project check-commit-sha check-service-name
