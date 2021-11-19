@@ -1,6 +1,11 @@
 import { Container } from 'inversify';
 import { Firestore } from '@google-cloud/firestore';
-import { ExampleAppService, GuiasRemitenteService, PinGuiaService } from '@application/services';
+import {
+    AutenticacionAppService,
+    ExampleAppService,
+    GuiasRemitenteService,
+    PinGuiaService,
+} from '@application/services';
 import { firestore, FirestoreExampleRepository, RecuperarPin } from '@infrastructure/repositories';
 import { ExampleRepository, TrackingRepository } from '@domain/repository';
 import { TYPES } from '@configuration';
@@ -14,6 +19,7 @@ export const createDependencyContainer = (): void => {
     DEPENDENCY_CONTAINER.bind(RecuperarPin).toSelf().inSingletonScope();
     DEPENDENCY_CONTAINER.bind(GuiasRemitenteService).toSelf().inSingletonScope();
     DEPENDENCY_CONTAINER.bind(PinGuiaService).toSelf().inSingletonScope();
+    DEPENDENCY_CONTAINER.bind(AutenticacionAppService).toSelf().inSingletonScope();
     DEPENDENCY_CONTAINER.bind<ExampleRepository>(TYPES.FirestoreExampleRepository)
         .to(FirestoreExampleRepository)
         .inSingletonScope();
