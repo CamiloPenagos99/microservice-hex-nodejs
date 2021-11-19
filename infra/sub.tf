@@ -13,7 +13,7 @@ resource "google_pubsub_subscription" "sub-tracking-almacenar-pin-guia" {
   }
 
   push_config {
-    push_endpoint = data.google_cloud_run_service.cm-tracking-almacenar-pin-guia.status[0].url
+    push_endpoint = "https://${var.host}/${var.service_name}/"
   }
 
   retain_acked_messages = "false"
