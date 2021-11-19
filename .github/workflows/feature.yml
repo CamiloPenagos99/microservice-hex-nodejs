@@ -2,7 +2,7 @@ name: cm-tracking-almacenar-pin-guia Flow
 on:
     push:
         branches:
-            - 'feature/**'
+            - 'feature/ci'
             - 'dev'
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
