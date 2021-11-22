@@ -1,8 +1,8 @@
 import admin from 'firebase-admin';
-import { GCP_PROJECT } from '@util';
+import { GCP_PROJECT, URL_BASE_DATABASE } from '@util';
 
 admin.initializeApp({
-    databaseURL: 'https://console.firebase.google.com/u/1/project/cm-api-tracking-dev/firestore/data/~2F',
+    databaseURL: URL_BASE_DATABASE,
     projectId: GCP_PROJECT,
     serviceAccountId: 'suite-apis@cm-cluster-coordinadora-prod.iam.gserviceaccount.com',
 });
