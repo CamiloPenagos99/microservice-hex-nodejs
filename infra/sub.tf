@@ -1,7 +1,7 @@
-resource "google_pubsub_subscription" "sub-tracking-almacenar-pin-guia" {
+resource "google_pubsub_subscription" "sub-tracking-almacenar-pin-guia-gke" {
   ack_deadline_seconds       = "10"
   message_retention_duration = "900s"
-  name                       = "sub-tracking-almacenar-pin-guia"
+  name                       = "sub-tracking-almacenar-pin-guia-gke"
   project                    = var.project_suite
   expiration_policy {
     ttl = ""
