@@ -3,7 +3,7 @@ concurrency: cm-tracking-almacenar-pin-guia
 on:
     push:
         branches:
-            - 'feature/kubernetes'
+            - 'feature/kubernetes/x'
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     PROJECT_CLUSTER_ID: cm-cluster-coordinadora-dev
