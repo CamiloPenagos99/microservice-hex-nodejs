@@ -74,7 +74,7 @@ describe('MS tracking pin guia', () => {
         it('test correcto, para consultar pin, de guia inexistente', async () => {
             const response = await application.inject({
                 method: 'POST',
-                url: `${PREFIX}/consultarPin`,
+                url: `/${PREFIX}/consultarPin`,
                 payload: consultarPinGuiaInexistente,
             });
             expect(response.statusCode).toBe(200);
