@@ -6,7 +6,7 @@ import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
-import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { ConsultarEnvioEntity, GuardarGuiaTriggerEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { generarJWT, getToken } from '@util';
 import { ApiException, FirestoreException } from '@domain/exceptions';
@@ -87,4 +87,10 @@ export class PinGuiaService {
         }
         return contador;
     };
+
+    async guardarTrigger(data: IDataIn): Promise<Response<string | null>> {
+        const entidad = GuardarGuiaTriggerEntity.crearEntidad(data);
+        const result = await this.guiaRepository.guardarTrigger(entidad);
+        return Result.ok(`Se guardo en la base de datos: ` + result);
+    }
 }

@@ -3,7 +3,8 @@ concurrency: cm-tracking-almacenar-pin-guia
 on:
     push:
         branches:
-            - 'feature/kubernetes'
+            - 'feature/kubernetes/x'
+            - 'feature/refactor'
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     PROJECT_CLUSTER_ID: cm-cluster-coordinadora-dev
@@ -91,7 +92,7 @@ jobs:
             - name: Create Workspace Terraform
               run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-create-workspace
             - name: Apply Terraform
-              run: PROJECT_ID=$GCP_PROJECT HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-apply
+              run: PROJECT_ID=$GCP_PROJECT SUITE_PROJECT_ID=$SUITE_PROJECT_ID HOST=$HOST SERVICE_NAME=$SERVICE_NAME ENV=${{ env.ENV }}  make terraform-apply
 
     kubernetes:
         runs-on: ubuntu-latest

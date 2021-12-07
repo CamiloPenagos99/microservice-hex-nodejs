@@ -1,5 +1,10 @@
 import { IEnvioDataOut } from '@application/data';
-import { ConsultarEnvioEntity, GuiasRemitenteEntity, RecuperarPinEntity } from '@domain/entities';
+import {
+    ConsultarEnvioEntity,
+    GuardarGuiaTriggerEntity,
+    GuiasRemitenteEntity,
+    RecuperarPinEntity,
+} from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { GuardarPinEntity } from '@domain/entities/GuardarPinEntity';
 import { JsonObject } from 'swagger-ui-express';
@@ -12,4 +17,5 @@ export interface TrackingRepository {
     recuperarPin(guia: RecuperarPinEntity): Promise<any>;
     recuperarDataEnvio(guia: ConsultarEnvioEntity): Promise<IEnvioDataOut>;
     consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject>;
+    guardarTrigger(data: GuardarGuiaTriggerEntity): Promise<string>;
 }

@@ -2,7 +2,13 @@
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
-import { ConsultarEnvioEntity, GuiasRemitenteEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import {
+    ConsultarEnvioEntity,
+    GuiasRemitenteEntity,
+    GuardarPinEntity,
+    RecuperarPinEntity,
+    GuardarGuiaTriggerEntity,
+} from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
@@ -13,6 +19,7 @@ import { USUARIO_REMITENTE } from '@util';
 export class FirestoreTrackingRepository implements TrackingRepository {
     private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
     private collection = 'guia-pin';
+    private collectionTrigger = 'guia-pin-notificacion';
 
     async guardarPin(dataSave: GuardarPinEntity): Promise<any> {
         try {
@@ -150,5 +157,22 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         const res = query.docs.map((doc) => doc.data());
         result = res;
         return result;
+    }
+
+    async guardarTrigger(data: GuardarGuiaTriggerEntity): Promise<string> {
+        try {
+            const ref = data.nit_remitente;
+            console.warn('Nit de referencia es', ref);
+            const { id } = await this.firestore
+                .collection(this.collectionTrigger)
+                .add({ ...data })
+                .catch((err) => {
+                    console.warn('error in database', err);
+                    throw new RepositoryException();
+                });
+            return id;
+        } catch (e: any) {
+            throw new FirestoreException(e.id, e.message);
+        }
     }
 }

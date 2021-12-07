@@ -4,6 +4,7 @@ import {
     consultarFormaEnvio,
     consultarPinGuia,
     guardarPinGuia,
+    guardarTrigger,
     recuperarPinGuia,
     validarPinGuia,
 } from './PinGuiaRouter';
@@ -19,4 +20,7 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);
     application.get('/guiasRemitente/:nit/:codigoRecogida', guiasRemitente);
+
+    //nuevo endpoint
+    application.post('/trigger', guardarTrigger);
 };
