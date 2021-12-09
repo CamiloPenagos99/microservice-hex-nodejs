@@ -1,4 +1,4 @@
-import { IDataIn, IToken } from '@application/data';
+import { IToken } from '@application/data';
 import { IDataInTrigger } from '@application/data/IDataInTrigger';
 import { IGuiaOut } from '@application/data/IGuiaOut';
 //import { JsonObject } from 'swagger-ui-express';
