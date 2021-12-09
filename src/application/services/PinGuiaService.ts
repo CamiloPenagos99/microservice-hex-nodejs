@@ -10,6 +10,7 @@ import { ConsultarEnvioEntity, GuardarGuiaTriggerEntity, GuardarPinEntity, Recup
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { generarJWT, getToken } from '@util';
 import { ApiException, FirestoreException } from '@domain/exceptions';
+import { IDataInTrigger } from '@application/data/IDataInTrigger';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -88,7 +89,7 @@ export class PinGuiaService {
         return contador;
     };
 
-    async guardarTrigger(data: IDataIn): Promise<Response<string | null>> {
+    async guardarTrigger(data: IDataInTrigger): Promise<Response<string | null>> {
         const entidad = GuardarGuiaTriggerEntity.crearEntidad(data);
         const result = await this.guiaRepository.guardarTrigger(entidad);
         return Result.ok(`Se guardo en la base de datos: ` + result);
