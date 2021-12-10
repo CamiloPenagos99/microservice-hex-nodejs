@@ -74,7 +74,7 @@ export const guardarTrigger = async (req: FastifyRequest, reply: FastifyReply): 
     console.log('En Kubernetes, llega la solicitud de pubsub trigger');
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     const body = validateDataPubSub<IDataInTrigger>(guardarPinGuiaTriggerSchema, req.body);
-    console.log('body pubsub:', body);
+    console.log('body pubsub:', JSON.stringify(body));
     const respuesta = await pinGuiaService.guardarTrigger(body);
     reply.status(200).send({ ...respuesta });
 };
