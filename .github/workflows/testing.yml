@@ -4,6 +4,7 @@ on:
     push:
         branches:
             - 'feature/kubernetes/x'
+            - 'test/refactor'
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     PROJECT_CLUSTER_ID: cm-cluster-coordinadora-test
