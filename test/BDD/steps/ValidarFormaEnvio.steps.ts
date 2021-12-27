@@ -6,6 +6,7 @@ import { FIRESTORE_DATA, recuperarFormaEnvioOk } from '../../mock';
 import { Firestore } from '@google-cloud/firestore';
 import { application } from '@infrastructure/api/Application';
 import { PREFIX } from '@util';
+import { maskEmail, maskPhone } from '@application/util/DataMask';
 
 const feature = loadFeature('./test/BDD/ValidarFormaEnvio.feature');
 
@@ -39,8 +40,8 @@ defineFeature(feature, (test) => {
                 expect(response.statusCode).toBe(200);
                 expect(JSON.parse(response.body).data).toHaveProperty('remitente');
                 expect(JSON.parse(response.body).data).toHaveProperty('destinatario');
-                expect(JSON.parse(response.body).data.remitente.correo).toBe(correo);
-                expect(JSON.parse(response.body).data.remitente.telefono).toBe(telefono);
+                expect(JSON.parse(response.body).data.remitente.correo).toBe(maskEmail(correo));
+                expect(JSON.parse(response.body).data.remitente.telefono).toBe(maskPhone(telefono));
             },
         );
     });
@@ -64,7 +65,7 @@ defineFeature(feature, (test) => {
                 expect(response.statusCode).toBe(200);
                 expect(JSON.parse(response.body).data).toHaveProperty('remitente');
                 expect(JSON.parse(response.body).data).toHaveProperty('destinatario');
-                expect(JSON.parse(response.body).data.remitente.correo).toBe(correo);
+                expect(JSON.parse(response.body).data.remitente.correo).toBe(maskEmail(correo));
                 expect(JSON.parse(response.body).data.remitente.telefono).toHaveLength(parseInt(telefono));
             },
         );
@@ -91,7 +92,7 @@ defineFeature(feature, (test) => {
                 expect(JSON.parse(response.body).data).toHaveProperty('remitente');
                 expect(JSON.parse(response.body).data).toHaveProperty('destinatario');
                 expect(JSON.parse(response.body).data.remitente.correo).toHaveLength(parseInt(correo));
-                expect(JSON.parse(response.body).data.remitente.telefono).toBe(telefono);
+                expect(JSON.parse(response.body).data.remitente.telefono).toBe(maskPhone(telefono));
             },
         );
     });
