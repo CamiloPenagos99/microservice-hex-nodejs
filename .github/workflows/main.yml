@@ -42,7 +42,7 @@ jobs:
             - name: Create ENV File
               run: cp ${{ env.ENV_FILE }} .env
             - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
+              uses: google-github-actions/setup-gcloud@v0
               with:
                   project_id: ${{ env.GCP_PROJECT }}
                   project_suite: ${{ env.SUITE_PROJECT_ID }}
@@ -76,7 +76,7 @@ jobs:
                       testing:${{ secrets.PROJECT_ID_TEST }}
                       !default:${{ secrets.PROJECT_ID_DEV }}
             - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
+              uses: google-github-actions/setup-gcloud@v0
               with:
                   project_id: ${{ env.GCP_PROJECT }}
                   service_account_key: ${{ secrets.GCP_SA_KEY }}
