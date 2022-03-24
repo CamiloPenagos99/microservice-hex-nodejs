@@ -10,7 +10,7 @@ import {
 } from './PinGuiaRouter';
 import { consultaDataEnvio, recuperarPin, validarPin, validarPinGuiaSchema } from '../swagger/schemas';
 import { guardarPinGuiasSwagger } from '../swagger/schemas/GuardarPinGuiaSchema';
-import { guiasRemitente } from './GuiasRemitenteRouter';
+import { guiasAgrupadas, guiasRemitente } from './GuiasAgrupadasRouter';
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
     application.get('/', example);
@@ -20,6 +20,7 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);
     application.get('/guiasRemitente/:nit/:codigoRecogida', guiasRemitente);
+    application.get('/guias/:nit/:llamada', guiasAgrupadas);
 
     //nuevo endpoint
     application.post('/trigger', guardarTrigger);
