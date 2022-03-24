@@ -1,9 +1,10 @@
 import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaPinTracking, IRecuperarPinOut } from '@application/data';
 import { IEnvioDataOutComplete } from '@application/data/IEnvioDataOutComplete';
+import { IGuiaOut } from '@application/data/IGuiaOut';
 import { JsonObject } from 'swagger-ui-express';
 import { maskEmail, maskPhone } from './DataMask';
 
-export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTracking => {
+export const reconstruccionData = (guia: IGuiaOut, data: IDataIn): IGuiaPinTracking => {
     return {
         codigo_recogida: data.codigo_recogida,
         id_llamada: data.id_llamada,
@@ -14,6 +15,7 @@ export const reconstruccionData = (guia: JsonObject, data: IDataIn): IGuiaPinTra
         envio_data: data.envio_data,
         codigo_remision: guia.codigo_remision,
         destinatario: guia.destinatario,
+        nit_destinatario: guia.nit_destinatario ?? 'NA',
         correo_destinatario: guia.correo_destinatario,
         telefono_destinatario: guia.telefono_destinatario,
         token: guia.token,

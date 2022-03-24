@@ -10,6 +10,7 @@ export interface IGuiaPinTracking {
     envio_data: boolean;
     codigo_remision: string;
     destinatario: string;
+    nit_destinatario: string;
     correo_destinatario: string;
     telefono_destinatario: string;
     token?: IToken;

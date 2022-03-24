@@ -10,6 +10,7 @@ export class GuardarPinEntity {
     readonly envio_data: boolean;
     readonly codigo_remision: string;
     readonly correo_destinatario: string;
+    readonly nit_destinatario: string;
     readonly destinatario: string;
     readonly telefono_destinatario: string;
     readonly token?: IToken;
@@ -26,6 +27,7 @@ export class GuardarPinEntity {
         this.codigo_remision = data.codigo_remision;
         this.correo_destinatario = data.correo_destinatario;
         this.destinatario = data.destinatario;
+        this.nit_destinatario = data.nit_destinatario;
         this.telefono_destinatario = data.telefono_destinatario;
         this.token = data.token;
         this.url_relacion_digital = data.url_relacion_digital;
