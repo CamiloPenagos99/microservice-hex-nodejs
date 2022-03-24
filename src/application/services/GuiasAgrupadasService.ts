@@ -18,6 +18,7 @@ export class GuiasAgrupadasService {
 
     async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<Response<JsonObject | null>> {
         //const entidad = GuiasRemitenteEntity.crearEntidad(data);
+        console.log(`Consultando grupo de guias de: nit ${data.nit} - llamada: ${data.llamada}`);
         const result = await this.guiaRepository.consultarGuiasAgrupadas(data);
         return Result.ok(result);
     }

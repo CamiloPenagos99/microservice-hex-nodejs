@@ -1,4 +1,3 @@
-import { example } from './ExampleRouter';
 import { FastifyInstance } from 'fastify';
 import {
     consultarFormaEnvio,
@@ -13,7 +12,6 @@ import { guardarPinGuiasSwagger } from '../swagger/schemas/GuardarPinGuiaSchema'
 import { guiasAgrupadas, guiasRemitente } from './GuiasAgrupadasRouter';
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
-    application.get('/', example);
     application.post('/', guardarPinGuiasSwagger, guardarPinGuia);
     application.post('/consultarPin', validarPin, consultarPinGuia);
     application.post('/validarPin', validarPinGuiaSchema, validarPinGuia);
