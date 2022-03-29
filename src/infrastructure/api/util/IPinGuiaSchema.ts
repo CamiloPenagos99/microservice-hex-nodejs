@@ -19,6 +19,7 @@ export const guardarPinGuiaSchema = Joi.object({
                     .label('El codigo de remision (guia), es obligatorio y de 11 caracteres'),
                 destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 correo_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
+                nit_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 telefono_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 token: Joi.object({
                     pin: Joi.string()

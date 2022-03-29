@@ -1,4 +1,5 @@
-import { IEnvioDataOut } from '@application/data';
+import { IConsultaGuiasGrupoIn, IEnvioDataOut, IGuiaPinTracking } from '@application/data';
+
 import {
     ConsultarEnvioEntity,
     GuardarGuiaTriggerEntity,
@@ -17,5 +18,6 @@ export interface TrackingRepository {
     recuperarPin(guia: RecuperarPinEntity): Promise<any>;
     recuperarDataEnvio(guia: ConsultarEnvioEntity): Promise<IEnvioDataOut>;
     consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject>;
+    consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]>;
     guardarTrigger(data: GuardarGuiaTriggerEntity): Promise<string>;
 }

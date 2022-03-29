@@ -14,6 +14,7 @@ import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
 import { USUARIO_REMITENTE } from '@util';
+import { IConsultaGuiasGrupoIn, IGuiaPinTracking } from '@application/data';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -157,6 +158,21 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         const res = query.docs.map((doc) => doc.data());
         result = res;
         return result;
+    }
+
+    async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]> {
+        const query = await this.firestore
+            .collection(this.collection)
+            .where('nit_destinatario', '==', data.nit)
+            .where('id_llamada', '==', parseInt(data.llamada))
+            .get();
+
+        if (!query.size || query.docs.length === 0) {
+            throw new FirestoreException('0', `No se encuentran las guias para el nit: ${data.nit}`);
+        }
+        const guias = query.docs.map((doc) => doc.data() as IGuiaPinTracking);
+
+        return guias;
     }
 
     async guardarTrigger(data: GuardarGuiaTriggerEntity): Promise<string> {

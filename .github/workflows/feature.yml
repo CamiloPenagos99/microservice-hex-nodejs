@@ -31,7 +31,7 @@ jobs:
             - name: Create ENV File
               run: echo ${{ secrets[env.ENV_FILE] }} | base64 --decode > .env
             - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
+              uses: google-github-actions/setup-gcloud@v0
               with:
                   project_id: ${{ secrets.PROJECT_ID_DEV }}
                   project_suite: ${{ env.SUITE_PROJECT_ID }}
@@ -58,7 +58,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
+              uses: google-github-actions/setup-gcloud@v0
               with:
                   project_id: ${{ secrets.PROJECT_ID_DEV }}
                   service_account_key: ${{ secrets.GCP_SA_KEY }}

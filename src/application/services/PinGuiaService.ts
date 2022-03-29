@@ -84,7 +84,6 @@ export class PinGuiaService {
             const entidad = GuardarPinEntity.crearEntidad(dataFinal);
             const result = await this.guiaRepository.guardarPin(entidad);
             if (result) contador++;
-            //console.log('------------->resultado save------------>', result);
         }
         return contador;
     };
