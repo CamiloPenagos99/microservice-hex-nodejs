@@ -14,7 +14,7 @@ import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
 import { USUARIO_REMITENTE } from '@util';
-import { IConsultaGuiasGrupoIn, IGuiaPinTracking } from '@application/data';
+import { IConsultaGuiasGrupoIn, IGuiaPinTracking, tipoUsuario } from '@application/data';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -161,10 +161,11 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     }
 
     async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]> {
+        const filter = data.tipo === tipoUsuario.REMITENTE ? 'nit_remitente' : 'nit_destinatario';
         const query = await this.firestore
             .collection(this.collection)
-            .where('nit_destinatario', '==', data.nit)
-            .where('id_llamada', '==', parseInt(data.llamada))
+            .where(filter, '==', data.nit)
+            .where('id_llamada', '==', parseInt(data.id_llamada))
             .get();
 
         if (!query.size || query.docs.length === 0) {

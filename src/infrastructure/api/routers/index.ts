@@ -18,7 +18,7 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);
     application.get('/guiasRemitente/:nit/:codigoRecogida', guiasRemitente);
-    application.get('/guias/:nit/:llamada', guiasAgrupadas);
+    application.get('/guias', guiasAgrupadas);
 
     //nuevo endpoint
     application.post('/trigger', guardarTrigger);
