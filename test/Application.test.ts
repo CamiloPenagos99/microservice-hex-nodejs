@@ -114,13 +114,13 @@ describe('MS tracking pin guia', () => {
             expect(response.statusCode).toBe(400);
         });
 
-        it('test exitoso para consulta forma de envio, con guia inexistente', async () => {
+        it('test fallido para consulta forma de envio, con guia inexistente', async () => {
             const response = await application.inject({
                 method: 'POST',
                 url: `${PREFIX}/consultarFormaEnvio`,
                 payload: recuperarFormaEnvioInexistente,
             });
-            expect(response.statusCode).toBe(400);
+            expect(response.statusCode).toBe(404);
             expect(JSON.parse(response.body).isError).toBeTruthy();
         });
 
@@ -175,13 +175,13 @@ describe('MS tracking pin guia', () => {
             expect(JSON.parse(response.body).isError).toBeFalsy();
         });
 
-        it('test exitoso para recuperar pin, de guia inexistente', async () => {
+        it('test fallido para recuperar pin, de guia inexistente', async () => {
             const response = await application.inject({
                 method: 'POST',
                 url: `${PREFIX}/recuperarPin`,
                 payload: recuperarPinGuiaInexistente,
             });
-            expect(response.statusCode).toBe(400);
+            expect(response.statusCode).toBe(404);
             expect(JSON.parse(response.body).isError).toBeTruthy();
         });
 
@@ -237,7 +237,7 @@ describe('MS tracking pin guia', () => {
                 url: `${PREFIX}/validarPin`,
                 payload: consultarPinGuiaInexistente,
             });
-            expect(response.statusCode).toBe(400);
+            expect(response.statusCode).toBe(404);
             expect(JSON.parse(response.body).isError).toBeTruthy();
             //expect(JSON.parse(response.body).data.pinValido).toBeTruthy();
         });
