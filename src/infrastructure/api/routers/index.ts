@@ -3,6 +3,7 @@ import {
     consultarFormaEnvio,
     consultarPinGuia,
     guardarPinGuia,
+    guardarPinGuiaPost,
     guardarTrigger,
     recuperarPinGuia,
     validarPinGuia,
@@ -13,6 +14,7 @@ import { guiasAgrupadas, guiasRemitente } from './GuiasAgrupadasRouter';
 
 export const initRoutes = async (application: FastifyInstance): Promise<void> => {
     application.post('/', guardarPinGuiasSwagger, guardarPinGuia);
+    application.post('/pin-guia', guardarPinGuiaPost);
     application.post('/consultarPin', validarPin, consultarPinGuia);
     application.post('/validarPin', validarPinGuiaSchema, validarPinGuia);
     application.post('/recuperarPin', recuperarPin, recuperarPinGuia);
