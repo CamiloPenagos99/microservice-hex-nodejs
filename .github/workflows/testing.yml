@@ -1,5 +1,5 @@
 name: Code Testing Flow
-concurrency: cm-tracking-almacenar-pin-guia
+concurrency: cm-tracking-almacenar-pin-guia-test
 on:
     push:
         branches:
