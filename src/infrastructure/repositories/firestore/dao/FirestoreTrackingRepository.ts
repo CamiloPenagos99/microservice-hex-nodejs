@@ -14,7 +14,7 @@ import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
 import { USUARIO_REMITENTE } from '@util';
-import { IConsultaGuiasGrupoIn, IGuiaPinTracking } from '@application/data';
+import { IConsultaGuiasGrupoIn, IGuiaPinTracking, tipoUsuario } from '@application/data';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -22,20 +22,21 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     private collection = 'guia-pin';
     private collectionTrigger = 'guia-pin-notificacion';
 
-    async guardarPin(dataSave: GuardarPinEntity): Promise<any> {
+    async guardarPin(data: GuardarPinEntity): Promise<any> {
         try {
-            const ref = dataSave.codigo_remision;
-            console.warn('id de referencia es', ref);
+            const ref = data.codigo_remision;
+            console.log('registrando pin para ', ref);
             const res = await this.firestore
                 .collection(this.collection)
                 .doc(ref)
-                .set({ ...dataSave })
+                .set({ ...data })
                 .catch((err) => {
-                    console.warn('error in database', err);
+                    console.error('error in database tracking', err);
                     throw new RepositoryException();
                 });
             return res;
         } catch (e: any) {
+            console.error('error registrando pin de guia ', data.codigo_remision, e.message);
             throw new FirestoreException(e.id, e.message);
         }
     }
@@ -161,10 +162,11 @@ export class FirestoreTrackingRepository implements TrackingRepository {
     }
 
     async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]> {
+        const filter = data.tipo === tipoUsuario.REMITENTE ? 'nit_remitente' : 'nit_destinatario';
         const query = await this.firestore
             .collection(this.collection)
-            .where('nit_destinatario', '==', data.nit)
-            .where('id_llamada', '==', parseInt(data.llamada))
+            .where(filter, '==', data.nit)
+            .where('id_llamada', '==', parseInt(data.id_llamada))
             .get();
 
         if (!query.size || query.docs.length === 0) {

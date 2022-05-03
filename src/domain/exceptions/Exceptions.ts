@@ -43,7 +43,7 @@ export class FirestoreException extends Exception {
         switch (code) {
             case 0:
             case '0':
-                super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
+                super(message, fsError, StatusCode.NOT_FOUND, 'Record not found in database');
                 break;
             /*
             case 1:

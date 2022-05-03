@@ -16,7 +16,8 @@ export const guiasRemitente = async (req: FastifyRequest, reply: FastifyReply): 
 export const guiasAgrupadas = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const service = DEPENDENCY_CONTAINER.get(GuiasAgrupadasService);
     const { id } = req;
-    const data = validateData<IConsultaGuiasGrupoIn>(consultarInfoGrupoSchema, req.params);
+    console.log(req.query);
+    const data = validateData<IConsultaGuiasGrupoIn>(consultarInfoGrupoSchema, req.query);
     const response = await service.consultarGuiasAgrupadas(data);
     return reply.send({ ...response, id });
 };

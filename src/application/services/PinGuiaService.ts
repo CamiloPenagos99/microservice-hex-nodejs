@@ -26,6 +26,13 @@ export class PinGuiaService {
         return Result.ok(`Se guardo en la base de datos, ${guiasRegistradas} registros`);
     }
 
+    async guardarPinGuia(data: IDataIn): Promise<Response<string | null>> {
+        const guiaPin = reconstruccionData(data.guias[0], data);
+        const entidad = GuardarPinEntity.crearEntidad(guiaPin);
+        await this.guiaRepository.guardarPin(entidad);
+        return Result.ok(`Se registro el pin para la guia, ${entidad.codigo_remision}`);
+    }
+
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
         const entidad = ConsultarPinEntity.crearEntidad(data);
         const result = await this.guiaRepository.consultarPin(entidad);

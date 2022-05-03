@@ -25,6 +25,5 @@ console.log('variables entorno GKE:', {
     PREFIX,
     URL_PIN_GUIA,
     URL_PIN_TRACKING,
-    URL_BASE,
     URL_BASE_DATABASE,
 });

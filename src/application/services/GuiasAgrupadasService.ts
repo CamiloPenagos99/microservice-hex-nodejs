@@ -3,7 +3,7 @@ import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { TrackingRepository } from '@domain/repository';
 import { GuiasRemitenteEntity } from '@domain/entities';
 import { Result, Response } from '@domain/response';
-import { IConsultaGuiasGrupoIn, IConsultaGuiasRtteIn } from '@application/data';
+import { IConsultaGuiasGrupoIn, IConsultaGuiasRtteIn, IGuiaPinTracking } from '@application/data';
 import { JsonObject } from 'swagger-ui-express';
 
 @injectable()
@@ -16,9 +16,9 @@ export class GuiasAgrupadasService {
         return Result.ok(result);
     }
 
-    async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<Response<JsonObject | null>> {
+    async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<Response<IGuiaPinTracking[] | null>> {
         //const entidad = GuiasRemitenteEntity.crearEntidad(data);
-        console.log(`Consultando grupo de guias de: nit ${data.nit} - llamada: ${data.llamada}`);
+        console.log(`Consultando grupo de guias de: nit ${data.nit} - llamada: ${data.id_llamada} tipo: ${data.tipo}`);
         const result = await this.guiaRepository.consultarGuiasAgrupadas(data);
         return Result.ok(result);
     }
