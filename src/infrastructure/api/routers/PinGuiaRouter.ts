@@ -26,7 +26,7 @@ export const guardarPinGuiaPost = async (req: FastifyRequest, reply: FastifyRepl
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     const body = validateData<IDataIn>(guardarPinGuiaSchema, req.body);
     console.log(`Guardando el pin de guia digital: ${body.guias[0].codigo_remision} - llamada: ${body.id_llamada}`);
-    const respuesta = await pinGuiaService.guardarPin(body);
+    const respuesta = await pinGuiaService.guardarPinGuia(body);
     reply.status(200).send({ ...respuesta });
 };
 
