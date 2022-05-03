@@ -30,12 +30,12 @@ export class RepositoryException extends Exception {
     }
 }
 
-/*
-export class PubSubException extends Exception {
-    constructor(message: string, cause: string) {
-        super(message, ErrorCode.PUBSUB_ERROR, StatusCode.INTERNAL_ERROR, cause);
+export class ApiException extends Exception {
+    constructor(cause: string) {
+        const er = 'Error al momento de recuperar el Pin - ' + cause;
+        super(er, ErrorCode.BAD_MESSAGE, StatusCode.BAD_REQUEST, cause);
     }
-} */
+}
 
 export class FirestoreException extends Exception {
     constructor(code: number | string, message: string) {
@@ -43,7 +43,7 @@ export class FirestoreException extends Exception {
         switch (code) {
             case 0:
             case '0':
-                super(message, fsError, StatusCode.BAD_REQUEST, 'Record not found in database');
+                super(message, fsError, StatusCode.NOT_FOUND, 'Record not found in database');
                 break;
             /*
             case 1:

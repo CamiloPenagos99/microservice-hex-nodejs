@@ -3,10 +3,11 @@ on:
     push:
         branches:
             - 'master'
-            - 'testing'
 env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     REGION: us-central1
+    SUITE_PROJECT_ID: ${{ secrets.PROJECT_ID_SUITE_TEST }}
+    ENV_FILE: env/test.env
 jobs:
     build_and_deploy:
         runs-on: ubuntu-latest
@@ -28,10 +29,6 @@ jobs:
                       master:${{ secrets.PROJECT_ID_PROD }}
                       testing:${{ secrets.PROJECT_ID_TEST }}
                       !default:${{ secrets.PROJECT_ID_DEV }}
-                  ENV_FILE: |
-                      master:ENV_PROD
-                      testing:ENV_TEST
-                      !default:ENV_DEV
             - name: Cache node modules
               uses: actions/cache@v2
               with:
@@ -42,11 +39,12 @@ jobs:
             - name: Build tests
               uses: ./.github/actions/quality
             - name: Create ENV File
-              run: echo ${{ secrets[env.ENV_FILE] }} | base64 --decode > .env
+              run: cp ${{ env.ENV_FILE }} .env
             - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
+              uses: google-github-actions/setup-gcloud@v0
               with:
                   project_id: ${{ env.GCP_PROJECT }}
+                  project_suite: ${{ env.SUITE_PROJECT_ID }}
                   service_account_key: ${{ secrets.GCP_SA_KEY }}
                   export_default_credentials: true
             - name: Build and deploy image
@@ -77,7 +75,7 @@ jobs:
                       testing:${{ secrets.PROJECT_ID_TEST }}
                       !default:${{ secrets.PROJECT_ID_DEV }}
             - name: Set up Cloud SDK
-              uses: google-github-actions/setup-gcloud@master
+              uses: google-github-actions/setup-gcloud@v0
               with:
                   project_id: ${{ env.GCP_PROJECT }}
                   service_account_key: ${{ secrets.GCP_SA_KEY }}

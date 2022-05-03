@@ -22,21 +22,31 @@ export const dataInput = {
 export const consultarPinFallido = {
     guia: '73940048072',
     pin: '123451',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const consultarPinOK = {
     guia: '73940048072',
     pin: '12347',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const consultarPinGuiaInexistente = {
     guia: '00000000000',
     pin: '12347',
+    tipoUsuario: USUARIO_DESTINATARIO,
+};
+
+export const consultarPinGuiaMalFormato = {
+    guia: '73141048019',
+    pin: '09192',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const consultarPinErrado = {
     guia: '73940048072',
     pin: '17891',
+    tipoUsuario: USUARIO_DESTINATARIO,
 };
 
 export const recuperarFormaEnvioOk = {
@@ -70,4 +80,10 @@ export const recuperarPinGuiaInexistente = {
     guia: '00000000000',
     tipoUsuario: USUARIO_DESTINATARIO,
     medioEnvio: MEDIO_ENVIO_SMS,
+};
+
+export const recuperarPinGuiaMalCreada = {
+    guia: '73940048012',
+    tipoUsuario: USUARIO_DESTINATARIO,
+    medioEnvio: MEDIO_ENVIO_CORREO,
 };

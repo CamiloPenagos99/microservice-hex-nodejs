@@ -13,6 +13,7 @@ export const guardarPinOk = {
     id_llamada: 34,
     remitente: 'Cordi Util',
     telefono_remitente: '2671890',
+    nit_remitente: '1010',
     correo_remitente: 'coordi@gmail.com',
     envio_data: true,
     guias: [

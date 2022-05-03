@@ -8,6 +8,11 @@ ifndef PROJECT_ID
 	$(error Please set PROJECT_ID)
 endif
 
+check-url:
+ifndef SUITE_PROJECT_ID
+	$(error Please set SUITE_PROJECT_ID)
+endif
+
 check-commit-sha:
 ifndef COMMIT_SHA
 	$(error Please set COMMIT_SHA)
@@ -33,7 +38,8 @@ terraform-plan: $(prerequisites)
 		terraform workspace select $(ENV) && \
 		terraform plan \
 		-var="project=$(PROJECT_ID)" \
-		-var="project_suite=$(SUITE_PROJECT_ID)" \
+		-var="host=$(HOST)" \
+		-var="service_name=$(SERVICE_NAME)" \
 
 terraform-apply: $(prerequisites)
 	@cd infra && \
@@ -41,6 +47,8 @@ terraform-apply: $(prerequisites)
 		terraform apply \
 		-var="project=$(PROJECT_ID)" \
 		-var="project_suite=$(SUITE_PROJECT_ID)" \
+		-var="host=$(HOST)" \
+		-var="service_name=$(SERVICE_NAME)" \
         -auto-approve
 
 deploy: check-project check-commit-sha check-service-name

@@ -5,13 +5,44 @@ export const guardarPinGuiasSwagger = {
         body: {
             type: 'object',
             properties: {
-                data: {
-                    type: 'string',
-                    example: 'Buffer Base64, de objeto interface IDataIn',
-                    description: 'buffer Json base64',
+                message: {
+                    type: 'object',
+                    properties: {
+                        data: {
+                            type: 'string',
+                            example: {
+                                codigo_recogida: 12,
+                                id_llamada: 34,
+                                remitente: 'Exito',
+                                telefono_remitente: '2671790',
+                                correo_remitente: 'ventas@exito.com',
+                                nit_remitente: '123456789',
+                                envio_data: true,
+                                guias: [
+                                    {
+                                        codigo_remision: '88888888888',
+                                        destinatario: 'Jaime Larrondo',
+                                        correo_destinatario: 'jlr@coordinadora.com',
+                                        telefono_destinatario: '3166407819',
+                                        token: '48231',
+                                        url_relacion_digital: 'prueba',
+                                    },
+                                    {
+                                        codigo_remision: '33333333333',
+                                        destinatario: 'Camilop',
+                                        correo_destinatario: 'camilo.penagos@coordinadora.com',
+                                        telefono_destinatario: '3182443322',
+                                        token: '12123',
+                                        url_relacion_digital: 'https://prueba/guia/suite.com',
+                                    },
+                                ],
+                            },
+                            description: 'buffer Json base64',
+                        },
+                        publishTime: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
+                        messageId: { type: 'string', description: 'id del mensaje GCP' },
+                    },
                 },
-                publishTime: { type: 'string', example: '2021-09-20T15:03:27.824Z' },
-                messageId: { type: 'string', description: 'id del mensaje GCP' },
             },
         },
         response: {

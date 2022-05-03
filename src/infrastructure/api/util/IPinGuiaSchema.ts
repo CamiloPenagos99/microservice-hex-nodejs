@@ -6,6 +6,7 @@ export const guardarPinGuiaSchema = Joi.object({
     remitente: Joi.string().allow(null, '', 0).min(0).optional(),
     telefono_remitente: Joi.string().allow(null, '', 0).min(0).optional(),
     correo_remitente: Joi.string().allow(null, '', 0).min(0).optional(),
+    nit_remitente: Joi.string().allow(null, '', 0).min(0).optional(),
     envio_data: Joi.bool().optional(),
     guias: Joi.array()
         .items(
@@ -18,11 +19,17 @@ export const guardarPinGuiaSchema = Joi.object({
                     .label('El codigo de remision (guia), es obligatorio y de 11 caracteres'),
                 destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 correo_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
+                nit_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
                 telefono_destinatario: Joi.string().allow(null, '', 0).min(0).optional(),
-                token: Joi.string()
-                    .required()
-                    .length(5)
-                    .regex(/^[0-9]+$/),
+                token: Joi.object({
+                    pin: Joi.string()
+                        .required()
+                        .length(5)
+                        .regex(/^[0-9]+$/),
+                    remitente: Joi.number().optional(),
+                    destinatario: Joi.number().optional(),
+                }),
+
                 url_relacion_digital: Joi.string().allow(null, '', 0).min(0).optional(),
                 recuperado: Joi.boolean().allow(null).optional(),
             }),

@@ -6,10 +6,11 @@ import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
-import { ConsultarEnvioEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { ConsultarEnvioEntity, GuardarGuiaTriggerEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
-import { generarJWT } from '@util';
-import { FirestoreException } from '@domain/exceptions';
+import { generarJWT, getToken } from '@util';
+import { ApiException, FirestoreException } from '@domain/exceptions';
+import { IDataInTrigger } from '@application/data/IDataInTrigger';
 
 //import { NotFoundException } from '@domain/exceptions';
 
@@ -22,7 +23,14 @@ export class PinGuiaService {
         const guiasRegistradas = await this.guardarGuiasUtil(data);
         //console.log('cantidad de guias registradas', guiasRegistradas);
         if (guiasRegistradas === 0) throw new FirestoreException(9, 'Unable to save in database');
-        return Result.ok(`Se guardo en base de datos, ${guiasRegistradas} registros`);
+        return Result.ok(`Se guardo en la base de datos, ${guiasRegistradas} registros`);
+    }
+
+    async guardarPinGuia(data: IDataIn): Promise<Response<string | null>> {
+        const guiaPin = reconstruccionData(data.guias[0], data);
+        const entidad = GuardarPinEntity.crearEntidad(guiaPin);
+        await this.guiaRepository.guardarPin(entidad);
+        return Result.ok(`Se registro el pin para la guia, ${entidad.codigo_remision}`);
     }
 
     async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
@@ -31,6 +39,22 @@ export class PinGuiaService {
         let token = '';
         if (result) {
             token = generarJWT(data.guia);
+        }
+        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
+        return Result.ok(respuesta);
+    }
+
+    async validarPinGuia(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
+        const entidad = ConsultarPinEntity.crearEntidad(data);
+        const result = await this.guiaRepository.validarPinGuia(entidad);
+        let token = 'no auth';
+        if (result.pinValidado) {
+            token = await getToken(data.guia);
+            //token = generarJWT(data.guia); //todo:generar el token con firebase admin
+            //desplegar en kubernetes, con cuenta de servicio de la suite
+            //firebaseAdmin.auth().createCustomToken(codigo_remision);
+        } else if (!result) {
+            throw new FirestoreException(0, 'no se encontro la guia');
         }
         const respuesta = { pinValido: result, bearer: token };
         return Result.ok(respuesta);
@@ -41,12 +65,13 @@ export class PinGuiaService {
         const result = await this.guiaRepository.recuperarPin(entidad);
         if (!result) return Result.ok(result);
         const respuesta = dataRecuperarPinSalida(result, data);
-        const res = await this.axiosRecuperarPin.recuperar(respuesta);
+        const res = await this.axiosRecuperarPin.recuperar(respuesta); //TODO
         if (!res.isError) {
+            await this.guiaRepository.reiniciarIntentosPin(entidad);
             return Result.ok('información enviada correctamente');
         }
 
-        return Result.failure(res[0]);
+        throw new ApiException(res.mensaje);
     }
 
     async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {
@@ -66,8 +91,13 @@ export class PinGuiaService {
             const entidad = GuardarPinEntity.crearEntidad(dataFinal);
             const result = await this.guiaRepository.guardarPin(entidad);
             if (result) contador++;
-            //console.log('------------->resultado save------------>', result);
         }
         return contador;
     };
+
+    async guardarTrigger(data: IDataInTrigger): Promise<Response<string | null>> {
+        const entidad = GuardarGuiaTriggerEntity.crearEntidad(data);
+        const result = await this.guiaRepository.guardarTrigger(entidad);
+        return Result.ok(`Se guardo en la base de datos: ` + result);
+    }
 }

@@ -10,6 +10,7 @@ import { randomBytes } from 'crypto';
 import fastifySwagger from 'fastify-swagger';
 import { swagger_config } from './swagger';
 import jwt from 'fastify-jwt';
+import { PREFIX } from '@util';
 
 export const application = fastify({
     genReqId: (_) => randomBytes(20).toString('hex'),
@@ -28,4 +29,6 @@ application.register(jwt, {
 });
 
 // routes
-initRoutes(application);
+//initRoutes(application);
+// routes
+application.register(initRoutes, { prefix: PREFIX });
