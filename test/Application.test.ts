@@ -27,7 +27,7 @@ import { PREFIX } from '@util';
 const MockFirestore = new MockFirebase(FIRESTORE_DATA);
 const firestore = MockFirestore.firestore();
 
-describe('MS tracking pin guia', () => {
+describe.skip('MS tracking pin guia', () => {
     beforeAll(() => {
         createDependencyContainer();
         DEPENDENCY_CONTAINER.rebind<Firestore>(TYPES.Firestore).toConstantValue(firestore);
