@@ -80,11 +80,11 @@ export class FirestoreTrackingRepository implements TrackingRepository {
                     rolUsuario === USUARIO_REMITENTE
                         ? { remitente: 0, destinatario: consulta.token.destinatario, pin: consulta.token.pin }
                         : { remitente: consulta.token.remitente, destinatario: 0, pin: consulta.token.pin };
-                const update = (await this.firestore
+                (await this.firestore
                     .collection(this.collection)
                     .doc(data.guia)
                     .update({ token: resetIntentos })) as JsonObject;
-                console.log('objeto de base de actualizado', update);
+
                 retorno.pinValidado = pinCorrecto;
                 retorno.tipoUsuario = rolUsuario;
                 //retorno.intentos=update.token[rolUsuario]
@@ -96,11 +96,11 @@ export class FirestoreTrackingRepository implements TrackingRepository {
                     rolUsuario === USUARIO_REMITENTE
                         ? { remitente: contador, destinatario: consulta.token.destinatario, pin: consulta.token.pin }
                         : { remitente: consulta.token.remitente, destinatario: contador, pin: consulta.token.pin };
-                const update = (await this.firestore
+                (await this.firestore
                     .collection(this.collection)
                     .doc(data.guia)
                     .update({ token: sumarIntentos })) as JsonObject;
-                console.log('objeto de base de actualizado', update);
+
                 retorno.pinValidado = pinCorrecto;
                 retorno.tipoUsuario = rolUsuario;
                 //retorno.intentos=update.token[rolUsuario]
@@ -115,9 +115,20 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         }
     }
 
-    async recuperarPin(data: RecuperarPinEntity): Promise<any> {
-        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        return consulta;
+    async recuperarPin(data: RecuperarPinEntity): Promise<GuardarPinEntity> {
+        try {
+            const doc = await this.firestore.collection(this.collection).doc(data.guia).get();
+            if (!doc.exists) {
+                console.error(`No existe registro para la guia ${data.guia}`);
+                throw new FirestoreException(0, `No existe registro, para la guia: ${data.guia}`);
+            } else {
+                const pinGuia = doc.data() as GuardarPinEntity;
+                return pinGuia;
+            }
+        } catch ({ code, message }) {
+            console.error(`Error en el proceso de recuperacion de pin-guia ${data.guia}`);
+            throw new FirestoreException(code as number | string, message as string);
+        }
     }
 
     async recuperarDataEnvio(data: ConsultarEnvioEntity): Promise<any> {
@@ -125,24 +136,23 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         return consulta;
     }
 
-    async reiniciarIntentosPin(data: RecuperarPinEntity): Promise<boolean> {
-        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        if (!consulta) return false;
-        console.log('objeto de base de datos', consulta);
+    async reiniciarIntentosPin(data: RecuperarPinEntity): Promise<void> {
+        const doc = await this.firestore.collection(this.collection).doc(data.guia).get();
+        if (!doc.exists) {
+            console.error(`No existe registro para la guia ${data.guia}`);
+            throw new FirestoreException(0, `No existe registro, para la guia: ${data.guia}`);
+        }
+        const ref = doc.data() as GuardarPinEntity;
         const rolUsuario = data.tipoUsuario;
-        const pinGuia = consulta.token.pin;
+        const pinGuia = ref.token.pin;
         const resetIntentos =
             rolUsuario === USUARIO_REMITENTE
-                ? { remitente: 0, destinatario: consulta.token.destinatario, pin: pinGuia }
-                : { remitente: consulta.token.remitente, destinatario: 0, pin: pinGuia };
-        const update = (await this.firestore
+                ? { remitente: 0, destinatario: ref.token.destinatario, pin: pinGuia }
+                : { remitente: ref.token.remitente, destinatario: 0, pin: pinGuia };
+        (await this.firestore
             .collection(this.collection)
             .doc(data.guia)
             .update({ token: resetIntentos })) as JsonObject;
-        console.log('objeto de base de actualizado', update);
-        const retorn = update ? true : false;
-
-        return retorn;
     }
 
     async consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject> {

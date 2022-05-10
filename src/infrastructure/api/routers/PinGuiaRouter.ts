@@ -60,9 +60,8 @@ export const validarPinGuia = async (req: FastifyRequest, reply: FastifyReply): 
 
 export const recuperarPinGuia = async (_req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
-    const validated = validateData<IDataEnvioIn>(IDataEnvioSchema, _req.body);
+    const guia = validateData<IDataEnvioIn>(IDataEnvioSchema, _req.body);
     const { id } = _req;
-    const guia = validated as IDataEnvioIn;
     const response = await pinGuiaService.recuperarPin(guia);
     if (!response.data) throw new FirestoreException(0, 'Record not found in database');
     return reply.send({ ...response, id });

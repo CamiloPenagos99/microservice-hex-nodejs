@@ -13,7 +13,7 @@ export interface IGuiaPinTracking {
     nit_destinatario: string;
     correo_destinatario: string;
     telefono_destinatario: string;
-    token?: IToken;
+    token: IToken;
     url_relacion_digital?: string;
     actualizado?: boolean;
 }

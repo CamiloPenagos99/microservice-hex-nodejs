@@ -6,7 +6,7 @@ export interface IGuiaOut {
     correo_destinatario: string;
     nit_destinatario?: string;
     telefono_destinatario: string;
-    token?: IToken;
+    token: IToken;
     url_relacion_digital?: string;
     tipoUsuario?: string;
     medioEnvio?: string;

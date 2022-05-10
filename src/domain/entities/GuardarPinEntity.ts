@@ -13,7 +13,7 @@ export class GuardarPinEntity {
     readonly nit_destinatario: string;
     readonly destinatario: string;
     readonly telefono_destinatario: string;
-    readonly token?: IToken;
+    readonly token: IToken;
     readonly url_relacion_digital?: string;
 
     constructor(data: IGuiaPinTracking) {

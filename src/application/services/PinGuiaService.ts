@@ -63,9 +63,8 @@ export class PinGuiaService {
     async recuperarPin(data: IDataEnvioIn): Promise<Response<string | null>> {
         const entidad = RecuperarPinEntity.crearEntidad(data);
         const result = await this.guiaRepository.recuperarPin(entidad);
-        if (!result) return Result.ok(result);
         const respuesta = dataRecuperarPinSalida(result, data);
-        const res = await this.axiosRecuperarPin.recuperar(respuesta); //TODO
+        const res = await this.axiosRecuperarPin.recuperar(respuesta);
         if (!res.isError) {
             await this.guiaRepository.reiniciarIntentosPin(entidad);
             return Result.ok('información enviada correctamente');

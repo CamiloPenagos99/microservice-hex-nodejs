@@ -12,10 +12,10 @@ import { JsonObject } from 'swagger-ui-express';
 
 export interface TrackingRepository {
     validarPinGuia(dataPin: ConsultarPinEntity): Promise<any>;
-    reiniciarIntentosPin(dataPin: RecuperarPinEntity): Promise<boolean>;
+    reiniciarIntentosPin(dataPin: RecuperarPinEntity): Promise<void>;
     guardarPin(dataGuiaPin: GuardarPinEntity): Promise<string>;
     consultarPin(dataPin: ConsultarPinEntity): Promise<boolean>;
-    recuperarPin(guia: RecuperarPinEntity): Promise<any>;
+    recuperarPin(guia: RecuperarPinEntity): Promise<GuardarPinEntity>;
     recuperarDataEnvio(guia: ConsultarEnvioEntity): Promise<IEnvioDataOut>;
     consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject>;
     consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]>;
