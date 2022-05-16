@@ -99,4 +99,10 @@ export class PinGuiaService {
         const result = await this.guiaRepository.guardarTrigger(entidad);
         return Result.ok(`Se guardo en la base de datos: ` + result);
     }
+
+    async consultarGuiaTracking(guia: string): Promise<Response<string | null>> {
+        const result = await this.guiaRepository.consultarGuiaTracking(guia);
+        console.log(JSON.stringify(result));
+        return Result.ok(result);
+    }
 }

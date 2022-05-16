@@ -203,4 +203,19 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             throw new FirestoreException(e.id, e.message);
         }
     }
+
+    async consultarGuiaTracking(guia: string): Promise<any> {
+        try {
+            console.log('consultango guia tracking de ', guia);
+            const ref = await this.firestore.collection('Tracking').doc(guia).get();
+            if (!ref.exists) {
+                throw new FirestoreException(0, `No se encontro el tracking de la guia ${guia}`);
+            }
+            const tracking = ref.data();
+            return tracking;
+        } catch (e: any) {
+            console.error(`error en el tracking de la guia ${guia}`, e.message);
+            throw new FirestoreException(e.id, e.message);
+        }
+    }
 }

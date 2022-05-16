@@ -85,3 +85,11 @@ export const guardarTrigger = async (req: FastifyRequest, reply: FastifyReply): 
     const respuesta = await pinGuiaService.guardarTrigger(body);
     reply.status(200).send({ ...respuesta });
 };
+
+export const consultarGuiaTracking = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+    const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
+    //const body = validateDataPubSub<IDataInTrigger>(guardarPinGuiaTriggerSchema, req.body);
+    const guia = req.params as IGuiaIn;
+    const respuesta = await pinGuiaService.consultarGuiaTracking(guia.guia);
+    reply.status(200).send({ ...respuesta });
+};

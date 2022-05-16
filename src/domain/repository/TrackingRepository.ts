@@ -20,4 +20,5 @@ export interface TrackingRepository {
     consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject>;
     consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]>;
     guardarTrigger(data: GuardarGuiaTriggerEntity): Promise<string>;
+    consultarGuiaTracking(guia: string): Promise<any>;
 }

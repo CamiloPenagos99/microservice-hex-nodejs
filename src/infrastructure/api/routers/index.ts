@@ -24,4 +24,5 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
 
     //nuevo endpoint
     application.post('/trigger', guardarTrigger);
+    application.get('/tracking-nube/:guia', guardarTrigger);
 };
