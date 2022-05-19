@@ -8,7 +8,7 @@ env:
     SERVICE_NAME: cm-tracking-almacenar-pin-guia
     PROJECT_CLUSTER_ID: ${{ secrets.PROJECT_CLUSTER_ID_PROD }}
     PROJECT_ID: ${{ secrets.PROJECT_ID_PROD }}
-    SUITE_PROJECT_ID: ${{ secrets.PROJECT_CLUSTER_ID_PROD }}
+    SUITE_PROJECT_ID: ${{ secrets.PROJECT_ID_SUITE_PROD }}
     CLUSTER_NAME: cm-cluster
     CLUSTER_LOCATION: us-central1
     ENV_FILE: env/prod.env
