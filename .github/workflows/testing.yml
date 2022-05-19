@@ -1,5 +1,5 @@
-name: Code Development Flow
-concurrency: cm-tracking-almacenar-pin-guia
+name: Code Testing Flow
+concurrency: cm-tracking-almacenar-pin-guia-test
 on:
     push:
         branches:
@@ -74,7 +74,7 @@ jobs:
                   GCP_PROJECT: |
                       master:${{ secrets.PROJECT_ID_PROD }}
                       testing:${{ secrets.PROJECT_ID_TEST }}
-                      !default:${{ secrets.PROJECT_ID_TEST }}
+                      !default:${{ secrets.PROJECT_ID_DEV }}
             - name: Set up Cloud SDK
               uses: google-github-actions/setup-gcloud@v0
               with:
