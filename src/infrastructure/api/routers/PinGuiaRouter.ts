@@ -11,8 +11,6 @@ import { PinGuiaService } from '@application/services';
 //import { BadMessageException } from '@domain/exceptions';
 import { IDataIn, IGuiaPinIn, IDataEnvioIn, IGuiaIn } from '@application/data';
 import { BadMessageException, FirestoreException } from '@domain/exceptions';
-import { IDataInTrigger } from '@application/data/IDataInTrigger';
-import { guardarPinGuiaTriggerSchema } from '../util/IPinGuiaTriggerSchema';
 
 export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
@@ -75,15 +73,6 @@ export const consultarFormaEnvio = async (_req: FastifyRequest, reply: FastifyRe
     const response = await pinGuiaService.recuperarDataEnvio(guia);
     if (!response.data) throw new FirestoreException(0, 'Record not found in database');
     return reply.send({ ...response, id });
-};
-
-export const guardarTrigger = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
-    console.log('En Kubernetes, llega la solicitud de pubsub trigger');
-    const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
-    const body = validateDataPubSub<IDataInTrigger>(guardarPinGuiaTriggerSchema, req.body);
-    console.log('body pubsub:', JSON.stringify(body));
-    const respuesta = await pinGuiaService.guardarTrigger(body);
-    reply.status(200).send({ ...respuesta });
 };
 
 export const consultarGuiaTracking = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {

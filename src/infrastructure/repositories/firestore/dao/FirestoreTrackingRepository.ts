@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
@@ -14,7 +13,7 @@ import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
 import { USUARIO_REMITENTE } from '@util';
-import { IConsultaGuiasGrupoIn, IGuiaPinTracking, tipoUsuario } from '@application/data';
+import { IConsultaGuiasGrupoIn, IGuiaPinTracking, IToken, tipoUsuario } from '@application/data';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
@@ -144,15 +143,17 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         }
         const ref = doc.data() as GuardarPinEntity;
         const rolUsuario = data.tipoUsuario;
-        const pinGuia = ref.token.pin;
-        const resetIntentos =
-            rolUsuario === USUARIO_REMITENTE
-                ? { remitente: 0, destinatario: ref.token.destinatario, pin: pinGuia }
-                : { remitente: ref.token.remitente, destinatario: 0, pin: pinGuia };
-        (await this.firestore
-            .collection(this.collection)
-            .doc(data.guia)
-            .update({ token: resetIntentos })) as JsonObject;
+        const guiaToken = ref.token;
+        const resetRemitente = {
+            remitente: { intentos: 0, pin: guiaToken.remitente.pin },
+            destinatario: { intentos: guiaToken.destinatario.intentos, pin: guiaToken.destinatario.pin },
+        };
+        const resetDestinatario = {
+            remitente: { intentos: 0, pin: guiaToken.remitente.pin },
+            destinatario: { intentos: guiaToken.destinatario.intentos, pin: guiaToken.destinatario.pin },
+        };
+        const resetIntentos: IToken = rolUsuario === USUARIO_REMITENTE ? resetRemitente : resetDestinatario;
+        await this.firestore.collection(this.collection).doc(data.guia).update({ token: resetIntentos });
     }
 
     async consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject> {

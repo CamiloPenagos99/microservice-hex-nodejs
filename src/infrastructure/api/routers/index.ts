@@ -5,7 +5,6 @@ import {
     consultarPinGuia,
     guardarPinGuia,
     guardarPinGuiaPost,
-    guardarTrigger,
     recuperarPinGuia,
     validarPinGuia,
 } from './PinGuiaRouter';
@@ -24,6 +23,5 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
     application.get('/guias', guiasAgrupadas);
 
     //nuevo endpoint
-    application.post('/trigger', guardarTrigger);
     application.get('/tracking-guia/:guia', consultarGuiaTracking);
 };
