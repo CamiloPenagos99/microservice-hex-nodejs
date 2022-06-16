@@ -12,7 +12,6 @@ export const reconstruccionData = (guia: IGuiaOut, data: IDataIn): IGuiaPinTrack
         telefono_remitente: data.telefono_remitente,
         nit_remitente: data.nit_remitente,
         correo_remitente: data.correo_remitente,
-        envio_data: data.envio_data,
         codigo_remision: guia.codigo_remision,
         destinatario: guia.destinatario,
         nit_destinatario: guia.nit_destinatario ?? 'NA',
