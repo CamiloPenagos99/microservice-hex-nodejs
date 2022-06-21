@@ -10,7 +10,7 @@ import {
 import { PinGuiaService } from '@application/services';
 //import { BadMessageException } from '@domain/exceptions';
 import { IDataIn, IGuiaPinIn, IDataEnvioIn, IGuiaIn } from '@application/data';
-import { BadMessageException, FirestoreException } from '@domain/exceptions';
+import { FirestoreException } from '@domain/exceptions';
 
 export const guardarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
@@ -28,31 +28,11 @@ export const guardarPinGuiaPost = async (req: FastifyRequest, reply: FastifyRepl
     reply.status(200).send({ ...respuesta });
 };
 
-export const consultarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
-    const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
-    //const body = validateData<IDataIn>(consultarPinGuiaSchema, req.body);
-    const { id } = req;
-
-    const data = req.body as IGuiaPinIn;
-    const { value: schema, error } = consultarPinGuiaSchema.validate(data);
-    if (!error) {
-        const guia: IGuiaPinIn = schema;
-        const response = await pinGuiaService.consultarPin(guia);
-        //console.log('data router', response);
-        return reply.send({ ...response, id });
-    }
-    throw new BadMessageException(error.message);
-};
-
 export const validarPinGuia = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
-    //const body = validateData<IDataIn>(consultarPinGuiaSchema, req.body);
     const { id } = req;
-
-    const data = req.body as IGuiaPinIn;
-    const schema = validateData<IGuiaPinIn>(consultarPinGuiaSchema, data);
-    const guia: IGuiaPinIn = schema;
-    const response = await pinGuiaService.validarPinGuia(guia);
+    const data = validateData<IGuiaPinIn>(consultarPinGuiaSchema, req.body);
+    const response = await pinGuiaService.validarPinGuia(data);
     return reply.send({ ...response, id });
 };
 

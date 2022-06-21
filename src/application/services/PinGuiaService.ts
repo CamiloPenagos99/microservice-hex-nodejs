@@ -4,15 +4,13 @@ import { Result, Response } from '@domain/response';
 import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
-import { JsonObject } from 'swagger-ui-express';
 import { RecuperarPin } from '@infrastructure/repositories';
 import { ConsultarEnvioEntity, GuardarGuiaTriggerEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
-import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
-import { generarJWT, getToken } from '@util';
+import { signToken } from '@util';
 import { ApiException, FirestoreException } from '@domain/exceptions';
 import { IDataInTrigger } from '@application/data/IDataInTrigger';
-
-//import { NotFoundException } from '@domain/exceptions';
+import { controlIntentosAcceso, modificarIntentosPinGuia } from '@domain/services';
+import { PinValidadoGuia } from '@domain/models';
 
 @injectable()
 export class PinGuiaService {
@@ -33,31 +31,13 @@ export class PinGuiaService {
         return Result.ok(`Se registro el pin para la guia, ${entidad.codigo_remision}`);
     }
 
-    async consultarPin(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
-        const entidad = ConsultarPinEntity.crearEntidad(data);
-        const result = await this.guiaRepository.consultarPin(entidad);
-        let token = '';
-        if (result) {
-            token = generarJWT(data.guia);
-        }
-        const respuesta = { pinValido: result, bearer: token, intentos: 1 };
-        return Result.ok(respuesta);
-    }
-
-    async validarPinGuia(data: IGuiaPinIn): Promise<Response<JsonObject | null>> {
-        const entidad = ConsultarPinEntity.crearEntidad(data);
-        const result = await this.guiaRepository.validarPinGuia(entidad);
-        let token = 'no auth';
-        if (result.pinValidado) {
-            token = await getToken(data.guia);
-            //token = generarJWT(data.guia); //todo:generar el token con firebase admin
-            //desplegar en kubernetes, con cuenta de servicio de la suite
-            //firebaseAdmin.auth().createCustomToken(codigo_remision);
-        } else if (!result) {
-            throw new FirestoreException(0, 'no se encontro la guia');
-        }
-        const respuesta = { pinValido: result, bearer: token };
-        return Result.ok(respuesta);
+    async validarPinGuia(data: IGuiaPinIn): Promise<Response<PinValidadoGuia | null>> {
+        const pinGuia = await this.guiaRepository.consultarPin(data.guia);
+        const token = await signToken(pinGuia.codigo_remision); // firmar el token con firebase admin
+        const validacion = controlIntentosAcceso(data, pinGuia, token);
+        const nuevoToken = modificarIntentosPinGuia(validacion, pinGuia);
+        await this.guiaRepository.modificarIntentosPinGuia(data.guia, nuevoToken);
+        return Result.ok(validacion);
     }
 
     async recuperarPin(data: IDataEnvioIn): Promise<Response<string | null>> {

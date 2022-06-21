@@ -9,7 +9,6 @@ import {
     GuardarGuiaTriggerEntity,
 } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
-import { ConsultarPinEntity } from '@domain/entities/ConsultarPinEntity';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
 import { USUARIO_REMITENTE } from '@util';
@@ -40,77 +39,26 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         }
     }
 
-    async consultarPin(data: ConsultarPinEntity): Promise<boolean> {
-        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        console.log('=== consulta pin ===', consulta, consulta ? (consulta.token === data.pin ? true : false) : false);
-        // consulta
-        //     ? consulta.token.pin === data.pin || consulta.token === data.pin
-        //         ? await this.firestore.collection(this.collection).doc().update({ contador: 1 })
-        //         : 0
-        //     : 0;
-        return consulta ? (consulta.token.pin === data.pin || consulta.token === data.pin ? true : false) : false;
+    async consultarPin(guia: string): Promise<IGuiaPinTracking> {
+        try {
+            const ref = await this.firestore.collection(this.collection).doc(guia).get();
+            if (!ref.exists) {
+                throw new FirestoreException(0, `No se encontro registro para el pin de la guía ${guia}`);
+            }
+            const guiaPin = ref.data() as IGuiaPinTracking;
+            return guiaPin;
+        } catch ({ code, message }) {
+            console.error(`error al consultar pin guia ${guia}, ${message}`);
+            throw new FirestoreException(code as number, message as string);
+        }
     }
 
-    async validarPinGuia(data: ConsultarPinEntity): Promise<any> {
-        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        if (!consulta) return false;
+    async modificarIntentosPinGuia(guia: string, tokenModificado: IToken): Promise<void> {
         try {
-            console.log('objeto de base de datos', consulta);
-            let pinCorrecto = false;
-            const rolUsuario = data.tipoUsuario;
-            const pinUser = data.pin;
-            const pinGuia = consulta.token.pin;
-            if (!pinGuia) throw new FirestoreException(9, 'Objeto Token invalido para la guia');
-            const retorno = { pinValidado: false, tipoUsuario: '', intentos: -1 };
-            let contador = consulta.token[rolUsuario];
-
-            //logica
-            if (contador >= 3) {
-                retorno.pinValidado = false;
-                retorno.tipoUsuario = rolUsuario;
-                //retorno.intentos=update.token[rolUsuario]
-                retorno.intentos = contador;
-                return retorno;
-            }
-
-            if (pinUser === pinGuia) {
-                pinCorrecto = true;
-                const resetIntentos =
-                    rolUsuario === USUARIO_REMITENTE
-                        ? { remitente: 0, destinatario: consulta.token.destinatario, pin: consulta.token.pin }
-                        : { remitente: consulta.token.remitente, destinatario: 0, pin: consulta.token.pin };
-                (await this.firestore
-                    .collection(this.collection)
-                    .doc(data.guia)
-                    .update({ token: resetIntentos })) as JsonObject;
-
-                retorno.pinValidado = pinCorrecto;
-                retorno.tipoUsuario = rolUsuario;
-                //retorno.intentos=update.token[rolUsuario]
-                retorno.intentos = 0;
-            } else {
-                contador++;
-                pinCorrecto = false;
-                const sumarIntentos =
-                    rolUsuario === USUARIO_REMITENTE
-                        ? { remitente: contador, destinatario: consulta.token.destinatario, pin: consulta.token.pin }
-                        : { remitente: consulta.token.remitente, destinatario: contador, pin: consulta.token.pin };
-                (await this.firestore
-                    .collection(this.collection)
-                    .doc(data.guia)
-                    .update({ token: sumarIntentos })) as JsonObject;
-
-                retorno.pinValidado = pinCorrecto;
-                retorno.tipoUsuario = rolUsuario;
-                //retorno.intentos=update.token[rolUsuario]
-                retorno.intentos = contador;
-            }
-
-            console.log('respuesta validar pin: ', retorno);
-            return retorno;
-        } catch (e) {
-            console.log('error en el formato de guia', e);
-            throw new FirestoreException(9, 'Error base de datos: ' + e.message);
+            await this.firestore.collection(this.collection).doc(guia).update({ token: tokenModificado });
+        } catch ({ code, message }) {
+            console.error(`Error al modificar intentos de pin guia ${guia}`);
+            throw new FirestoreException(code as number | string, message as string);
         }
     }
 

@@ -7,7 +7,7 @@ import { IConsultaGuiasGrupoIn, IConsultaGuiasRtteIn, IGuiaPinTracking } from '@
 import { JsonObject } from 'swagger-ui-express';
 
 @injectable()
-export class GuiasAgrupadasService {
+export class AppService {
     private guiaRepository = DEPENDENCY_CONTAINER.get<TrackingRepository>(TYPES.FirestoreTrackingRepository);
 
     async consultarInfo(data: IConsultaGuiasRtteIn): Promise<Response<JsonObject | null>> {
