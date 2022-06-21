@@ -1,4 +1,4 @@
-import { IGuiaPinIn, IGuiaPinTracking, IToken } from '@application/data';
+import { IDataEnvioPin, IGuiaPinIn, IGuiaPinTracking, IToken } from '@application/data';
 import { PinValidadoGuia } from '@domain/models';
 
 export const controlIntentosAcceso = (data: IGuiaPinIn, guiaPin: IGuiaPinTracking, token: string): PinValidadoGuia => {
@@ -33,6 +33,14 @@ export const modificarIntentosPinGuia = (validacion: PinValidadoGuia, guiaPin: I
     const nuevoToken = guiaPin.token;
     const tipoUsuario = validacion.tipoUsuario;
     nuevoToken[tipoUsuario].intentos = validacion.intentos;
+
+    return nuevoToken;
+};
+
+export const reiniciarIntentosPinGuia = (data: IDataEnvioPin, guiaPin: IGuiaPinTracking): IToken => {
+    const nuevoToken = guiaPin.token;
+    const tipoUsuario = data.tipoUsuario;
+    nuevoToken[tipoUsuario].intentos = 0;
 
     return nuevoToken;
 };

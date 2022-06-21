@@ -6,6 +6,5 @@ export interface IRecuperarPinOut {
     telefono_remitente: string;
     correo_remitente: string;
     nit_remitente: string;
-    envio_data: boolean;
     guias: IGuiaOut[];
 }

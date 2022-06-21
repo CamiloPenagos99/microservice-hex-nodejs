@@ -36,6 +36,12 @@ export class ApiException extends Exception {
     }
 }
 
+export class ApiRestException extends Exception {
+    constructor(message: string, cause: string) {
+        super(message, ErrorCode.API_CLIENT_ERROR, StatusCode.INTERNAL_ERROR, cause);
+    }
+}
+
 export class FirestoreException extends Exception {
     constructor(code: number | string, message: string) {
         const fsError = ErrorCode.REPOSITORY_ERROR;

@@ -7,7 +7,7 @@ export interface TrackingRepository {
     modificarIntentosPinGuia(guia: string, tokenModificado: IToken): Promise<void>;
     reiniciarIntentosPin(dataPin: RecuperarPinEntity): Promise<void>;
     guardarPin(dataGuiaPin: GuardarPinEntity): Promise<string>;
-    consultarPin(dataPin: string): Promise<GuardarPinEntity>;
+    consultarPin(dataPin: string): Promise<IGuiaPinTracking>;
     recuperarPin(guia: RecuperarPinEntity): Promise<GuardarPinEntity>;
     consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject>;
     consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]>;
