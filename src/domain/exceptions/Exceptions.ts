@@ -24,9 +24,8 @@ export class BadMessageException extends Exception {
 }
 
 export class RepositoryException extends Exception {
-    constructor() {
-        const message = 'Ocurrió un error al momento de guardar la guía';
-        super(message, ErrorCode.REPOSITORY_ERROR, StatusCode.INTERNAL_ERROR);
+    constructor(message: string, statusCode: number, cause: string) {
+        super(message, ErrorCode.REPOSITORY_ERROR, statusCode, cause);
     }
 }
 

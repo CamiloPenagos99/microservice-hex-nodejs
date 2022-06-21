@@ -48,9 +48,8 @@ export const recuperarPinGuia = async (_req: FastifyRequest, reply: FastifyReply
 export const consultarFormaEnvio = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     const data = validateData<IGuiaIn>(IDataEnvioSchema, req.body);
-    const { id } = req;
     const response = await pinGuiaService.recuperarDataEnvio(data);
-    return reply.send({ ...response, id });
+    return reply.send({ ...response, id: req.id });
 };
 
 export const consultarGuiaTracking = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {

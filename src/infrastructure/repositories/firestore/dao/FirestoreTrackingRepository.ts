@@ -1,13 +1,7 @@
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
-import {
-    ConsultarEnvioEntity,
-    GuiasRemitenteEntity,
-    GuardarPinEntity,
-    RecuperarPinEntity,
-    GuardarGuiaTriggerEntity,
-} from '@domain/entities';
+import { GuiasRemitenteEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
 import { JsonObject } from 'swagger-ui-express';
@@ -18,7 +12,6 @@ import { IConsultaGuiasGrupoIn, IGuiaPinTracking, IToken, tipoUsuario } from '@a
 export class FirestoreTrackingRepository implements TrackingRepository {
     private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
     private collection = 'guia-pin';
-    private collectionTrigger = 'guia-pin-notificacion';
 
     async guardarPin(data: GuardarPinEntity): Promise<any> {
         try {
@@ -27,15 +20,11 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             const res = await this.firestore
                 .collection(this.collection)
                 .doc(ref)
-                .set({ ...data })
-                .catch((err) => {
-                    console.error('error in database tracking', err);
-                    throw new RepositoryException();
-                });
+                .set({ ...data });
             return res;
-        } catch (e: any) {
-            console.error('error registrando pin de guia ', data.codigo_remision, e.message);
-            throw new FirestoreException(e.id, e.message);
+        } catch ({ code, message }) {
+            console.error(`Error al registrar pin para guía ${data.codigo_remision}`);
+            throw new FirestoreException(code as number | string, message as string);
         }
     }
 
@@ -43,13 +32,14 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         try {
             const ref = await this.firestore.collection(this.collection).doc(guia).get();
             if (!ref.exists) {
-                throw new FirestoreException(0, `No se encontro registro para el pin de la guía ${guia}`);
+                throw new FirestoreException(0, `No se encontro registro del pin, para la guía ${guia}`);
             }
             const guiaPin = ref.data() as IGuiaPinTracking;
+            console.log(`consulta pin guia ${guia}`);
             return guiaPin;
-        } catch ({ code, message }) {
-            console.error(`error al consultar pin guia ${guia}, ${message}`);
-            throw new FirestoreException(code as number, message as string);
+        } catch ({ statusCode, cause, message }) {
+            console.error(`error al consultar pin guia ${guia}`);
+            throw new RepositoryException(`${message}`, statusCode as number, cause as string);
         }
     }
 
@@ -76,11 +66,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
             console.error(`Error en el proceso de recuperacion de pin-guia ${data.guia}`);
             throw new FirestoreException(code as number | string, message as string);
         }
-    }
-
-    async recuperarDataEnvio(data: ConsultarEnvioEntity): Promise<any> {
-        const consulta = (await this.firestore.collection(this.collection).doc(data.guia).get()).data();
-        return consulta;
     }
 
     async reiniciarIntentosPin(data: RecuperarPinEntity): Promise<void> {
@@ -134,23 +119,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         const guias = query.docs.map((doc) => doc.data() as IGuiaPinTracking);
 
         return guias;
-    }
-
-    async guardarTrigger(data: GuardarGuiaTriggerEntity): Promise<string> {
-        try {
-            const ref = data.nit_remitente;
-            console.warn('Nit de referencia es', ref);
-            const { id } = await this.firestore
-                .collection(this.collectionTrigger)
-                .add({ ...data })
-                .catch((err) => {
-                    console.warn('error in database', err);
-                    throw new RepositoryException();
-                });
-            return id;
-        } catch (e: any) {
-            throw new FirestoreException(e.id, e.message);
-        }
     }
 
     async consultarGuiaTracking(guia: string): Promise<any> {

@@ -1,16 +1,16 @@
 import { injectable } from 'inversify';
 import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
-import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaIn, IGuiaPinIn } from '@application/data';
+import { IDataEnvioIn, IDataIn, IGuiaIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinFormat, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { RecuperarPin } from '@infrastructure/repositories';
-import { GuardarGuiaTriggerEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { signToken } from '@util';
 import { ApiException, FirestoreException } from '@domain/exceptions';
-import { IDataInTrigger } from '@application/data/IDataInTrigger';
 import { controlIntentosAcceso, modificarIntentosPinGuia } from '@domain/services';
 import { PinValidadoGuia } from '@domain/models';
+import { IDataRecuperacionPinOut } from '@application/data/IDataRecuperacionPinOut';
 
 @injectable()
 export class PinGuiaService {
@@ -53,7 +53,7 @@ export class PinGuiaService {
         throw new ApiException(res.mensaje);
     }
 
-    async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {
+    async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IDataRecuperacionPinOut | null>> {
         const { guia } = data;
         const guiaPin = await this.guiaRepository.consultarPin(guia);
         const resultado = dataRecuperarPinFormat(guiaPin);
@@ -70,12 +70,6 @@ export class PinGuiaService {
         }
         return contador;
     };
-
-    async guardarTrigger(data: IDataInTrigger): Promise<Response<string | null>> {
-        const entidad = GuardarGuiaTriggerEntity.crearEntidad(data);
-        const result = await this.guiaRepository.guardarTrigger(entidad);
-        return Result.ok(`Se guardo en la base de datos: ` + result);
-    }
 
     async consultarGuiaTracking(guia: string): Promise<Response<string | null>> {
         const result = await this.guiaRepository.consultarGuiaTracking(guia);
