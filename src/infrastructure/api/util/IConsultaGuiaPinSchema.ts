@@ -14,6 +14,6 @@ export const consultarPinGuiaSchema = Joi.object({
         .regex(/^[0-9]+$/),
     tipoUsuario: Joi.string()
         .valid(USUARIO_REMITENTE, USUARIO_DESTINATARIO)
-        .optional()
+        .required()
         .label('El tipo de usuario es obligatorio'),
 });

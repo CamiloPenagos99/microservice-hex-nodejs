@@ -3,9 +3,9 @@ import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
 import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
-import { dataRecuperarPinCompleto, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
+import { dataRecuperarPinFormat, dataRecuperarPinSalida, reconstruccionData } from '@application/util';
 import { RecuperarPin } from '@infrastructure/repositories';
-import { ConsultarEnvioEntity, GuardarGuiaTriggerEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { GuardarGuiaTriggerEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { signToken } from '@util';
 import { ApiException, FirestoreException } from '@domain/exceptions';
 import { IDataInTrigger } from '@application/data/IDataInTrigger';
@@ -54,12 +54,9 @@ export class PinGuiaService {
     }
 
     async recuperarDataEnvio(data: IGuiaIn): Promise<Response<IEnvioDataOut | null>> {
-        const entidad = ConsultarEnvioEntity.crearEntidad(data);
-        const result = await this.guiaRepository.recuperarDataEnvio(entidad);
-        if (!result) {
-            return Result.ok(result);
-        }
-        const resultado = dataRecuperarPinCompleto(result);
+        const { guia } = data;
+        const guiaPin = await this.guiaRepository.consultarPin(guia);
+        const resultado = dataRecuperarPinFormat(guiaPin);
         return Result.ok(resultado);
     }
 

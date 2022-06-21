@@ -1,5 +1,5 @@
 import { IDataEnvioIn, IDataIn, IEnvioDataOut, IGuiaPinTracking, IRecuperarPinOut } from '@application/data';
-import { IEnvioDataOutComplete } from '@application/data/IEnvioDataOutComplete';
+import { IDataRecuperacionPinOut } from '@application/data/IDataRecuperacionPinOut';
 import { IGuiaOut } from '@application/data/IGuiaOut';
 import { JsonObject } from 'swagger-ui-express';
 import { maskEmail, maskPhone } from './DataMask';
@@ -38,7 +38,7 @@ export const dataRecuperarPinDestinatario = (guia: JsonObject): IEnvioDataOut =>
     };
 };
 
-export const dataRecuperarPinCompleto = (guia: JsonObject): IEnvioDataOutComplete => {
+export const dataRecuperarPinFormat = (guia: IGuiaPinTracking): IDataRecuperacionPinOut => {
     return {
         remitente: {
             telefono: maskPhone(guia.telefono_remitente),
