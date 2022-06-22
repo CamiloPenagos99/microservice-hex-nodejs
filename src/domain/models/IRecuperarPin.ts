@@ -10,5 +10,5 @@ export interface IRecuperarPin {
     telefono_destinatario: string;
     token: IToken;
     tipo_usuario: tipoUsuarioGuia;
-    medio_evio: string;
+    medio_envio: string;
 }

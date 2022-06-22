@@ -64,6 +64,6 @@ export const formatDataRecuperarPin = (guia: IGuiaPinTracking, data: IDataEnvioP
         telefono_destinatario: guia.telefono_destinatario,
         token: guia.token,
         tipo_usuario: data.tipoUsuario,
-        medio_evio: data.medioEnvio,
+        medio_envio: data.medioEnvio,
     };
 };
