@@ -35,15 +35,15 @@ export class RecuperarPin {
         }
     }
 
-    public async recuperarPin(data: IRecuperarPin): Promise<boolean> {
+    public async recuperarPin(data: IRecuperarPin): Promise<IRecuperarPin> {
         console.log(`data recuperacion pin ${JSON.stringify(data)}`);
         try {
-            const responseApi = await axios.post<Response<boolean>>(URL_PIN_GUIA, data, {
+            const responseApi = await axios.post<Response<IRecuperarPin>>(URL_PIN_GUIA, data, {
                 timeout: 5000,
             });
             const dataResponse = responseApi.data;
-            console.log('respuesta api', dataResponse);
-            return true;
+            console.log('respuesta api recupera pin', JSON.stringify(dataResponse));
+            return dataResponse.data;
         } catch (e) {
             if (axios.isAxiosError(e)) {
                 const err = e as AxiosError<Exception>;
