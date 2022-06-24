@@ -7,7 +7,7 @@ export interface IGuiaOut {
     nit_destinatario?: string;
     telefono_destinatario: string;
     token: IToken;
-    url_relacion_digital?: string;
+    url_relacion_digital: string;
     tipoUsuario?: string;
     medioEnvio?: string;
     recuperado?: boolean;

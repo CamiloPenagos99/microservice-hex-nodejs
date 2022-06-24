@@ -13,5 +13,5 @@ export interface IGuiaPinTracking {
     correo_destinatario: string;
     telefono_destinatario: string;
     token: IToken;
-    url_relacion_digital?: string;
+    url_relacion_digital: string;
 }

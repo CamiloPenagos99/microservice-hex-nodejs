@@ -12,4 +12,5 @@ export interface IRecuperarPin {
     token: IToken;
     tipo_usuario: TipoUsuario;
     medio_envio: string;
+    url_relacion_digital: string;
 }

@@ -66,5 +66,6 @@ export const formatDataRecuperarPin = (guia: IGuiaPinTracking, data: IDataEnvioP
         token: guia.token,
         tipo_usuario: data.tipoUsuario === 'remitente' ? TipoUsuario.REMITENTE : TipoUsuario.DESTINATARIO,
         medio_envio: data.medioEnvio,
+        url_relacion_digital: guia.url_relacion_digital,
     };
 };

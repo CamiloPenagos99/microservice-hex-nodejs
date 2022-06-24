@@ -13,7 +13,7 @@ export class GuardarPinEntity implements IGuiaPinTracking {
     readonly destinatario: string;
     readonly telefono_destinatario: string;
     readonly token: IToken;
-    readonly url_relacion_digital?: string;
+    readonly url_relacion_digital: string;
 
     constructor(data: IGuiaPinTracking) {
         this.codigo_recogida = data.codigo_recogida;
