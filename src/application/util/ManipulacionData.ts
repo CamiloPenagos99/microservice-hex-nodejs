@@ -60,7 +60,7 @@ export const formatDataRecuperarPin = (guia: IGuiaPinTracking, data: IDataEnvioP
         remitente: guia.remitente,
         telefono_remitente: guia.telefono_remitente,
         correo_remitente: guia.correo_remitente,
-        destinatario: guia.telefono_destinatario,
+        destinatario: guia.destinatario,
         correo_destinatario: guia.correo_destinatario,
         telefono_destinatario: guia.telefono_destinatario,
         token: guia.token,

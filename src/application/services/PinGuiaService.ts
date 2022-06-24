@@ -34,8 +34,9 @@ export class PinGuiaService {
 
     async recuperarPin(data: IDataEnvioPin): Promise<Response<string | null>> {
         const pinGuia = await this.guiaRepository.consultarPin(data.guia);
-        const respuesta = formatDataRecuperarPin(pinGuia, data);
-        await this.axiosRecuperarPin.recuperarPin(respuesta);
+        const dataRecuperacion = formatDataRecuperarPin(pinGuia, data);
+        console.log(`recuperar pin ${JSON.stringify(dataRecuperacion)}`);
+        await this.axiosRecuperarPin.recuperarPin(dataRecuperacion);
         const token = reiniciarIntentosPinGuia(data, pinGuia);
         await this.guiaRepository.modificarIntentosPinGuia(data.guia, token);
         return Result.ok(`pin enviado correctamente para la guía ${data.guia}`);
