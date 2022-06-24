@@ -2,6 +2,7 @@ import { IDataEnvioPin, IDataIn, IEnvioDataOut, IGuiaPinTracking } from '@applic
 import { IDataRecuperacionPinOut } from '@application/data/IDataRecuperacionPinOut';
 import { IGuiaOut } from '@application/data/IGuiaOut';
 import { IRecuperarPin } from '@domain/models';
+import { TipoUsuario } from '@domain/models/ITipoUsuario';
 import { JsonObject } from 'swagger-ui-express';
 import { maskEmail, maskPhone } from './DataMask';
 
@@ -63,7 +64,7 @@ export const formatDataRecuperarPin = (guia: IGuiaPinTracking, data: IDataEnvioP
         correo_destinatario: guia.correo_destinatario,
         telefono_destinatario: guia.telefono_destinatario,
         token: guia.token,
-        tipo_usuario: data.tipoUsuario,
+        tipo_usuario: data.tipoUsuario === 'remitente' ? TipoUsuario.REMITENTE : TipoUsuario.DESTINATARIO,
         medio_envio: data.medioEnvio,
     };
 };

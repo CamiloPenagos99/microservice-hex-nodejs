@@ -1,27 +1,26 @@
 import { injectable } from 'inversify';
 import { DEPENDENCY_CONTAINER, TYPES } from '@configuration';
 import { Firestore } from '@google-cloud/firestore';
-import { GuiasRemitenteEntity, GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
+import { GuardarPinEntity, RecuperarPinEntity } from '@domain/entities';
 import { TrackingRepository } from '@domain/repository';
 import { FirestoreException, RepositoryException } from '@domain/exceptions';
-import { JsonObject } from 'swagger-ui-express';
 import { USUARIO_REMITENTE } from '@util';
-import { IConsultaGuiasGrupoIn, IGuiaPinTracking, IToken, tipoUsuario } from '@application/data';
+import { IGuiaPinTracking, IToken } from '@application/data';
 
 @injectable()
 export class FirestoreTrackingRepository implements TrackingRepository {
     private firestore = DEPENDENCY_CONTAINER.get<Firestore>(TYPES.Firestore);
     private collection = 'guia-pin';
 
-    async guardarPin(data: GuardarPinEntity): Promise<any> {
+    async guardarPin(data: GuardarPinEntity): Promise<string> {
         try {
             const ref = data.codigo_remision;
             console.log('registrando pin para ', ref);
-            const res = await this.firestore
+            await this.firestore
                 .collection(this.collection)
                 .doc(ref)
                 .set({ ...data });
-            return res;
+            return ref;
         } catch ({ code, message }) {
             console.error(`Error al registrar pin para guía ${data.codigo_remision}`);
             throw new FirestoreException(code as number | string, message as string);
@@ -87,38 +86,6 @@ export class FirestoreTrackingRepository implements TrackingRepository {
         };
         const resetIntentos: IToken = rolUsuario === USUARIO_REMITENTE ? resetRemitente : resetDestinatario;
         await this.firestore.collection(this.collection).doc(data.guia).update({ token: resetIntentos });
-    }
-
-    async consultarGuiasRemitente(data: GuiasRemitenteEntity): Promise<JsonObject> {
-        let result: JsonObject | undefined = {};
-        const query = await this.firestore
-            .collection(this.collection)
-            .where('nit_remitente', '==', data.nit)
-            .where('codigo_recogida', '==', parseInt(data.codigoRecogida))
-            .get();
-
-        if (!query.size) {
-            return result;
-        }
-        const res = query.docs.map((doc) => doc.data());
-        result = res;
-        return result;
-    }
-
-    async consultarGuiasAgrupadas(data: IConsultaGuiasGrupoIn): Promise<IGuiaPinTracking[]> {
-        const filter = data.tipo === tipoUsuario.REMITENTE ? 'nit_remitente' : 'nit_destinatario';
-        const query = await this.firestore
-            .collection(this.collection)
-            .where(filter, '==', data.nit)
-            .where('id_llamada', '==', parseInt(data.id_llamada))
-            .get();
-
-        if (!query.size || query.docs.length === 0) {
-            throw new FirestoreException('0', `No se encuentran las guias para el nit: ${data.nit}`);
-        }
-        const guias = query.docs.map((doc) => doc.data() as IGuiaPinTracking);
-
-        return guias;
     }
 
     async consultarGuiaTracking(guia: string): Promise<any> {

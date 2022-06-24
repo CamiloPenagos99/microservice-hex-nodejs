@@ -1,4 +1,5 @@
-import { IToken, tipoUsuarioGuia } from '@application/data';
+import { IToken } from '@application/data';
+import { TipoUsuario } from './ITipoUsuario';
 
 export interface IRecuperarPin {
     remitente: string;
@@ -9,6 +10,6 @@ export interface IRecuperarPin {
     correo_destinatario: string;
     telefono_destinatario: string;
     token: IToken;
-    tipo_usuario: tipoUsuarioGuia;
+    tipo_usuario: TipoUsuario;
     medio_envio: string;
 }
