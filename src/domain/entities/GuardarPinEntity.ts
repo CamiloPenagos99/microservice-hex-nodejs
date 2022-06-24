@@ -1,13 +1,12 @@
 import { IGuiaPinTracking, IToken } from '@application/data';
 
-export class GuardarPinEntity {
+export class GuardarPinEntity implements IGuiaPinTracking {
     readonly codigo_recogida: number;
     readonly id_llamada: number;
     readonly remitente: string;
     readonly telefono_remitente: string;
     readonly correo_remitente: string;
     readonly nit_remitente: string;
-    readonly envio_data: boolean;
     readonly codigo_remision: string;
     readonly correo_destinatario: string;
     readonly nit_destinatario: string;
@@ -23,7 +22,6 @@ export class GuardarPinEntity {
         this.telefono_remitente = data.telefono_remitente;
         this.correo_remitente = data.correo_remitente;
         this.nit_remitente = data.nit_remitente;
-        this.envio_data = data.envio_data;
         this.codigo_remision = data.codigo_remision;
         this.correo_destinatario = data.correo_destinatario;
         this.destinatario = data.destinatario;

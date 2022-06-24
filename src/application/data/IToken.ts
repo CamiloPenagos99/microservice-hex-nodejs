@@ -1,5 +1,10 @@
 export interface IToken {
-    pin: string;
-    destinatario: number;
-    remitente: number;
+    destinatario: {
+        intentos: number;
+        pin: string;
+    };
+    remitente: {
+        intentos: number;
+        pin: string;
+    };
 }

@@ -1,3 +1,2 @@
 export * from './PinGuiaService';
-export * from './GuiasAgrupadasService';
-export * from './AutenticacionService';
+export * from './AppService';

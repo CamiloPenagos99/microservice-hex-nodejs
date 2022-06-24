@@ -24,9 +24,8 @@ export class BadMessageException extends Exception {
 }
 
 export class RepositoryException extends Exception {
-    constructor() {
-        const message = 'Ocurrió un error al momento de guardar la guía';
-        super(message, ErrorCode.REPOSITORY_ERROR, StatusCode.INTERNAL_ERROR);
+    constructor(message: string, statusCode: number, cause: string) {
+        super(message, ErrorCode.REPOSITORY_ERROR, statusCode, cause);
     }
 }
 
@@ -34,6 +33,12 @@ export class ApiException extends Exception {
     constructor(cause: string) {
         const er = 'Error al momento de recuperar el Pin - ' + cause;
         super(er, ErrorCode.BAD_MESSAGE, StatusCode.BAD_REQUEST, cause);
+    }
+}
+
+export class ApiRestException extends Exception {
+    constructor(message: string, cause: string) {
+        super(message, ErrorCode.API_CLIENT_ERROR, StatusCode.INTERNAL_ERROR, cause);
     }
 }
 
