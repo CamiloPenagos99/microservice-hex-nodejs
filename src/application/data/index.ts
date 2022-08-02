@@ -7,3 +7,4 @@ export * from './IDataEnvioPin';
 export * from './IRecuperarPinOut';
 export * from './IConsultaGuiasRtteIn';
 export * from './IToken';
+export * from './IGuiaDataPin';

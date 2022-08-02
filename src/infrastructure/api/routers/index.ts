@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import {
     consultarFormaEnvio,
-    consultarGuiaTracking,
+    consultarGuiaToken,
     guardarPinGuia,
     recuperarPinGuia,
     validarPinGuia,
@@ -15,5 +15,5 @@ export const initRoutes = async (application: FastifyInstance): Promise<void> =>
     application.post('/consultarFormaEnvio', consultaDataEnvio, consultarFormaEnvio);
 
     //nuevo endpoint
-    application.get('/tracking-guia/:guia', consultarGuiaTracking);
+    application.get('/guia/:guia', consultarGuiaToken);
 };

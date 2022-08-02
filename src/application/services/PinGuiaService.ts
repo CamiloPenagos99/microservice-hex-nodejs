@@ -1,13 +1,18 @@
 import { injectable } from 'inversify';
 import { TYPES, DEPENDENCY_CONTAINER } from '@configuration';
 import { Result, Response } from '@domain/response';
-import { IDataEnvioPin, IDataIn, IGuiaIn, IGuiaPinIn } from '@application/data';
+import { IDataEnvioPin, IDataGuiaPinTracking, IDataIn, IGuiaIn, IGuiaPinIn } from '@application/data';
 import { TrackingRepository } from '@domain/repository';
 import { dataRecuperarPinFormat, formatDataRecuperarPin, reconstruccionData } from '@application/util';
 import { RecuperarPin } from '@infrastructure/repositories';
 import { GuardarPinEntity } from '@domain/entities';
 import { signToken } from '@util';
-import { controlIntentosAcceso, modificarIntentosPinGuia, reiniciarIntentosPinGuia } from '@domain/services';
+import {
+    controlIntentosAcceso,
+    dataGuiaPin,
+    modificarIntentosPinGuia,
+    reiniciarIntentosPinGuia,
+} from '@domain/services';
 import { PinValidadoGuia } from '@domain/models';
 import { IDataRecuperacionPinOut } from '@application/data/IDataRecuperacionPinOut';
 
@@ -49,9 +54,9 @@ export class PinGuiaService {
         return Result.ok(resultado);
     }
 
-    async consultarGuiaTracking(guia: string): Promise<Response<string | null>> {
-        const result = await this.guiaRepository.consultarGuiaTracking(guia);
-        console.log(JSON.stringify(result));
-        return Result.ok(result);
+    async consultarGuiaToken(guia: string): Promise<Response<IDataGuiaPinTracking | null>> {
+        const pinGuia = await this.guiaRepository.consultarPin(guia);
+        const data = dataGuiaPin(pinGuia);
+        return Result.ok(data);
     }
 }

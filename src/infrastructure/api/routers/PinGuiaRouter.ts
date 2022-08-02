@@ -34,10 +34,10 @@ export const consultarFormaEnvio = async (req: FastifyRequest, reply: FastifyRep
     return reply.send({ ...response, id: req.id });
 };
 
-export const consultarGuiaTracking = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
+export const consultarGuiaToken = async (req: FastifyRequest, reply: FastifyReply): Promise<FastifyReply | void> => {
     const pinGuiaService = DEPENDENCY_CONTAINER.get(PinGuiaService);
     //const body = validateDataPubSub<IDataInTrigger>(guardarPinGuiaTriggerSchema, req.body);
     const guia = req.params as IGuiaIn;
-    const respuesta = await pinGuiaService.consultarGuiaTracking(guia.guia);
+    const respuesta = await pinGuiaService.consultarGuiaToken(guia.guia);
     reply.status(200).send({ ...respuesta });
 };
